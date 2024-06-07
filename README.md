@@ -4,7 +4,7 @@
 
 |<img src="https://avatars.githubusercontent.com/u/122499274?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/101380919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/116863184?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/49721857?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/93638922?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|:-:|
-|[@hyuna333](https://github.com/hyuna333)|JinHyeok<br/>[@YangJinHyeok](https://github.com/YangJinHyeok)|[@LimSeHyeon](https://github.com/LimSeHyeon)|[@jiyeon5](https://github.com/jiyeon5)|Yoon<br/>[@Yoon-97](https://github.com/Yoon-97)|
+|김현아<br/>[@hyuna333](https://github.com/hyuna333)|양진혁<br/>[@YangJinHyeok](https://github.com/YangJinHyeok)|임세현<br/>[@LimSeHyeon](https://github.com/LimSeHyeon)|최지연<br/>[@jiyeon5](https://github.com/jiyeon5)|하윤철<br/>[@Yoon-97](https://github.com/Yoon-97)|
 
 
 
