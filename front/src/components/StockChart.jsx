@@ -1,7 +1,23 @@
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
+//
 const StockChart = () => {
+  /*
+  // 차트 데이터 예시
+  // name: 데이터 값의 이름
+  // data: 데이터 값 입력해주세용
+  series: [{
+      name: "Desktops",
+      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+    }]
+
+
+
+  // X축 데이터 예시 ex) D-7, D-6, D-5... 1주일 데이터 넣을 예정
+  categories: [],
+
+  */
   const [chartOptions, setChartOptions] = useState({
     series: [{
       name: "Desktops",
