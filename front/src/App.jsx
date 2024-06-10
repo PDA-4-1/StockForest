@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { RouterProvider, Route, Routes, BrowserRouter } from "react-router-dom";
 import { routerObj } from "./routers/router";
+import "./index.css";
 
 function renderRoutes(routesObj) {
     return routesObj.map((route) => {
