@@ -7,5 +7,4 @@ const Farm = () => {
         </div>
     );
 };
-gdgd;
 export default Farm;
