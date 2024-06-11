@@ -36,6 +36,10 @@ const Profile = () => {
                 <p>수익률: {asset.user_returns}%</p>
             </div>
             <p>자산: {asset.user_pdi} 프디</p>
+            <div>
+                <p>{userInfo.turns} 턴</p>
+                <button>다음 턴</button>
+            </div>
         </div>
     );
 };
