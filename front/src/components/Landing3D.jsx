@@ -66,7 +66,7 @@ const ThreeModelViewer = () => {
                 model = gltf.scene;
                 scene.add(model);
 
-                model.scale.set(200, 200, 200); // 모델의 크기를 더 크게 조정합니다.
+                model.scale.set(500, 500, 500); // 모델의 크기를 더 크게 조정합니다.
                 model.rotation.y = Math.PI;
 
                 // 텍스처가 없는 경우 기본 재질 적용
