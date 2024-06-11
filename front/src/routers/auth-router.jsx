@@ -1,12 +1,12 @@
 import React from "react";
 import Login from "../routes/login/Login";
 import Signup from "../routes/signup/Signup";
-import landingPage from "../routes/landingPage/landingPage";
+import Landing from "../routes/landingPage/Landing"
 
 const authRouter = [
     {
         path: "/",
-        element: <landingPage />,
+        element: <Landing />,
         index: true,
     },
     {

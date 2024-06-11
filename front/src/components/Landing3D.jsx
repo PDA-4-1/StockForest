@@ -59,7 +59,7 @@ const ThreeModelViewer = () => {
         let model;
 
         loader.load(
-            '/model/bee/scene.gltf',
+            '/models/landingModel/scene.gltf',
             (gltf) => {
                 model = gltf.scene;
                 scene.add(model);
