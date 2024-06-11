@@ -92,8 +92,9 @@ const ThreeModelViewer = () => {
                 const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
                 const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
-                model.rotation.y = mouseX * Math.PI * 0.35;
-                model.rotation.x = -mouseY * Math.PI * 0.35; // 위아래 반전을 없애기 위해 -를 붙임
+                model.rotation.y = mouseX * Math.PI * 0.45;
+                model.rotation.x = -mouseY * Math.PI * 0.38;
+                // 위아래 반전을 없애기 위해 -를 붙임
             }
         };
 
