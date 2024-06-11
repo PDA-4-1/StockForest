@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// src/components/ThreeModelViewer.js
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const ThreeModelViewer = () => {
     const containerRef = useRef();
@@ -18,11 +19,11 @@ const ThreeModelViewer = () => {
         // 카메라 설정
         const camera = new THREE.PerspectiveCamera(
             45,
-            window.innerWidth / window.innerHeight,
+            container.clientWidth / container.clientHeight,
             0.1,
-            2000  // 더 넓은 범위를 볼 수 있도록 far 값을 증가시킵니다.
+            2000 // 더 넓은 범위를 볼 수 있도록 far 값을 증가시킵니다.
         );
-        camera.position.set(0, 400, 800);  // 카메라 위치를 조정하여 모델이 보이도록 합니다.
+        camera.position.set(0, 400, 800); // 카메라 위치를 조정하여 모델이 보이도록 합니다.
 
         const scene = new THREE.Scene();
 
@@ -38,7 +39,8 @@ const ThreeModelViewer = () => {
         scene.add(directionalLight2);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(800, 600); // 렌더러 크기 조정
+        renderer.setSize(container.clientWidth, container.clientHeight); // 렌더러 크기 조정
+        renderer.setClearColor(0x88c9a1); // 캔버스 배경색 설정
         renderer.outputEncoding = THREE.sRGBEncoding;
         rendererRef.current = renderer;
         container.appendChild(renderer.domElement);
@@ -50,21 +52,21 @@ const ThreeModelViewer = () => {
         window.addEventListener("resize", onWindowResize);
 
         function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(800, 600); // 창 크기 변경 시 렌더러 크기 재조정
+            renderer.setSize(container.clientWidth, container.clientHeight); // 창 크기 변경 시 렌더러 크기 재조정
         }
 
         const loader = new GLTFLoader();
         let model;
 
         loader.load(
-            '/models/landingModel/scene.gltf',
+            "/models/landingModel/scene.gltf",
             (gltf) => {
                 model = gltf.scene;
                 scene.add(model);
 
-                model.scale.set(200, 200, 200);  // 모델의 크기를 더 크게 조정합니다.
+                model.scale.set(200, 200, 200); // 모델의 크기를 더 크게 조정합니다.
                 model.rotation.y = Math.PI;
 
                 // 텍스처가 없는 경우 기본 재질 적용
@@ -118,10 +120,14 @@ const ThreeModelViewer = () => {
     return (
         <div
             ref={containerRef}
+            //임시 스타일 지정
             style={{
-                width: '30vw',  // 컨테이너 크기 조정
-                height: '30vw',  // 컨테이너 크기 조정
-                margin: '0 auto'  // 중앙 정렬
+                width: "100%", // 컨테이너 너비 조정
+                height: "300px", // 컨테이너 높이 조정
+                position: "absolute", // 절대 위치
+                bottom: 0, // 하단에 위치
+                left: "50%", // 수평 중앙 정렬
+                transform: "translateX(-50%)", // 수평 중앙 정렬 보정
             }}
         />
     );
