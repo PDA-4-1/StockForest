@@ -1,5 +1,5 @@
 import React from "react";
-import Landing from "../routes/main/Landing";
+import Landing from "../routes/landingPage/Landing";
 import Market from "../routes/main/Market";
 import Farm from "../routes/main/Farm";
 import MainLayPage from "../routes/main/layout";
