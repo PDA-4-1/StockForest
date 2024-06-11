@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "a_younggothic";
+    font-weight: normal;
+    src: url("./fonts/a_younggothic.ttf") format("truetype");
+}
+
+body {
+    font-family: "a_younggothic";
+}
