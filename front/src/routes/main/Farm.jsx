@@ -1,9 +1,10 @@
 import React from "react";
+import Navbar from "../../components/Navbar";
 
 const Farm = () => {
     return (
-        <div className="main-page-wrapper">
-            <div>Farm</div>
+        <div className="bg-background-pattern bg-cover bg-center h-screen">
+            <Navbar />
         </div>
     );
 };

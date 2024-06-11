@@ -6,7 +6,7 @@ import MainLayPage from "../routes/main/layout";
 
 const mainRouter = [
     {
-        path: "/main",
+        path: "/",
         element: <MainLayPage />,
         children: [
             {
