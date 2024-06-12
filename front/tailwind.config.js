@@ -11,6 +11,11 @@ module.exports = {
             backgroundImage: {
                 "background-pattern": "url('/imgs/background.svg')",
             },
+            colors: {
+                "back-yellow": "#FEED9F",
+                "shinhan-red": "#E11A1A",
+                "shinhan-blue": "#2173CF",
+            },
         },
     },
     plugins: [],
