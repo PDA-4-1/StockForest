@@ -3,12 +3,14 @@ import { IoTriangleSharp } from "react-icons/io5";
 export default function StockCard(props) {
     const { title, price, change, value } = props.stock;
     const selected = props.selected;
+    const onClick = props.onClick;
 
     return (
         <div
             className={`${
                 selected == title ? "bg-select-green" : "bg-white"
             } w-full rounded-3xl flex items-center space-x-2 justify-center px-3 space-x-2 hover:cursor-pointer hover:bg-select-green max-w-[180px]`}
+            onClick={onClick}
         >
             <div className="w-9 h-9 rounded-full bg-black"></div>
             <div className="text-sm min-w-[100px]">
