@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import StockCard from "../../components/StockCard";
+import StockDetail from "../../components/StockDetail";
 
 const Market = () => {
     const stockList = [
@@ -72,9 +73,7 @@ const Market = () => {
                             <StockCard stock={el} key={i} selected={selected} onClick={() => setSelected(el.title)} />
                         ))}
                     </div>
-                    <div className="col-span-3">
-                        <p>여기가 주식 디테일</p>
-                    </div>
+                    {selected && <StockDetail />}
                 </div>
                 <div className="grid grid-rows-3 h-full gap-6">
                     <div className="bg-back-yellow">여기 프로필 부분</div>
