@@ -17,39 +17,39 @@ const Navbar = () => {
 
     return (
         <>
-            <div class="flex items-center justify-between">
-                <div class="flex-shrink-0 ml-10">
+            <div className="flex items-center justify-between">
+                <div className="flex-shrink-0 ml-10">
                     <img
                         src="/imgs/Logo.svg"
                         alt="로고"
                         onClick={handleLogoClick}
                     />
                 </div>
-                <div class="flex-grow flex justify-center space-x-4 gap-20">
-                    <div class="flex">
+                <div className="flex-grow flex justify-center space-x-4 gap-20">
+                    <div className="flex">
                         <img
                             src="/imgs/market.svg"
                             alt="마켓"
                             onClick={handleMarketClick}
-                            class="size-10 cursor-pointer"
+                            className="size-10 cursor-pointer"
                         />
                         <button
                             onClick={handleMarketClick}
-                            class="text-xl ml-2 text-[#505050]"
+                            className="text-xl ml-2 text-[#505050]"
                         >
                             시장으로
                         </button>
                     </div>
-                    <div class="flex">
+                    <div className="flex">
                         <img
                             src="/imgs/farm.svg"
                             alt="농장"
                             onClick={handleFarmClick}
-                            class="size-10 cursor-pointer"
+                            className="size-10 cursor-pointer"
                         />
                         <button
                             onClick={handleFarmClick}
-                            class="text-xl ml-2 text-[#505050]"
+                            className="text-xl ml-2 text-[#505050]"
                         >
                             농장으로
                         </button>
@@ -59,14 +59,14 @@ const Navbar = () => {
                     <img
                         src="/imgs/quiz.svg"
                         alt="퀴즈"
-                        class="size-10 cursor-pointer"
+                        className="size-10 cursor-pointer"
                     />
-                    <button class="text-xl ml-2 text-[#505050]">
+                    <button className="text-xl ml-2 text-[#505050]">
                         오늘의 퀴즈
                     </button>
                 </div>
             </div>
-            <div class="border-b-2 border-[#FDF9EA] mt-2"></div>
+            <div className="border-b-2 border-[#FDF9EA] mt-2"></div>
         </>
     );
 };
