@@ -8,7 +8,7 @@ const Market = () => {
             title: "미미전자",
             price: 3000,
             change: "up",
-            value: 300,
+            value: 1000,
         },
         {
             title: "미미자동차",

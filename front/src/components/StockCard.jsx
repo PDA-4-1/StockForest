@@ -23,9 +23,9 @@ export default function StockCard(props) {
                     }
                 >
                     <span>{price.toLocaleString()}</span>
-                    <div className="flex items-center ml-2 space-x-1">
+                    <div className="flex items-center ml-2">
                         <IoTriangleSharp className={change == "down" && "rotate-180"} />
-                        <span>{value}</span>
+                        <span className="min-w-[34px] text-right">{value}</span>
                     </div>
                 </div>
             </div>
