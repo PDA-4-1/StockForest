@@ -2,7 +2,7 @@ const mysql = require("mysql2/promise");
 const dotenv = require("dotenv");
 
 dotenv.config();
-
+// console.log(process.env);
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -15,7 +15,7 @@ const pool = mysql.createPool({
     connectTimeout: 60000,
 });
 
-module.exports = { pool };
+module.exports = pool;
 
 /* 연결 확인용 테스트 코드
 async function testConnection() {
