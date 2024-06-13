@@ -20,10 +20,9 @@ router.get("/:id", async (req, res) => {
     try {
         const [result] = await pool.query(query, [req.params.id]);
         if (result.length === 0) {
-            return res.status(404).send("User not found");
+            return res.status(404).send("유저를 찾을 수 없습니다.");
         }
-        console.log(result[0].nickname);
-        res.send(result[0].nickname);
+        res.send(result);
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
