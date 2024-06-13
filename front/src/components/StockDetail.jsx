@@ -1,10 +1,12 @@
 import StockButton from "./StockButton";
 
-export default function StockDetail() {
+export default function StockDetail(props) {
+    const title = props.title;
+
     return (
         <div className="bg-white w-full h-full col-span-3 px-6 py-9 flex flex-col justify-between">
             <div className="flex justify-between items-center">
-                <span>여기 주식 이름</span>
+                <span>{title}</span>
                 <span>가격</span>
                 <span>여기 상승하락</span>
                 <div className="flex space-x-6">
