@@ -2,7 +2,7 @@ const mysql = require("mysql2/promise");
 const dotenv = require("dotenv");
 
 dotenv.config();
-// console.log(process.env);
+// console.log(process.env.DB_PORT);
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -17,7 +17,7 @@ const pool = mysql.createPool({
 
 module.exports = pool;
 
-/* 연결 확인용 테스트 코드
+//연결 확인용 테스트 코드
 async function testConnection() {
     try {
         const connection = await pool.getConnection();
@@ -29,4 +29,3 @@ async function testConnection() {
 }
 
 testConnection();
-*/
