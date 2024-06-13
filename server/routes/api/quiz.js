@@ -18,15 +18,32 @@ router.post("/response", async (req, res) => {
             upDown,
         ]);
         console.log(result.affectedRows);
-        res.send(result.affectedRows+"개의 레코드가 없데이트 되었습니다");
+        res.send(result.affectedRows + "개의 레코드가 추가되었습니다");
     } catch (err) {
         console.log(err);
         res.send(err);
     }
 });
 
-router.post("/answer", async (req, res) => {
+router.put("/answer", async (req, res) => {
     //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
+    const userId = req.body.userId;
+    const date = req.body.date;
+    const isCorrect = req.body.isCorrect;
+
+    const answerQuery = `UPDATE quiz SET is_correct = ? WHERE user_id = ? AND date = ?`;
+    const [result] = await pool.query(answerQuery, [isCorrect, userId, date]);
+
+    // 맞았을 경우 사용자의 pdi 추가
+    const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
+    let result2;
+    if (isCorrect) {
+        [result2] = await pool.query(addPointQuery, [userId]);
+    }
+    res.send({
+        success : result.affectedRows,
+        isCorrect : result2.affectedRows
+    });
 });
 
 module.exports = router;
