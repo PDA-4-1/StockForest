@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import StockCard from "../../components/StockCard";
 import StockDetail from "../../components/StockDetail";
+import Ranking from "../../components/Ranking/Ranking";
 
 const Market = () => {
     const stockList = [
@@ -75,9 +76,9 @@ const Market = () => {
                     </div>
                     {selected && <StockDetail title={selected} />}
                 </div>
-                <div className="grid grid-rows-3 h-full gap-6">
-                    <div className="bg-back-yellow">여기 프로필 부분</div>
-                    <div className="row-span-2 bg-back-yellow">여기는 랭킹 부분</div>
+                <div className="grid grid-rows-3 h-full">
+                    <div className="bg-back-yellow mb-4">여기 프로필 부분</div>
+                    <Ranking />
                 </div>
             </div>
         </div>
