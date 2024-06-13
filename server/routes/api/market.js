@@ -2,11 +2,11 @@ var express = require("express");
 var pool = require("../../config/db.connect.js");
 var router = express.Router();
 const moment = require("moment");
-const date = moment("2020-01-01");
 
 router.get("/:turn", async (req, res) => {
     //TODO : 시장 화면 첫 진입 시 종목 목록 띄우기 위한 데이터 요청
     // 종목명, 설명, 산업 + 등락률
+    const date = moment("2020-01-01");
     const query = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
     const [result] = await pool.query(query, [
         date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
@@ -15,12 +15,21 @@ router.get("/:turn", async (req, res) => {
     res.send(result);
 });
 
-router.get("/stock/:turn", async (req, res) => {
+router.get("/:stockId/:turn", async (req, res) => {
     //TODO : 종목 주가 데이터 요청. 차트에 표시할 과거 1주일간의 데이터 요청
+    const date = moment("2020-01-01");
+    const query = `select a.id, a.name, a.description, b.price, b.date, b.diff from stock a inner join stock_price b on a.id=b.stock_id where a.id=? and (b.date>=? and b.date<=?);`;
+    const [result] = await pool.query(query, [
+        req.params.stockId,
+        date.add((req.params.turn - 1) * 7, "days").format("YYYY-MM-DD"),
+        date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
+    ]);
+    // console.log(result);
+    res.send(result);
 });
 
-router.get("/:id", async (req, res) => {
-    //TODO : 랭킹 불러오기. TOP 10 + 본인 몇 등인지
+router.get("/rank/:id", async (req, res) => {
+    //TODO : 랭킹 불러오기. TOP 5 + 본인 몇 등인지
 });
 
 router.post("/buy", async (req, res) => {
