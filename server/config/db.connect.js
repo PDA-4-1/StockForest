@@ -17,7 +17,7 @@ const pool = mysql.createPool({
 
 module.exports = pool;
 
-/* 연결 확인용 테스트 코드
+// 연결 확인용 테스트 코드
 async function testConnection() {
     try {
         const connection = await pool.getConnection();
@@ -29,4 +29,3 @@ async function testConnection() {
 }
 
 testConnection();
-*/

@@ -1,10 +1,18 @@
 var express = require("express");
 var pool = require("../../config/db.connect.js");
 var router = express.Router();
+const moment = require("moment");
+const date = moment("2020-01-01");
 
 router.get("/:turn", async (req, res) => {
     //TODO : 시장 화면 첫 진입 시 종목 목록 띄우기 위한 데이터 요청
     // 종목명, 설명, 산업 + 등락률
+    const query = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+    const [result] = await pool.query(query, [
+        date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
+    ]);
+    // console.log(result);
+    res.send(result);
 });
 
 router.get("/stock/:turn", async (req, res) => {
@@ -30,12 +38,12 @@ router.get("/sell/:id/:stodkid/:turn", async (req, res) => {
     //TODO : 현재 가지고 있는 주식 수, 가격 불러오기
 });
 
-router.post('/sell', async (req, res) => {
+router.post("/sell", async (req, res) => {
     //TODO : 몇 개 팔건지 요청받아서 뺄거 빼고 필요한 계산 수행
 });
 
-router.post('/turn/:id', async (req, res) => {
+router.post("/turn/:id", async (req, res) => {
     //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
-})
+});
 
 module.exports = router;
