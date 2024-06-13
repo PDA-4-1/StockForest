@@ -25,7 +25,7 @@ router.post("/response", async (req, res) => {
     }
 });
 
-router.put("/answer", async (req, res) => {
+router.patch("/answer", async (req, res) => {
     //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     const userId = req.body.userId;
     const date = req.body.date;
