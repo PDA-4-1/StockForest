@@ -73,7 +73,7 @@ const Market = () => {
                             <StockCard stock={el} key={i} selected={selected} onClick={() => setSelected(el.title)} />
                         ))}
                     </div>
-                    {selected && <StockDetail />}
+                    {selected && <StockDetail title={selected} />}
                 </div>
                 <div className="grid grid-rows-3 h-full gap-6">
                     <div className="bg-back-yellow">여기 프로필 부분</div>

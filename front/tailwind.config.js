@@ -17,6 +17,8 @@ module.exports = {
                 "shinhan-red": "#E11A1A",
                 "shinhan-blue": "#2173CF",
                 "select-green": "#88C9A1",
+                "back-red": "#FDE6EA",
+                "back-blue": "#F2F5FC",
             },
         },
     },
