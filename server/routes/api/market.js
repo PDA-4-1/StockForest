@@ -58,8 +58,17 @@ router.post("/buy", async (req, res) => {
     */
 });
 
-router.get("/sell/:id/:stodkid/:turn", async (req, res) => {
+router.get("/sell/:id/:stockId/:turn", async (req, res) => {
     //TODO : 현재 가지고 있는 주식 수, 가격 불러오기
+    const date = moment("2020-01-01");
+    const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
+    const [result] = await pool.query(query, [
+        req.params.id,
+        req.params.stockId,
+        date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
+    ]);
+    // console.log(result);
+    res.send(result);
 });
 
 router.post("/sell", async (req, res) => {
