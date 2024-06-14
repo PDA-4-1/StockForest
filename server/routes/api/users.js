@@ -43,8 +43,6 @@ router.post("/signin", async (req, res) => {
     try {
         const { nickname, password } = req.body;
 
-        console.log("Received login request:", { nickname, password });
-
         // 사용자 조회
         const [userRows] = await pool.query(
             "SELECT * FROM user WHERE nickname = ?",
@@ -57,14 +55,9 @@ router.post("/signin", async (req, res) => {
         }
 
         const user = userRows[0];
-        console.log("User found:", user);
-
-        console.log("Comparing password:", password);
-        console.log("With hashed password:", user.password);
 
         // 비밀번호 비교
         const auth = await bcrypt.compare(password, user.password);
-        console.log("Password match result:", auth);
         if (!auth) {
             const error = new Error("비밀번호가 일치하지 않습니다.");
             error.name = "PasswordMismatchError";
@@ -83,7 +76,6 @@ router.post("/signin", async (req, res) => {
             maxAge: tokenMaxAge * 1000,
         });
 
-        console.log("User logged in:", user);
         res.status(200).json({ id: user.id, nickname: user.nickname });
     } catch (err) {
         console.error("Error occurred:", err);
