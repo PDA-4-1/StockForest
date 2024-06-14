@@ -34,18 +34,16 @@ jobs:
       run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
     - name: Build Docker image
-      id: build-docker # ID를 추가하여 이 단계의 출력을 참조할 수 있게 함
+      id: build-docker
       run: |
         TIMESTAMP=$(date +%Y%m%d%H%M%S)
-        IMAGE_NAME=yoon97/stockforest:$TIMESTAMP
+        IMAGE_NAME=yoon97/stockforest
         docker build -t $IMAGE_NAME ./server
-        echo "::set-output name=image_name::$IMAGE_NAME" # IMAGE_NAME 변수를 출력으로 설정
-
+        echo "::set-output name=image_name::$IMAGE_NAME"
     - name: Push Docker image to Docker Hub
       run: |
-        IMAGE_NAME=${{ steps.build-docker.outputs.image_name }} # 이전 단계의 출력 참조
+        IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
         docker push $IMAGE_NAME
-
     - name: Execute remote commands via SSH
       uses: appleboy/ssh-action@v0.1.6
       with:
@@ -53,11 +51,11 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.SSH_PEM_KEY }}
         port: 22
-        envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }} # IMAGE_NAME 변수를 환경 변수로 전달
+        envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
         script: |
           echo "Pulling Docker image: $IMAGE_NAME"
-          docker pull $IMAGE_NAME # 환경 변수에서 IMAGE_NAME을 사용
+          docker pull ${{ secrets.DOCKER_ID }}/stockforest
           docker stop stockforest || true
           docker rm stockforest || true
           docker images
-          docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME # 환경 변수에서 IMAGE_NAME을 사용
+          docker run -d --name stockforest -p 3000:3000 ${{ secrets.DOCKER_ID }}/stockforest
