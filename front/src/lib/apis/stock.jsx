@@ -7,3 +7,8 @@ export async function GetStockList(turn) {
     const res = await service.get(`/${turn}`);
     return res.data;
 }
+
+export async function GetStockChart(stockId, turn) {
+    const res = await service.get(`${stockId}/${turn}`);
+    return res.data;
+}

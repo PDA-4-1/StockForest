@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import StockButton from "./StockButton";
 import { IoTriangleSharp } from "react-icons/io5";
+import { GetStockChart } from "../lib/apis/stock";
 
 export default function StockDetail({ stock }) {
-    const { name, price, diff } = stock;
+    const { id, name, price, diff } = stock;
+
+    useEffect(() => {
+        GetStockChart(id, 2).then((data) => console.log(data));
+    }, []);
 
     return (
         <div className="bg-white w-full h-full col-span-3 px-6 py-9 flex flex-col justify-between">
