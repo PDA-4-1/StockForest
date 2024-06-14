@@ -29,6 +29,15 @@ router.post("/signup", async (req, res) => {
             "INSERT INTO user (nickname, password, turn, img) VALUES (?, ?, ?, ?)",
             [nickname, hashedPassword, 0, 1]
         );
+
+         // 생성된 유저의 ID 가져오기
+        const userId = result.insertId;
+
+        // ranking 테이블에 유저 ID 삽입
+        await pool.query(
+            "INSERT INTO ranking (user_id) VALUES (?)",
+            [userId]
+        );
         // 생성된 사용자 정보 반환
         res.status(200).json(nickname);
     } catch (err) {
