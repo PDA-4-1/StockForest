@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import RankComponent from "./RankComponent";
 import trophy from "~/public/imgs/trophy.png";
+import { GetRanking } from "../../lib/apis/stock";
 
 export default function Ranking() {
-    const users = [
+    const [users, setUsers] = useState([
         {
             nickname: "닉네임은여덟글자",
             stock_returns: 25.88,
@@ -28,12 +30,25 @@ export default function Ranking() {
             stock_returns: 23,
             profile_img: "",
         },
-    ];
-    const my = {
+    ]);
+    const [my, setMy] = useState({
         nickname: "닉네임은여덟글자",
         stock_returns: 23,
         profile_img: "",
-    };
+    });
+
+    useEffect(() => {
+        GetRanking(10)
+            .then((data) => {
+                if (data.top5[0]) {
+                    setUsers(data?.top5);
+                }
+                if (data.amI[0]) {
+                    setMy(data?.amI);
+                }
+            })
+            .catch((err) => console.log(err.response));
+    }, []);
 
     return (
         <div className="row-span-2 bg-back-yellow px-2 py-3 grid content-between">
@@ -43,7 +58,7 @@ export default function Ranking() {
                     <p className="text-2xl text-center">랭 킹</p>
                 </div>
                 <div className="flex flex-col space-y-2">
-                    {users.map((el, i) => (
+                    {users?.map((el, i) => (
                         <RankComponent user={el} rank={i + 1} key={i} />
                     ))}
                 </div>
