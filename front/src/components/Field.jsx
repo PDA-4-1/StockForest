@@ -31,17 +31,18 @@ const Field = () => {
         <div>
             <div className="grid grid-cols-3 grid-rows-3 absolute top-[70px] w-[calc(100%-400px)] h-[calc(100vh-70px)] place-items-center">
                 {images.map((src, index) => (
-                    <div className="w-[300px] h-[200px] flex justify-center">
+                    <div className="w-[200px] h-[250px] flex justify-center overflow-hidden">
                         <img
                             key={index}
                             src={src}
                             alt={`Field ${index + 1}`}
-                            className="cursor-pointer"
+                            className="cursor-pointer object-cover "
                             onClick={() => handleButtonClick(src)}
                         />
                     </div>
                 ))}
             </div>
+
             <CompanyProfile
                 visible={isVisible}
                 onClose={handleClose}
