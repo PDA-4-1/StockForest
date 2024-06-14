@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -28,7 +27,6 @@ jobs:
       run: npm run build --if-present
       working-directory: ./server
 
-
     - name: Log in to Docker Hub
       env:
         DOCKER_USER: ${{ secrets.DOCKER_ID }}
@@ -46,17 +44,18 @@ jobs:
       run: |
         IMAGE_NAME=$(cat image_name.txt)
         docker push $IMAGE_NAME
-        
-          
+
     - name: Execute remote commands via SSH
       uses: appleboy/ssh-action@v0.1.6
       with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PEM_KEY }}
-          port: 22
-          script: |
-            docker pull $IMAGE_NAME
-            docker stop stockforest || true
-            docker rm stockforest || true
-            docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.SSH_PEM_KEY }}
+        port: 22
+        envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }} # 환경 변수로 전달
+        script: |
+          echo "Pulling Docker image: $IMAGE_NAME"
+          docker pull $IMAGE_NAME
+          docker stop stockforest || true
+          docker rm stockforest || true
+          docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME
