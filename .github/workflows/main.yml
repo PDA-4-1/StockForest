@@ -37,7 +37,7 @@ jobs:
       id: build-docker
       run: |
         TIMESTAMP=$(date +%Y%m%d%H%M%S)
-        IMAGE_NAME=yoon97/stockforest:$TIMESTAMP
+        IMAGE_NAME=yoon97/stockforest
         docker build -t $IMAGE_NAME ./server
         echo "::set-output name=image_name::$IMAGE_NAME"
 
