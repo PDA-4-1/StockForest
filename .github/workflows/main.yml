@@ -56,7 +56,7 @@ jobs:
         envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
         script: |
           echo "Pulling Docker image: $IMAGE_NAME"
-          docker pull $IMAGE_NAME
+          docker pull ${{ secrets.DOCKER_ID }}/stockforest
           docker stop stockforest || true
           docker rm stockforest || true
-          docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME
+          docker run -d --name stockforest -p 3000:3000 ${{ secrets.DOCKER_ID }}/stockforest
