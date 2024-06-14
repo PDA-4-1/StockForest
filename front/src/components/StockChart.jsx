@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { useSelector } from "react-redux";
 
-//
 const StockChart = () => {
     /*
   // 차트 데이터 예시

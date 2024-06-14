@@ -33,7 +33,7 @@ export default function StockDetail({ stock }) {
                 <div className="w-20 h-20 bg-black rounded-full"></div>
                 <p>여기 회사 설명할거임</p>
             </div>
-            <div>
+            <div className="max-h-[300px]">
                 <StockChart />
             </div>
             <div></div>
