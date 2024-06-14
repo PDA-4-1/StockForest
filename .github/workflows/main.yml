@@ -59,4 +59,5 @@ jobs:
           docker pull $IMAGE_NAME # 환경 변수에서 IMAGE_NAME을 사용
           docker stop stockforest || true
           docker rm stockforest || true
+          docker images
           docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME # 환경 변수에서 IMAGE_NAME을 사용
