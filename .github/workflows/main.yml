@@ -47,15 +47,17 @@ jobs:
         IMAGE_NAME=$(cat image_name.txt)
         docker push $IMAGE_NAME
         
-
-    - name: ssh to ec2
+          
+    - name: Execute remote commands via SSH
       uses: appleboy/ssh-action@master
       with:
-          key: ${{ secrets.SSH_PEM_KEY }} # 내가 변수로 저장한 pem key
-          host: ${{ secrets.EC2_HOST }} # 내가 변수로 저장한 ip
-          username: ${{ secrets.EC2_USER }} # 내가 변수로 저장한 User
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PEM_KEY }}
+          port: 22
           script: |
+            echo ${{ secrets.DOCKER_PASS }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
             docker pull $IMAGE_NAME
-            docker stop sotckforest || true
-            docker rm sotckforest || true
-            docker run -d --name sotckforest -p 3000:3000 $IMAGE_NAME
+            docker stop stockforest || true
+            docker rm stockforest || true
+            docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME
