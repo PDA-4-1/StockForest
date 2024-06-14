@@ -1,14 +1,18 @@
 import StockButton from "./StockButton";
+import { IoTriangleSharp } from "react-icons/io5";
 
-export default function StockDetail(props) {
-    const title = props.title;
+export default function StockDetail({ stock }) {
+    const { name, price, diff } = stock;
 
     return (
         <div className="bg-white w-full h-full col-span-3 px-6 py-9 flex flex-col justify-between">
             <div className="flex justify-between items-center">
-                <span>{title}</span>
-                <span>가격</span>
-                <span>여기 상승하락</span>
+                <span>{name}</span>
+                <span className={diff > 0 ? "text-shinhan-red" : "text-shinhan-blue"}>{price.toLocaleString()}</span>
+                <div className={`flex items-center ml-2 ${diff > 0 ? "text-shinhan-red" : "text-shinhan-blue"}`}>
+                    <IoTriangleSharp className={diff <= 0 && "rotate-180"} />
+                    <span className="min-w-[34px] text-right">{Math.abs(diff).toLocaleString()}</span>
+                </div>
                 <div className="flex space-x-6">
                     <StockButton purpo="buy" onClick={() => {}} />
                     <StockButton purpo="sell" onClick={() => {}} />
