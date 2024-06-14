@@ -47,6 +47,17 @@ jobs:
         IMAGE_NAME=$(cat image_name.txt)
         docker push $IMAGE_NAME
 
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PEM_KEY }}
+
+    - name: Add SSH known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        
+
     - name: Deploy to EC2
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -55,11 +66,10 @@ jobs:
         EC2_HOST: ${{ secrets.EC2_HOST }}
       run: |
         IMAGE_NAME=$(cat image_name.txt)
-        scp -i ~/.ssh/id_rsa image_name.txt $EC2_USER@$EC2_HOST:/home/$EC2_USER/
-        ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST << 'EOF'
-          IMAGE_NAME=$(cat /home/$EC2_USER/image_name.txt)
+        ssh $EC2_USER@$EC2_HOST << 'EOF'
+          docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
           docker pull $IMAGE_NAME
-          docker stop my_container || true
-          docker rm my_container || true
-          docker run -d --name my_container -p 80:80 $IMAGE_NAME
+          docker stop stockforest || true
+          docker rm stockforest || true
+          docker run -d --name stockforest -p 3000:3000 $IMAGE_NAME
         EOF
