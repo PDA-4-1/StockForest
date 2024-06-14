@@ -51,11 +51,6 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.SSH_PEM_KEY }}
         port: 22
-        envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
         script: |
-          echo "Pulling Docker image: $IMAGE_NAME"
-          docker pull ${{ secrets.DOCKER_ID }}/stockforest
-          docker stop stockforest || true
-          docker rm stockforest || true
-          docker images
-          docker run -d --name stockforest -p 3000:3000 ${{ secrets.DOCKER_ID }}/stockforest
+          docker-compose down
+          docker-compose up --build -d
