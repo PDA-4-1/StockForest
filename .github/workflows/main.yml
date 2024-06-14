@@ -47,6 +47,7 @@ jobs:
         IMAGE_NAME=$(cat image_name.txt)
         docker push $IMAGE_NAME
         
+
     - name: Setup SSH and Add Known Hosts
       run: |
         mkdir -p ~/.ssh
@@ -62,7 +63,7 @@ jobs:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       run: |
         IMAGE_NAME=$(cat image_name.txt)
-        ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST << EOF
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker pull $IMAGE_NAME
           docker stop my_container || true
