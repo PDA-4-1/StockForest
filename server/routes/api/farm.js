@@ -3,7 +3,8 @@ var pool = require("../../config/db.connect.js");
 var router = express.Router();
 
 router.get("/:id", async (req, res) => {
-    //TODO : 사용자 농장 식물 받아오기(농장 3*3 배열에 띄울 종목)
+    // 사용자 농장 식물(주식)정보 받아오기
+    // stock_id(1~9)는 주식ID  10은 잔고 잔액
     const query = `SELECT stock_id, quantity, avg_price, returns FROM hold_stock where user_id = ?`;
     try {
         const [result] = await pool.query(query, [req.params.id]);
@@ -12,8 +13,8 @@ router.get("/:id", async (req, res) => {
                 .status(404)
                 .send("유저의 주식정보를 불러올 수 없습니다.");
         }
-        res.send(result[0]);
-        console.log(result[0]);
+        res.send(result);
+        console.log(result);
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
