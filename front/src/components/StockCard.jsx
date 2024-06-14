@@ -14,7 +14,7 @@ export default function StockCard(props) {
         >
             <div className="w-9 h-9 rounded-full bg-black"></div>
             <div className="text-sm min-w-[100px]">
-                <p className={selected == name && "text-white"}>{name}</p>
+                <p className={selected == name ? "text-white" : ""}>{name}</p>
                 <div
                     className={
                         diff >= 0 ? "text-shinhan-red flex justify-between" : "text-shinhan-blue flex justify-between"
