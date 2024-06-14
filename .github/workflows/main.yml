@@ -37,7 +37,7 @@ jobs:
       run: |
         TIMESTAMP=$(date +%Y%m%d%H%M%S)
         IMAGE_NAME=yoon97/stockforest:$TIMESTAMP
-        docker build -t $IMAGE_NAME .
+        docker build -t $IMAGE_NAME ./
         echo $IMAGE_NAME > image_name.txt
 
     - name: Push Docker image to Docker Hub
