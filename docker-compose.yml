@@ -1,6 +1,9 @@
 version: "3.8"
 services:
   stockforest_server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     image: stockforest_server:latest
     environment:
     - DB_HOST='stockforest.cf8i6iuo2swl.ap-northeast-2.rds.amazonaws.com'
