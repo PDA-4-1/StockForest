@@ -49,7 +49,6 @@ jobs:
         
 
     - name: ssh to ec2
-      uses: appleboy/ssh-action@develop
       with:
           key: ${{ secrets.SSH_PEM_KEY }} # 내가 변수로 저장한 pem key
           host: ${{ secrets.EC2_HOST }} # 내가 변수로 저장한 ip
