@@ -56,7 +56,6 @@ jobs:
           key: ${{ secrets.SSH_PEM_KEY }}
           port: 22
           script: |
-            echo ${{ secrets.DOCKER_PASS }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
             docker pull $IMAGE_NAME
             docker stop stockforest || true
             docker rm stockforest || true
