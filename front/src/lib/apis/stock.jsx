@@ -12,3 +12,8 @@ export async function GetStockChart(stockId, turn) {
     const res = await service.get(`${stockId}/${turn}`);
     return res.data;
 }
+
+export async function GetRanking(userId) {
+    const res = await service.get(`rank/${userId}`);
+    return res.data;
+}
