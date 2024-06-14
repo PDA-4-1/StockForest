@@ -4,6 +4,20 @@ var router = express.Router();
 
 router.get("/:id", async (req, res) => {
     //TODO : 사용자 농장 식물 받아오기(농장 3*3 배열에 띄울 종목)
+    const query = `SELECT stock_id, quantity, avg_price, returns FROM hold_stock where user_id = ?`;
+    try {
+        const [result] = await pool.query(query, [req.params.id]);
+        if (result.length === 0) {
+            return res
+                .status(404)
+                .send("유저의 주식정보를 불러올 수 없습니다.");
+        }
+        res.send(result[0]);
+        console.log(result[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
 });
 
 router.get("/stock/:id", async (req, res) => {
