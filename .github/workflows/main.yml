@@ -1,0 +1,63 @@
+name: serverCICD
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Build the project
+      run: npm run build --if-present
+
+    - name: Log in to Docker Hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_ID }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PW }}
+      run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+    - name: Build Docker image
+      run: |
+        TIMESTAMP=$(date +%Y%m%d%H%M%S)
+        IMAGE_NAME=yoon97/stockforest:$TIMESTAMP
+        docker build -t $IMAGE_NAME .
+        echo $IMAGE_NAME > image_name.txt
+
+    - name: Push Docker image to Docker Hub
+      run: |
+        IMAGE_NAME=$(cat image_name.txt)
+        docker push $IMAGE_NAME
+
+    - name: Deploy to EC2
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+      run: |
+        IMAGE_NAME=$(cat image_name.txt)
+        scp -i ~/.ssh/id_rsa image_name.txt $EC2_USER@$EC2_HOST:/home/$EC2_USER/
+        ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST << 'EOF'
+          IMAGE_NAME=$(cat /home/$EC2_USER/image_name.txt)
+          docker pull $IMAGE_NAME
+          docker stop my_container || true
+          docker rm my_container || true
+          docker run -d --name my_container -p 80:80 $IMAGE_NAME
+        EOF
