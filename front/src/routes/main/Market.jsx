@@ -3,11 +3,24 @@ import Navbar from "../../components/Navbar";
 import StockCard from "../../components/StockCard";
 import StockDetail from "../../components/StockDetail";
 import Ranking from "../../components/Ranking/Ranking";
-import { GetStockList } from "../../lib/apis/stock";
+import { GetStockChart, GetStockList } from "../../lib/apis/stock";
+import { useDispatch } from "react-redux";
+import { savePrices } from "../../store/stockSlice";
 
 const Market = () => {
     const [stockList, setStockList] = useState([]);
     const [selected, setSelected] = useState(null);
+    const dispatch = useDispatch();
+    const saveStock = (el) => {
+        setSelected(el);
+        GetStockChart(el.id, 1)
+            .then((data) => {
+                const prices = data.map((el) => el.price);
+                // console.log(prices);
+                dispatch(savePrices(prices));
+            })
+            .catch((err) => console.log(err));
+    };
 
     useEffect(() => {
         GetStockList(1)
@@ -27,7 +40,7 @@ const Market = () => {
                                 key={i}
                                 selected={selected?.name}
                                 onClick={() => {
-                                    setSelected(el);
+                                    saveStock(el);
                                 }}
                             />
                         ))}
