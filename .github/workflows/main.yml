@@ -52,6 +52,8 @@ jobs:
         key: ${{ secrets.SSH_PEM_KEY }}
         port: 22
         script: |
+          cd /home/ec2-user/StockForest/server
+          git pull https://github.com/PDA-4-1/StockForest
           cd ~
           docker-compose down
           docker-compose up --build -d
