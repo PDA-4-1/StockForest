@@ -34,15 +34,16 @@ jobs:
       run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
     - name: Build Docker image
+      id: build-docker
       run: |
         TIMESTAMP=$(date +%Y%m%d%H%M%S)
         IMAGE_NAME=yoon97/stockforest:$TIMESTAMP
         docker build -t $IMAGE_NAME ./server
-        echo $IMAGE_NAME > image_name.txt
+        echo "::set-output name=image_name::$IMAGE_NAME"
 
     - name: Push Docker image to Docker Hub
       run: |
-        IMAGE_NAME=$(cat image_name.txt)
+        IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
         docker push $IMAGE_NAME
 
     - name: Execute remote commands via SSH
@@ -52,7 +53,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.SSH_PEM_KEY }}
         port: 22
-        envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }} # 환경 변수로 전달
+        envs: IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
         script: |
           echo "Pulling Docker image: $IMAGE_NAME"
           docker pull $IMAGE_NAME
