@@ -67,8 +67,8 @@ router.post("/buy", async (req, res) => {
     const quantity = req.body.quantity;
 
     // 매수 정보 주식히스토리 테이블에 추가
-    const resQuery = `INSERT INTO stock_history (user_id, stock_id, is_buy, price, quantity) VALUES (?, ?, ?, ?, ?);`;
-    const [result] = await pool.query(resQuery, [
+    const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity) values (?, ?, ?, ?, ?);`;
+    const [stockHistoryResult] = await pool.query(stockHistoryQuery, [
         //userId
         10,
         stockId,
@@ -76,10 +76,30 @@ router.post("/buy", async (req, res) => {
         price,
         quantity,
     ]);
+
+    // 매수 정보 보유주식 테이블에 추가
+    // 해당 주식 보유시 update 보유x시 insert
+    const holdStockQuery = `insert into hold_stock (user_id, stock_id, quantity, avg_price) values (?, ?, ?, ?) 
+    on duplicate key update avg_price = ((quantity * avg_price) + (? * ?)) / (quantity + ?), quantity = quantity + ?;`;
+    const [holdStockResult] = await pool.query(holdStockQuery, [
+        //userId
+        1,
+        stockId,
+        quantity,
+        price,
+        quantity,
+        price,
+        quantity,
+        quantity,
+    ]);
+
     res.send(
         "주식히스토리 테이블에 " +
-            result.affectedRows +
-            "개의 레코드가 없데이트 되었습니다"
+            stockHistoryResult.affectedRows +
+            "개의 레코드가 업데이트 되었습니다\n" +
+            "보유주식 테이블에 " +
+            holdStockResult.affectedRows +
+            "개의 레코드가 업데이트 되었습니다\n"
     );
 });
 
