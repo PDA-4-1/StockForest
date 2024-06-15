@@ -62,6 +62,25 @@ router.get("/sell/:id/:stockId/:turn", async (req, res) => {
 
 router.post("/buy", async (req, res) => {
     //TODO : 주식 매수. request body 값들 활용해서 DB 값 수정하기.
+    const stockId = req.body.stockId;
+    const price = req.body.price;
+    const quantity = req.body.quantity;
+
+    // 매수 정보 주식히스토리 테이블에 추가
+    const resQuery = `INSERT INTO stock_history (user_id, stock_id, is_buy, price, quantity) VALUES (?, ?, ?, ?, ?);`;
+    const [result] = await pool.query(resQuery, [
+        //userId
+        10,
+        stockId,
+        1,
+        price,
+        quantity,
+    ]);
+    res.send(
+        "주식히스토리 테이블에 " +
+            result.affectedRows +
+            "개의 레코드가 없데이트 되었습니다"
+    );
 });
 
 router.post("/sell", async (req, res) => {
