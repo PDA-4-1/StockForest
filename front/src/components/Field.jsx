@@ -29,7 +29,8 @@ const Field = () => {
 
     return (
         <div>
-            <div className="grid grid-cols-3 grid-rows-3 absolute top-[70px] w-[calc(100%-400px)] h-[calc(100vh-70px)] place-items-center">
+            {/* <div className="absolute top-[70px] w-[calc(100%-400px)] h-[calc(100vh-70px)] bg-[url('/imgs/fence.png')] z-10 bg-no-repeat bg-cover"></div> */}
+            <div className="grid grid-cols-3 grid-rows-3 absolute top-[130px] left-[70px] w-[calc(100%-500px)] h-[calc(100vh-170px)] place-items-center bg-[url('/imgs/field.jpg')]">
                 {images.map((src, index) => (
                     <div className="w-[200px] h-[250px] flex justify-center overflow-hidden">
                         <img
