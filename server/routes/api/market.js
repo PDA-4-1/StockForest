@@ -66,11 +66,19 @@ router.post("/buy", async (req, res) => {
     const price = req.body.price;
     const quantity = req.body.quantity;
 
-    // 매수 정보 주식히스토리 테이블에 추가
+    // 남은 시드머니 조회
+    const remainSeedQuery = `select avg_price from hold_stock where user_id=? and stock_id=10;`;
+    const [remainSeedResult] = await pool.query(remainSeedQuery, [
+        // userId
+        1,
+    ]);
+    const remainSeed = remainSeedResult[0].avg_price;
+
+    // 매수 정보 거래내역 테이블에 추가
     const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity) values (?, ?, ?, ?, ?);`;
     const [stockHistoryResult] = await pool.query(stockHistoryQuery, [
         //userId
-        10,
+        1,
         stockId,
         1,
         price,
@@ -79,7 +87,7 @@ router.post("/buy", async (req, res) => {
 
     // 매수 정보 보유주식 테이블에 추가
     // 해당 주식 보유시 update 보유x시 insert
-    const holdStockQuery = `insert into hold_stock (user_id, stock_id, quantity, avg_price) values (?, ?, ?, ?) 
+    const holdStockQuery = `insert into hold_stock (user_id, stock_id, quantity, avg_price) values (?, ?, ?, ?)
     on duplicate key update avg_price = ((quantity * avg_price) + (? * ?)) / (quantity + ?), quantity = quantity + ?;`;
     const [holdStockResult] = await pool.query(holdStockQuery, [
         //userId
@@ -94,7 +102,7 @@ router.post("/buy", async (req, res) => {
     ]);
 
     res.send(
-        "주식히스토리 테이블에 " +
+        "거래내역 테이블에 " +
             stockHistoryResult.affectedRows +
             "개의 레코드가 업데이트 되었습니다\n" +
             "보유주식 테이블에 " +
