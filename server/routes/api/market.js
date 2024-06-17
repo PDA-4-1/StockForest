@@ -148,6 +148,23 @@ router.post("/sell", async (req, res) => {
 
     if (holdStock >= quantity) {
         // 매도할 수 있는 경우
+
+        // 매도 정보 거래내역 테이블에 추가
+        const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity) values (?, ?, ?, ?, ?);`;
+        const [stockHistoryResult] = await pool.query(stockHistoryQuery, [
+            //userId
+            1,
+            stockId,
+            0,
+            price,
+            quantity,
+        ]);
+
+        res.send(
+            "거래내역 테이블에 " +
+                stockHistoryResult.affectedRows +
+                "개의 레코드가 업데이트 되었습니다\n"
+        );
     }
 });
 
