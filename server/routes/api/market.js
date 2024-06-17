@@ -160,9 +160,22 @@ router.post("/sell", async (req, res) => {
             quantity,
         ]);
 
+        // 매도 정보 보유주식 테이블에 추가
+        // 해당 주식 update
+        const holdStockQuery = `update hold_stock set quantity=quantity-? where user_id=? and stock_id=?;`;
+        const [holdStockResult] = await pool.query(holdStockQuery, [
+            quantity,
+            //userId
+            1,
+            stockId,
+        ]);
+
         res.send(
             "거래내역 테이블에 " +
                 stockHistoryResult.affectedRows +
+                "개의 레코드가 업데이트 되었습니다\n" +
+                "보유주식(해당주식) 테이블에 " +
+                holdStockResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n"
         );
     }
