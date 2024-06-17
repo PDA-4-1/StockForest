@@ -27,7 +27,7 @@ const Profile = () => {
     }, []);
 
     return (
-        <div className="w-[400px] h-[300px] scale-200 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-cover flex flex-col justify-center items-center">
+        <div className="w-full h-full scale-200 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-cover flex flex-col justify-center items-center">
             <div className="flex justify-center items-center">
                 <div className="w-[50px] h-[50px] rounded-full bg-black mr-4">
                     <img>{/* {userInfo.img} */}</img>

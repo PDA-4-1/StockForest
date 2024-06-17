@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CompanyProfile from "./CompanyProfile";
+import Profile from "./Profile";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -28,27 +29,49 @@ const Field = () => {
     ];
 
     return (
-        <div>
-            {/* <div className="absolute top-[70px] w-[calc(100%-400px)] h-[calc(100vh-70px)] bg-[url('/imgs/fence.png')] z-10 bg-no-repeat bg-cover"></div> */}
-            <div className="grid grid-cols-3 grid-rows-3 absolute top-[130px] left-[70px] w-[calc(100%-500px)] h-[calc(100vh-170px)] place-items-center bg-[url('/imgs/field.jpg')]">
-                {images.map((src, index) => (
-                    <div className="w-[200px] h-[250px] flex justify-center overflow-hidden">
-                        <img
+        <div
+            className="grid grid-cols-5"
+            style={{ height: "calc(100vh - 70px)" }}
+        >
+            <div className="col-span-4 h-full relative">
+                <div className="bg-[url('/imgs/fence.png')] bg-no-repeat w-full h-full z-10 absolute top-0 left-0"></div>
+                <div className="grid grid-cols-3 grid-rows-3 place-items-center bg-[url('/imgs/field1.png')] h-full z-1 relative">
+                    {images.map((src, index) => (
+                        <div
+                            className="w-[250px] h-[200px] flex justify-center overflow-hidden"
                             key={index}
-                            src={src}
-                            alt={`Field ${index + 1}`}
-                            className="cursor-pointer object-cover "
-                            onClick={() => handleButtonClick(src)}
+                        >
+                            <img
+                                src={src}
+                                alt={`Field ${index + 1}`}
+                                className="cursor-pointer object-cover z-30"
+                                onClick={() => handleButtonClick(src)}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="col-span-1 bg-[url('/imgs/grass.png')] relative">
+                <div className="grid grid-rows-3 h-full">
+                    <div className="row-span-1 bg-[url('/imgs/grass.png')]">
+                        <Profile />
+                    </div>
+                    <div className="row-span-2 relative flex items-center justify-center bg-[url('/imgs/grass.png')]">
+                        {!isVisible && (
+                            <img
+                                src="/imgs/character.png"
+                                alt="Character"
+                                className="w-full h-[400px]"
+                            />
+                        )}
+                        <CompanyProfile
+                            visible={isVisible}
+                            onClose={handleClose}
+                            image={selectedImage}
                         />
                     </div>
-                ))}
+                </div>
             </div>
-
-            <CompanyProfile
-                visible={isVisible}
-                onClose={handleClose}
-                image={selectedImage}
-            />
         </div>
     );
 };
