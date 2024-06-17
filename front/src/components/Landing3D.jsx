@@ -21,7 +21,7 @@ const ThreeModelViewer = () => {
             0.1,
             2000
         );
-        camera.position.set(0, 800, 800);
+        camera.position.set(0, 900, 1200);
 
         const scene = new THREE.Scene();
 
@@ -46,9 +46,12 @@ const ThreeModelViewer = () => {
         frontLightRight.position.set(300, 200, 300);
         scene.add(frontLightRight);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+        }); // alpha 옵션 추가
         renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setClearColor(0x88c9a1);
+        renderer.setClearColor(0x000000, 0); // 캔버스 배경을 투명하게 설정
         renderer.outputEncoding = THREE.sRGBEncoding;
         rendererRef.current = renderer;
         container.appendChild(renderer.domElement);
@@ -95,7 +98,7 @@ const ThreeModelViewer = () => {
 
             model.scale.set(1000, 1000, 1000);
             model.rotation.y = Math.PI;
-            model.position.set(0, -1000, 0); // 모델의 위치를 Y축 기준으로 아래로 이동
+            model.position.set(0, -1000, -0); // 모델의 위치를 Y축 기준으로 아래로 이동
 
             model.traverse((node) => {
                 if (node.isMesh) {
@@ -111,9 +114,9 @@ const ThreeModelViewer = () => {
         const handleMouseMove = (event) => {
             if (model) {
                 const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                let mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
-                // 하한선 설정 (예: mouseY가 -0.5 이하로 내려가지 않도록 설정)
+                // 하한선 설정 (예: mouseY가 0.05 이하로 내려가지 않도록 설정)
                 const lowerBound = 0.05;
                 if (mouseY < lowerBound) {
                     mouseY = lowerBound;
