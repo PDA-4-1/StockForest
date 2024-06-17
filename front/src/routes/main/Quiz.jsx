@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { FaChevronDown } from "react-icons/fa";
 import { FaChevronUp } from "react-icons/fa";
@@ -9,18 +8,21 @@ const Quiz = () => {
         setIsOpen(!isOpen);
     };
 
+    
+
+
     return (
-        <div className = "bg-background-pattern bg-cover bg-center h-screen">
-            <Navbar/>
-            {/* <div className="relative inline-block text-left"> */}
-                <div>
+        <div className="bg-background-pattern bg-cover bg-center h-screen">
+            <Navbar />
+            <div className="flex flex-row">
+                <div className="basis-1/2">
                     <button
                         type="button"
                         className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         onClick={toggleDropdown}
                     >
                         주식 이름
-                        {isOpen ? <FaChevronDown/> : <FaChevronUp/>}
+                        {isOpen ? <FaChevronDown /> : <FaChevronUp />}
                     </button>
                 </div>
 
@@ -98,11 +100,13 @@ const Quiz = () => {
                         </div>
                     </div>
                 )}
-            {/* </div> */}
-
-            <div>
-                <div>상승버튼 하락버튼</div>
-                <div>저장</div>
+                <div className="flex basis-1/2 items-center">
+                    <div className="flex basis-1/2 justify-center">
+                        <div className="basis-1/2 text-center">상승버튼</div>
+                        <div className="basis-1/2 text-center">하락버튼</div>
+                    </div>
+                    <div className="basis-1/2 text-center">저장</div>
+                </div>
             </div>
         </div>
     );
