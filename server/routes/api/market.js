@@ -105,6 +105,7 @@ router.post("/buy", async (req, res) => {
             quantity,
         ]);
 
+        // 보유프디 보유잔고 테이블에서 업데이트
         const holdSeedQuery = `update hold_stock set avg_price=avg_price-?*? where user_id=? and stock_id=10;`;
         const [holdSeedResult] = await pool.query(holdSeedQuery, [
             quantity,
@@ -124,6 +125,9 @@ router.post("/buy", async (req, res) => {
                 holdSeedResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n"
         );
+    } else {
+        // 매수 불가능할 경우
+        res.send("가지고있는 프디가 부족합니다.");
     }
 });
 
