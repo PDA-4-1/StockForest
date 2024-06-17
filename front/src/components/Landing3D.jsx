@@ -119,10 +119,10 @@ const ThreeModelViewer = () => {
 
                 // 모델 회전 각도 기준으로 하한선 설정
                 const lowerBoundRotation = -Math.PI / 2; // 예: -22.5도 이하로 회전하지 않도록 설정
-                const upperBoundRotation = Math.PI / 20; // 예: 22.5도 이상으로 회전하지 않도록 설정
+                const upperBoundRotation = Math.PI / 30; // 예: 22.5도 이상으로 회전하지 않도록 설정
 
                 model.rotation.y = mouseX * Math.PI * 0.45;
-                const newRotationX = -mouseY * Math.PI * 0.38;
+                const newRotationX = -mouseY * Math.PI * 0.34;
 
                 // 회전 각도 제한 적용
                 if (
