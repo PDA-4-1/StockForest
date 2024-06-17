@@ -21,7 +21,8 @@ const ThreeModelViewer = () => {
             0.1,
             2000
         );
-        camera.position.set(0, 900, 1200);
+        //카메라 위치 조정
+        camera.position.set(0, 500, 700);
 
         const scene = new THREE.Scene();
 
