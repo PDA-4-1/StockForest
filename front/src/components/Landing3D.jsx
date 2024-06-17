@@ -95,7 +95,7 @@ const ThreeModelViewer = () => {
 
             model.scale.set(1000, 1000, 1000);
             model.rotation.y = Math.PI;
-            model.position.set(0, -900, 0); // 모델의 위치를 Y축 기준으로 아래로 이동
+            model.position.set(0, -1000, 0); // 모델의 위치를 Y축 기준으로 아래로 이동
 
             model.traverse((node) => {
                 if (node.isMesh) {
@@ -112,6 +112,12 @@ const ThreeModelViewer = () => {
             if (model) {
                 const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
                 const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+                // 하한선 설정 (예: mouseY가 -0.5 이하로 내려가지 않도록 설정)
+                const lowerBound = 0.05;
+                if (mouseY < lowerBound) {
+                    mouseY = lowerBound;
+                }
 
                 model.rotation.y = mouseX * Math.PI * 0.45;
                 model.rotation.x = -mouseY * Math.PI * 0.38;
