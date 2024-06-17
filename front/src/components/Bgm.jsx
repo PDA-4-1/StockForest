@@ -3,21 +3,27 @@ import { useState, useEffect } from "react";
 
 
 const Bgm = () => {
+  const audioRef = React.useRef()
   const [isPlay, setIsPlay] = useState(true);
-  const bgmUrl = "https://stockforest.s3.ap-northeast-2.amazonaws.com/bgm/bgm_1h.mp3";
+  const bgmUrl = "/bgm/bgm_1h.mp3";
+  // useEffect(()=>{
+  //   console.log(audioRef)
+  // audioRef.current.play()
+  // }, [])
   console.log(`음악 실행 여부: ${isPlay}`);
     return (
       //isPlay redux 처리
       <>
-        {isPlay && (
+        {/* {isPlay && (
           <audio
             src= {bgmUrl}
-            autoPlay={isPlay}
+            ref={audioRef}
+            // autoPlay={isPlay}
             volume={1.0}
-            mute={false}
             > 
           </audio>
-        )}
+        )} */}
+        <iframe src= {bgmUrl} allow="autoplay" style={{ display: "none" }}></iframe>
       </>
     );
 };
