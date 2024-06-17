@@ -97,7 +97,7 @@ const ThreeModelViewer = () => {
             scene.add(model);
 
             model.scale.set(1000, 1000, 1000);
-            model.rotation.y = Math.PI;
+            model.rotation.y = 0;
             model.position.set(0, -1000, -0); // 모델의 위치를 Y축 기준으로 아래로 이동
 
             model.traverse((node) => {
@@ -116,14 +116,20 @@ const ThreeModelViewer = () => {
                 const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
                 let mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
-                // 하한선 설정 (예: mouseY가 0.05 이하로 내려가지 않도록 설정)
-                const lowerBound = 0.05;
-                if (mouseY < lowerBound) {
-                    mouseY = lowerBound;
-                }
+                // 모델 회전 각도 기준으로 하한선 설정
+                const lowerBoundRotation = -Math.PI / 2; // 예: -22.5도 이하로 회전하지 않도록 설정
+                const upperBoundRotation = Math.PI / 20; // 예: 22.5도 이상으로 회전하지 않도록 설정
 
                 model.rotation.y = mouseX * Math.PI * 0.45;
-                model.rotation.x = -mouseY * Math.PI * 0.38;
+                const newRotationX = -mouseY * Math.PI * 0.38;
+
+                // 회전 각도 제한 적용
+                if (
+                    newRotationX >= lowerBoundRotation &&
+                    newRotationX <= upperBoundRotation
+                ) {
+                    model.rotation.x = newRotationX;
+                }
             }
         };
 
