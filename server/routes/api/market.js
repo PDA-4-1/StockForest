@@ -145,6 +145,10 @@ router.post("/sell", async (req, res) => {
         stockId,
     ]);
     const holdStock = holdStockResult[0].quantity;
+
+    if (holdStock >= quantity) {
+        // 매도할 수 있는 경우
+    }
 });
 
 router.post("/turn/:id", async (req, res) => {
