@@ -132,7 +132,19 @@ router.post("/buy", async (req, res) => {
 });
 
 router.post("/sell", async (req, res) => {
-    //TODO : 몇 개 팔건지 요청받아서 뺄거 빼고 필요한 계산 수행
+    //TODO : 주식 매도. request body 값들 활용해서 DB 값 수정하기.
+    const stockId = req.body.stockId;
+    const price = req.body.price;
+    const quantity = req.body.quantity;
+
+    // 해당주식 보유량 조회
+    const holdStockQuery = `select quantity from hold_stock where user_id=? and stock_id=?;`;
+    const [holdStockResult] = await pool.query(holdStockQuery, [
+        // userId
+        1,
+        stockId,
+    ]);
+    const holdStock = holdStockResult[0].quantity;
 });
 
 router.post("/turn/:id", async (req, res) => {
