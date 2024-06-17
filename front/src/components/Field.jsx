@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CompanyProfile from "./CompanyProfile";
 import Profile from "./Profile";
 
@@ -30,11 +30,11 @@ const Field = () => {
 
     return (
         <div
-            className="grid grid-cols-5"
+            className="grid grid-cols-5 overflow-hidden"
             style={{ height: "calc(100vh - 70px)" }}
         >
-            <div className="col-span-4 h-full relative">
-                <div className="bg-[url('/imgs/fence.png')] bg-no-repeat w-full h-full z-10 absolute top-0 left-0"></div>
+            <div className="col-span-4 h-full relative overflow-hidden">
+                <div className="bg-[url('/imgs/fence.png')] bg-cover bg-no-repeat w-full h-full z-10 absolute top-0 left-0"></div>
                 <div className="grid grid-cols-3 grid-rows-3 place-items-center bg-[url('/imgs/field1.png')] h-full z-1 relative">
                     {images.map((src, index) => (
                         <div
@@ -51,7 +51,7 @@ const Field = () => {
                     ))}
                 </div>
             </div>
-            <div className="col-span-1 bg-[url('/imgs/grass.png')] relative">
+            <div className="col-span-1 bg-[url('/imgs/grass.png')] relative overflow-hidden">
                 <div className="grid grid-rows-3 h-full">
                     <div className="row-span-1 bg-[url('/imgs/grass.png')]">
                         <Profile />
