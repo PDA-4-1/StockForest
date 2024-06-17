@@ -38,11 +38,11 @@ const ThreeModelViewer = () => {
         scene.add(directionalLight2);
 
         // 정면 좌우측 조명 추가
-        const frontLightLeft = new THREE.DirectionalLight(0xffffff, 0.8);
+        const frontLightLeft = new THREE.DirectionalLight(0xffffff, 0.5);
         frontLightLeft.position.set(-300, 200, 300);
         scene.add(frontLightLeft);
 
-        const frontLightRight = new THREE.DirectionalLight(0xffffff, 0.8);
+        const frontLightRight = new THREE.DirectionalLight(0xffffff, 0.5);
         frontLightRight.position.set(300, 200, 300);
         scene.add(frontLightRight);
 
