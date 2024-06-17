@@ -93,9 +93,9 @@ const ThreeModelViewer = () => {
             model = gltf.scene;
             scene.add(model);
 
-            model.scale.set(400, 400, 400);
+            model.scale.set(1000, 1000, 1000);
             model.rotation.y = Math.PI;
-            model.position.set(0, -200, 0); // 모델의 위치를 Y축 기준으로 아래로 이동
+            model.position.set(0, -900, 0); // 모델의 위치를 Y축 기준으로 아래로 이동
 
             model.traverse((node) => {
                 if (node.isMesh) {
@@ -145,7 +145,7 @@ const ThreeModelViewer = () => {
             ref={containerRef}
             style={{
                 width: "100%",
-                height: "900px",
+                height: "400px",
                 position: "absolute",
                 bottom: 0,
                 left: "50%",
