@@ -61,7 +61,10 @@ export default function OrderModal(props) {
                             <p>총 가격</p>
                             <p>{price * num} 원</p>
                         </div>
-                        <StockButton purpo={purpo} onClick={sellStock} />
+                        <div className="flex justify-center space-x-6">
+                            <StockButton purpo={"cancle"} onClick={onHide} />
+                            <StockButton purpo={purpo} onClick={sellStock} />
+                        </div>
                     </div>
                 ) : (
                     <div className="text-center grid gap-6 w-full">
@@ -81,7 +84,10 @@ export default function OrderModal(props) {
                             <p>총 가격</p>
                             <p>{price * num} 원</p>
                         </div>
-                        <StockButton purpo={purpo} onClick={buyStock} />
+                        <div className="flex justify-center space-x-6">
+                            <StockButton purpo={"cancle"} onClick={onHide} />
+                            <StockButton purpo={purpo} onClick={buyStock} />
+                        </div>
                     </div>
                 )}
             </div>
