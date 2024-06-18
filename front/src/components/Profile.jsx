@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Profile = () => {
-    const id = 1; //임시로 1로 설정, redux로 받아올 예정
+    const id = 10; //임시로 1로 설정, redux로 받아올 예정
 
     const [userInfo, setUserInfo] = useState([]);
-    const userInfoAPI = `http://localhost:3000/api/users/${id}`;
+    const userInfoAPI = `/api/users/${id}`;
 
     useEffect(() => {
         const fetchuUserInfo = async () => {
@@ -41,8 +41,8 @@ const Profile = () => {
             </div>
 
             <div className="mt-[30px] flex items-center">
-                <img src="/imgs/money.svg" alt="자산"/>
-                <div  className="ml-[5px]" >{userInfo.user_pdi} 프디</div>
+                <img src="/imgs/money.svg" alt="자산" />
+                <div className="ml-[5px]">{userInfo.user_pdi} 프디</div>
             </div>
 
             <div className="flex items-center mt-[30px] justify-center gap-3">
