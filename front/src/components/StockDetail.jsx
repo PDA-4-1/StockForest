@@ -51,7 +51,7 @@ export default function StockDetail({ stock }) {
                 <StockChart />
             </div>
 
-            {modalSee ? <OrderModal purpo={purpo} onHide={onHide} /> : null}
+            {modalSee ? <OrderModal purpo={purpo} onHide={onHide} price={price} stockId={id} /> : null}
         </div>
     );
 }
