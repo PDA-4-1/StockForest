@@ -21,7 +21,7 @@ const ThreeModelViewer = () => {
             0.1,
             2000
         );
-        //카메라 위치 조정
+        // 카메라 위치 조정
         camera.position.set(0, 500, 700);
 
         const scene = new THREE.Scene();
@@ -97,9 +97,10 @@ const ThreeModelViewer = () => {
             model = gltf.scene;
             scene.add(model);
 
-            model.scale.set(1000, 1000, 1000);
+            model.scale.set(600, 600, 600);
             model.rotation.y = 0;
-            model.position.set(0, -1000, -0); // 모델의 위치를 Y축 기준으로 아래로 이동
+            model.rotation.x = 0; // 초기 X축 회전 각도를 0으로 설정하여 직립 상태로 보이게 함
+            model.position.set(0, -500, 0); // 모델의 위치를 Y축 기준으로 덜 이동시킴
 
             model.traverse((node) => {
                 if (node.isMesh) {
@@ -115,19 +116,33 @@ const ThreeModelViewer = () => {
         const handleMouseMove = (event) => {
             if (model) {
                 const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                let mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                // 모델 Y축 회전 각도 기준으로 하한선 설정
+                const lowerBoundRotationY = -1; // 약 -10도
+                const upperBoundRotationY = 1; // 약 10도
 
-                // 모델 회전 각도 기준으로 하한선 설정
-                const lowerBoundRotation = -Math.PI / 2; // 예: -22.5도 이하로 회전하지 않도록 설정
-                const upperBoundRotation = Math.PI / 30; // 예: 22.5도 이상으로 회전하지 않도록 설정
+                // 모델 X축 회전 각도 기준으로 하한선 설정
+                const lowerBoundRotationX = -0.8; // 약 -20도
+                const upperBoundRotationX = 0.05; // 약 20도
 
-                model.rotation.y = mouseX * Math.PI * 0.45;
+                // 새로운 Y축 회전 각도 계산
+                const newRotationY = mouseX * Math.PI * 0.45;
+
+                // Y축 회전 각도 제한 적용
+                if (
+                    newRotationY >= lowerBoundRotationY &&
+                    newRotationY <= upperBoundRotationY
+                ) {
+                    model.rotation.y = newRotationY;
+                }
+
+                // 새로운 X축 회전 각도 계산
                 const newRotationX = -mouseY * Math.PI * 0.34;
 
-                // 회전 각도 제한 적용
+                // X축 회전 각도 제한 적용
                 if (
-                    newRotationX >= lowerBoundRotation &&
-                    newRotationX <= upperBoundRotation
+                    newRotationX >= lowerBoundRotationX &&
+                    newRotationX <= upperBoundRotationX
                 ) {
                     model.rotation.x = newRotationX;
                 }
