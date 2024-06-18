@@ -56,6 +56,16 @@ router.get("/next/:turn/:id", async (req, res) => {
         date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
     ]);
 
+    // 수익률 업데이트
+    const returnsQuery = `update hold_stock c inner join (
+        select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
+        on c.stock_id=d.id set c.returns=((d.price-c.avg_price)/c.avg_price)*100;`;
+    await pool.query(returnsQuery, [date.format("YYYY-MM-DD")]);
+    const rankingQuery = `update ranking a inner join (
+        select user_id, sum(avg_price*quantity) as seed from hold_stock group by user_id) b
+        on a.user_id=b.user_id set a.user_pdi=b.seed, a.user_returns=((a.user_pdi-100000)/100000)*100;`;
+    await pool.query(rankingQuery, []);
+
     res.send(stockResult);
 });
 
