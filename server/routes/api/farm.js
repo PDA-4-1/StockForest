@@ -1,13 +1,18 @@
 var express = require("express");
 var pool = require("../../config/db.connect.js");
+const { verifyToken } = require("../../utils/auth.js");
 var router = express.Router();
 
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
     // 사용자 농장 식물(주식)정보 받아오기
     // stock_id(1~9)는 주식ID  10은 잔고 잔액
+    const token = req.cookies.authToken;
+    const decoded = verifyToken(token);
+    const userId = decoded.id;
+
     const query = `SELECT stock_id, quantity, avg_price, returns FROM hold_stock where user_id = ?`;
     try {
-        const [result] = await pool.query(query, [req.params.id]);
+        const [result] = await pool.query(query, [userId]);
         if (result.length === 0) {
             return res
                 .status(404)
