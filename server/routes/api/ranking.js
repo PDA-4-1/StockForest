@@ -14,9 +14,18 @@ router.get("/:turn", async (req, res) => {
         date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
     ]);
 
+    // 유저별 보유시드 랭킹테이블에서 업데이트
+    const rankingQuery = `update ranking a inner join (
+    select user_id, sum(avg_price*quantity) as seed from hold_stock group by user_id) b
+    on a.user_id=b.user_id set a.user_pdi=b.seed, a.user_returns=((a.user_pdi-100000)/100000)*100;`;
+    const [rankingResult] = await pool.query(rankingQuery, []);
+
     res.send(
         "보유주식 테이블에 " +
             returnsResult.affectedRows +
+            "개의 레코드가 업데이트 되었습니다\n" +
+            "랭킹 테이블에 " +
+            rankingResult.affectedRows +
             "개의 레코드가 업데이트 되었습니다\n"
     );
 });
