@@ -29,17 +29,17 @@ const Field = () => {
         setSelectedImage(null);
     };
 
-    const images = [
-        "/imgs/tomato/tomato1.png",
-        "/imgs/tomato/tomato2.png",
-        "/imgs/tomato/tomato3.png",
-        "/imgs/tomato/tomato4.png",
-        "/imgs/tomato/tomato5.png",
-        "/imgs/tomato/tomato2.png",
-        "/imgs/tomato/tomato3.png",
-        "/imgs/tomato/tomato4.png",
-        "/imgs/tomato/tomato5.png",
-    ];
+    const stockImages = {
+        1: "/imgs/tomato/tomato1.png",
+        2: "/imgs/tomato/tomato2.png",
+        3: "/imgs/tomato/tomato3.png",
+        4: "/imgs/tomato/tomato4.png",
+        5: "/imgs/tomato/tomato5.png",
+        6: "/imgs/banana/banana1.png",
+        7: "/imgs/banana/banana2.png",
+        8: "/imgs/banana/banana3.png",
+        9: "/imgs/banana/banana4.png",
+    };
 
     return (
         <div
