@@ -2,7 +2,7 @@ var express = require("express");
 var pool = require("../../config/db.connect.js");
 var router = express.Router();
 const bcrypt = require("bcrypt");
-const { createToken } = require("../../utils/auth");
+const { createToken, verifyToken } = require("../../utils/auth");
 
 router.post("/signup", async (req, res) => {
     //회원가입 로직
@@ -30,14 +30,11 @@ router.post("/signup", async (req, res) => {
             [nickname, hashedPassword, 0, 1]
         );
 
-         // 생성된 유저의 ID 가져오기
+        // 생성된 유저의 ID 가져오기
         const userId = result.insertId;
 
         // ranking 테이블에 유저 ID 삽입
-        await pool.query(
-            "INSERT INTO ranking (user_id) VALUES (?)",
-            [userId]
-        );
+        await pool.query("INSERT INTO ranking (user_id) VALUES (?)", [userId]);
         // 생성된 사용자 정보 반환
         res.status(200).json(nickname);
     } catch (err) {
@@ -99,6 +96,17 @@ router.post("/signin", async (req, res) => {
 
 router.get("/exist/:nick", async (req, res) => {
     //TODO : 닉네임 중복 확인 로직 구현
+});
+
+router.get("/getId", async (req, res) => {
+  try {
+      const token = req.cookies.authToken;
+      const decoded = verifyToken(token);
+      const userId = decoded.id;
+      res.json(userId);
+  } catch (error) {
+      res.status(500).json(error);
+  }
 });
 
 router.get("/:id", async (req, res) => {
