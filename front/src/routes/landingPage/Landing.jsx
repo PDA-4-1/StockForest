@@ -3,13 +3,22 @@ import Landing3D from "../../components/Landing3D";
 
 const Landing = () => {
     return (
-
         <div className="bg-background-pattern bg-cover bg-center h-screen">
-            <h1>모여봐요 주식의 숲</h1>
-            <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-                <button>로그인</button>
-                <button>회원가입</button>
+            <div className="flex justify-center pt-5 scale-75">
+                <img
+                    src="/imgs/loginlogo.svg"
+                    alt="로그인로고"
+                    className="max-400:w-[300px]"
+                />{" "}
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "20px",
+                        marginBottom: "20px",
+                    }}
+                ></div>
             </div>
+
             <Landing3D />
         </div>
     );
