@@ -47,6 +47,18 @@ router.get("/:stockId/:turn", async (req, res) => {
     res.send(result);
 });
 
+router.get("/next/:turn/:id", async (req, res) => {
+    //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
+    // 주식 목록 불러오기
+    const date = moment("2020-01-01");
+    const stocQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+    const [stockResult] = await pool.query(stocQuery, [
+        date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
+    ]);
+
+    res.send(stockResult);
+});
+
 router.get("/sell/:id/:stockId/:turn", async (req, res) => {
     //TODO : 현재 가지고 있는 주식 수, 가격 불러오기
     const date = moment("2020-01-01");
@@ -194,10 +206,6 @@ router.post("/sell", async (req, res) => {
         // 매도 불가능 경우
         res.send("가지고있는 주식량보다 더 많이 팔 수 없어요.");
     }
-});
-
-router.get("/:turn/:id", async (req, res) => {
-    //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
 });
 
 module.exports = router;
