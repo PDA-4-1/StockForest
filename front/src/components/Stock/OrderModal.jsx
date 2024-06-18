@@ -15,10 +15,21 @@ export default function OrderModal(props) {
     };
     const sellStock = () => {
         console.log(num, stockId, price, price * num);
+        SellStock(stockId, price, num)
+            .then((data) => {
+                console.log(data);
+                onHide();
+            })
+            .catch((err) => console.log(err.response));
     };
     const buyStock = () => {
         console.log(num, stockId, price, price * num);
-        // BuyStock(stockId, price, price * num).then((data) => console.log(data));
+        BuyStock(stockId, price, num)
+            .then((data) => {
+                console.log(data);
+                onHide();
+            })
+            .catch((err) => console.log(err.response));
         setNum(0);
     };
 

@@ -17,3 +17,15 @@ export async function GetRanking(userId) {
     const res = await service.get(`rank/${userId}`);
     return res.data;
 }
+
+export async function SellStock(stockId, price, quantity) {
+    const data = { stockId, price, quantity };
+    const res = await service.post(`sell`, data);
+    return res.data;
+}
+
+export async function BuyStock(stockId, price, quantity) {
+    const data = { stockId, price, quantity };
+    const res = await service.post(`buy`, data);
+    return res.data;
+}
