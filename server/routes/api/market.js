@@ -73,6 +73,13 @@ router.get("/next/:turn/:id", async (req, res) => {
         date.add(6, "days").format("YYYY-MM-DD"),
     ]);
 
+    // user turn 업데이트
+    const query = `update user set turn=turn+1 where id=?;`;
+    await pool.query(query, [
+        //userId
+        10,
+    ]);
+
     const obj = {
         stocks: stockResult,
         news: newsResult,
