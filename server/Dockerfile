@@ -1,7 +1,7 @@
 FROM node:18-alpine
-WORKDIR /app
+WORKDIR /app/server
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 COPY . .
 EXPOSE 3000
 
