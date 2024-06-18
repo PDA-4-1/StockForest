@@ -10,6 +10,15 @@ const Quiz = () => {
 
     
 
+    // open API를 이용해서 퀴즈에 쓸 투자전략 불러오기 -> 앞으로 1주일 간 꾸준히 불러보고 판단
+    /* 사용자 응답 받아서 post 요청하기
+        stockId, date, upDown state 생성하기
+        - stockId는 드롭다운 선택 시 onClick 이벤트로 설정
+        - date는 랜더링 시에 useEffect로 변경
+        - upDown은 상승, 하락 버튼 클릭 onClick 이벤트로 설정
+        - axios로 api 요청 전송
+        - 응답 확인하기
+    */
 
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">
