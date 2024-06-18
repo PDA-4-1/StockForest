@@ -19,7 +19,6 @@ router.get("/", async (req, res) => {
                 .send("유저의 주식정보를 불러올 수 없습니다.");
         }
         res.send(result);
-        console.log(result);
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
