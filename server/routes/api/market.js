@@ -160,7 +160,7 @@ router.post("/sell", async (req, res) => {
             quantity,
         ]);
 
-        // 매도 정보 보유주식 테이블에 추가
+        // 매도 정보 보유주식 테이블에 업데이트
         // 해당 주식 update
         const holdStockQuery = `update hold_stock set quantity=quantity-? where user_id=? and stock_id=?;`;
         const [holdStockResult] = await pool.query(holdStockQuery, [
@@ -170,18 +170,30 @@ router.post("/sell", async (req, res) => {
             stockId,
         ]);
 
+        // 보유 시드 update
+        const holdSeedQuery = `update hold_stock set avg_price=avg_price+?*? where user_id=? and stock_id=10;`;
+        const [holdSeedResult] = await pool.query(holdSeedQuery, [
+            quantity,
+            price,
+            //userId
+            1,
+        ]);
+
         res.send(
             "거래내역 테이블에 " +
                 stockHistoryResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n" +
                 "보유주식(해당주식) 테이블에 " +
                 holdStockResult.affectedRows +
+                "개의 레코드가 업데이트 되었습니다\n" +
+                "보유주식(시드머니) 테이블에 " +
+                holdSeedResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n"
         );
     }
 });
 
-router.post("/turn/:id", async (req, res) => {
+router.get("/:turn/:id", async (req, res) => {
     //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
 });
 
