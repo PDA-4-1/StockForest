@@ -38,10 +38,10 @@ export default function OrderModal(props) {
             className="z-10 bg-black/30 w-screen h-screen fixed left-0 top-0 flex justify-center items-center"
             onClick={handleModalClick}
         >
-            <div className="w-[400px] h-fit bg-modal-yellow rounded-3xl grid justify-items-center p-6">
+            <div className="w-[400px] min-h-[400px] h-fit bg-modal-yellow rounded-3xl grid justify-items-center p-6">
                 {purpo == "sell" ? (
                     <div className="text-center grid gap-6 w-full">
-                        <p className="text-2xl">판 매 서</p>
+                        <p className="text-2xl font-bold">판 매 서</p>
                         <div className="flex justify-between">
                             <p>내 나무</p>
                             <p>?? 그루</p>
@@ -49,7 +49,11 @@ export default function OrderModal(props) {
                         <div className="flex justify-between">
                             <p>팔 나무</p>
                             <div className="flex space-x-1">
-                                <input type="number" onChange={(e) => setNum(e.target.value)} className="w-40" />
+                                <input
+                                    type="number"
+                                    onChange={(e) => setNum(e.target.value)}
+                                    className="w-40 max-h-6 text-right"
+                                />
                                 <p>그루</p>
                             </div>
                         </div>
@@ -68,11 +72,15 @@ export default function OrderModal(props) {
                     </div>
                 ) : (
                     <div className="text-center grid gap-6 w-full">
-                        <p className="text-2xl">주 문 서</p>
+                        <p className="text-2xl font-bold">주 문 서</p>
                         <div className="flex justify-between">
                             <p>살 나무</p>
                             <div className="flex space-x-1">
-                                <input type="number" onChange={(e) => setNum(e.target.value)} className="w-40" />
+                                <input
+                                    type="number"
+                                    onChange={(e) => setNum(e.target.value)}
+                                    className="w-40 max-h-6 text-right"
+                                />
                                 <p>그루</p>
                             </div>
                         </div>
