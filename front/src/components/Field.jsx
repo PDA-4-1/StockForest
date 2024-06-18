@@ -52,16 +52,20 @@ const Field = () => {
             <div className="col-span-4 h-full relative overflow-hidden">
                 <div className="bg-[url('/imgs/fence.png')] bg-cover bg-no-repeat w-full h-full z-10 absolute top-0 left-0"></div>
                 <div className="grid grid-cols-3 grid-rows-3 place-items-center bg-[url('/imgs/field1.png')] h-full z-1 relative">
-                    {images.map((src, index) => (
+                    {userStock.map((stock) => (
                         <div
                             className="w-[250px] h-[200px] flex justify-center overflow-hidden"
-                            key={index}
+                            key={stock.stock_id}
                         >
                             <img
-                                src={src}
-                                alt={`Field ${index + 1}`}
+                                src={stockImages[stock.stock_id]}
+                                alt={`Field ${stock.stock_id}`}
                                 className="cursor-pointer object-cover z-30"
-                                onClick={() => handleButtonClick(src)}
+                                onClick={() =>
+                                    handleButtonClick(
+                                        stockImages[stock.stock_id]
+                                    )
+                                }
                             />
                         </div>
                     ))}
