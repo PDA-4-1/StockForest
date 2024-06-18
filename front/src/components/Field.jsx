@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import CompanyProfile from "./CompanyProfile";
 import Profile from "./Profile";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [userStock, setUserStock] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const getStock = await axios.get("/api/farm");
+            console.log(getStock.data);
+            setUserStock(getStock.data);
+            console.log(userStock);
+        };
+
+        fetchData();
+    }, []);
 
     const handleButtonClick = (image) => {
         setSelectedImage(image);
