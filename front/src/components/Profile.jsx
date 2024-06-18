@@ -3,10 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Profile = () => {
-    const id = 10; //임시로 1로 설정, redux로 받아올 예정
-
     const [userInfo, setUserInfo] = useState([]);
-    const userInfoAPI = `/api/users/${id}`;
+    const userInfoAPI = `/api/users`;
 
     useEffect(() => {
         const fetchuUserInfo = async () => {
