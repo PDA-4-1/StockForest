@@ -5,9 +5,27 @@ const bcrypt = require("bcrypt");
 const { createToken, verifyToken } = require("../../utils/auth");
 
 function getRandomInt1to4() {
-  return Math.floor(Math.random() * 4) + 1;
+    return Math.floor(Math.random() * 4) + 1;
 }
 
+router.get("/", async (req, res) => {
+    //TODO : 사용자 정보 불러오기(nickname, 수익률, pdi, 턴, 프로필사진)
+    const token = req.cookies.authToken;
+    const decoded = verifyToken(token);
+    const userId = decoded.id;
+
+    const query = `SELECT nickname, user_returns, user_pdi, turn, img FROM user u join ranking r on u.id = r.user_id where u.id = ?`;
+    try {
+        const [result] = await pool.query(query, [userId]);
+        if (result.length === 0) {
+            return res.status(404).send("유저를 찾을 수 없습니다.");
+        }
+        res.send(result[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+});
 
 router.post("/signup", async (req, res) => {
     //회원가입 로직
@@ -108,21 +126,6 @@ router.post("/signin", async (req, res) => {
 
 router.get("/exist/:nick", async (req, res) => {
     //TODO : 닉네임 중복 확인 로직 구현
-});
-
-router.get("/:id", async (req, res) => {
-    //TODO : 사용자 정보 불러오기(nickname, 수익률, pdi, 턴, 프로필사진)
-    const query = `SELECT nickname, user_returns, user_pdi, turn, img FROM user u join ranking r on u.id = r.user_id where u.id = ?`;
-    try {
-        const [result] = await pool.query(query, [req.params.id]);
-        if (result.length === 0) {
-            return res.status(404).send("유저를 찾을 수 없습니다.");
-        }
-        res.send(result[0]);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Server error");
-    }
 });
 
 module.exports = router;
