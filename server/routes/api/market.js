@@ -66,7 +66,18 @@ router.get("/next/:turn/:id", async (req, res) => {
         on a.user_id=b.user_id set a.user_pdi=b.seed, a.user_returns=((a.user_pdi-100000)/100000)*100;`;
     await pool.query(rankingQuery, []);
 
-    res.send(stockResult);
+    // 뉴스받아오기
+    const newsQuery = `select id, content from news where date>=? and date<=?;`;
+    const [newsResult] = await pool.query(newsQuery, [
+        date.format("YYYY-MM-DD"),
+        date.add(6, "days").format("YYYY-MM-DD"),
+    ]);
+
+    const obj = {
+        stocks: stockResult,
+        news: newsResult,
+    };
+    res.send(obj);
 });
 
 router.get("/sell/:id/:stockId/:turn", async (req, res) => {
