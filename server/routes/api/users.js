@@ -4,6 +4,11 @@ var router = express.Router();
 const bcrypt = require("bcrypt");
 const { createToken, verifyToken } = require("../../utils/auth");
 
+function getRandomInt1to4() {
+  return Math.floor(Math.random() * 4) + 1;
+}
+
+
 router.post("/signup", async (req, res) => {
     //회원가입 로직
     try {
@@ -24,10 +29,11 @@ router.post("/signup", async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        const img = getRandomInt1to4();
         // 사용자 생성
         const [result] = await pool.query(
             "INSERT INTO user (nickname, password, turn, img) VALUES (?, ?, ?, ?)",
-            [nickname, hashedPassword, 0, 1]
+            [nickname, hashedPassword, 1, img]
         );
 
         // 생성된 유저의 ID 가져오기
@@ -35,6 +41,12 @@ router.post("/signup", async (req, res) => {
 
         // ranking 테이블에 유저 ID 삽입
         await pool.query("INSERT INTO ranking (user_id) VALUES (?)", [userId]);
+
+        // hold_stock 테이블에 유저 기본 정보 삽입
+        await pool.query(
+            "INSERT INTO hold_stock (user_id, stock_id, quantity, avg_price, returns) VALUES (?, ?, ?, ?, ?)",
+            [userId, 10, 1, 100000, 0]
+        );
         // 생성된 사용자 정보 반환
         res.status(200).json(nickname);
     } catch (err) {
@@ -96,17 +108,6 @@ router.post("/signin", async (req, res) => {
 
 router.get("/exist/:nick", async (req, res) => {
     //TODO : 닉네임 중복 확인 로직 구현
-});
-
-router.get("/getId", async (req, res) => {
-  try {
-      const token = req.cookies.authToken;
-      const decoded = verifyToken(token);
-      const userId = decoded.id;
-      res.json(userId);
-  } catch (error) {
-      res.status(500).json(error);
-  }
 });
 
 router.get("/:id", async (req, res) => {

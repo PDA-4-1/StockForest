@@ -47,6 +47,46 @@ router.get("/:stockId/:turn", async (req, res) => {
     res.send(result);
 });
 
+router.get("/next/:turn/:id", async (req, res) => {
+    //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
+    // 주식 목록 불러오기
+    const date = moment("2020-01-01");
+    const stocQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+    const [stockResult] = await pool.query(stocQuery, [
+        date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
+    ]);
+
+    // 수익률 업데이트
+    const returnsQuery = `update hold_stock c inner join (
+        select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
+        on c.stock_id=d.id set c.returns=((d.price-c.avg_price)/c.avg_price)*100;`;
+    await pool.query(returnsQuery, [date.format("YYYY-MM-DD")]);
+    const rankingQuery = `update ranking a inner join (
+        select user_id, sum(avg_price*quantity) as seed from hold_stock group by user_id) b
+        on a.user_id=b.user_id set a.user_pdi=b.seed, a.user_returns=((a.user_pdi-100000)/100000)*100;`;
+    await pool.query(rankingQuery, []);
+
+    // 뉴스받아오기
+    const newsQuery = `select id, content from news where date>=? and date<=?;`;
+    const [newsResult] = await pool.query(newsQuery, [
+        date.format("YYYY-MM-DD"),
+        date.add(6, "days").format("YYYY-MM-DD"),
+    ]);
+
+    // user turn 업데이트
+    const query = `update user set turn=turn+1 where id=?;`;
+    await pool.query(query, [
+        //userId
+        10,
+    ]);
+
+    const obj = {
+        stocks: stockResult,
+        news: newsResult,
+    };
+    res.send(obj);
+});
+
 router.get("/sell/:id/:stockId/:turn", async (req, res) => {
     //TODO : 현재 가지고 있는 주식 수, 가격 불러오기
     const date = moment("2020-01-01");
@@ -194,10 +234,6 @@ router.post("/sell", async (req, res) => {
         // 매도 불가능 경우
         res.send("가지고있는 주식량보다 더 많이 팔 수 없어요.");
     }
-});
-
-router.get("/:turn/:id", async (req, res) => {
-    //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
 });
 
 module.exports = router;
