@@ -37,6 +37,10 @@ const Quiz = () => {
         setUpDown(false);
     };
 
+    const postAnswer = async () => {
+        const result = await UpdateQuiz(stockId, date, upDown);
+        console.log(result);
+    };
     // open API를 이용해서 퀴즈에 쓸 투자전략 불러오기 -> 앞으로 1주일 간 꾸준히 불러보고 판단
     /* 사용자 응답 받아서 post 요청하기
         stockId, date, upDown state 생성하기

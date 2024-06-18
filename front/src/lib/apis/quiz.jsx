@@ -5,8 +5,13 @@ const BASE_URL = "/api/quiz";
 const service = axios.create({ withCredentials: true, baseURL: BASE_URL });
 
 // 퀴즈 응답 기록 요청
-export async function UpdateQuiz() {
-    const res = await service.post("/response");
+export async function UpdateQuiz(stockId, date, upDown) {
+    const res = await service.post("/response", {
+        userId: 10,
+        stockId: stockId,
+        date: date,
+        upDown: upDown,
+    });
     return res.data;
 }
 
