@@ -3,7 +3,7 @@ import React from "react";
 const CompanyProfile = ({ visible, onClose, image }) => {
     return (
         <div
-            className={`fixed bottom-0 right-0 bg-[url('/imgs/companyprofile.svg')] bg-no-repeat bg-center bg-contain h-[500px] w-[400px] transition-transform duration-300 ${
+            className={`bg-[url('/imgs/companyprofile.svg')] bg-no-repeat bg-center bg-contain w-full h-full scale-95 transition-transform duration-300 ${
                 visible ? "translate-x-0" : "translate-x-full"
             }`}
         >
