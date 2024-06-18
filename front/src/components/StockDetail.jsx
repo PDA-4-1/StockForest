@@ -3,9 +3,23 @@ import StockButton from "./StockButton";
 import { IoTriangleSharp } from "react-icons/io5";
 import { GetStockChart } from "../lib/apis/stock";
 import StockChart from "./StockChart";
+import OrderModal from "./Stock/OrderModal";
 
 export default function StockDetail({ stock }) {
     const { id, name, price, diff } = stock;
+    const [purpo, setPurpo] = useState("");
+    const [modalSee, setModalSee] = useState(false);
+    const openSellModal = () => {
+        setPurpo("sell");
+        setModalSee(true);
+    };
+    const openBuyModal = () => {
+        setPurpo("buy");
+        setModalSee(true);
+    };
+    const onHide = () => {
+        setModalSee(false);
+    };
     // const [prices, setPrices] = useState(null);
 
     // useEffect(() => {
@@ -25,8 +39,8 @@ export default function StockDetail({ stock }) {
                     <span className="min-w-[34px] text-right">{Math.abs(diff).toLocaleString()}</span>
                 </div>
                 <div className="flex space-x-6">
-                    <StockButton purpo="buy" onClick={() => {}} />
-                    <StockButton purpo="sell" onClick={() => {}} />
+                    <StockButton purpo="buy" onClick={openBuyModal} />
+                    <StockButton purpo="sell" onClick={openSellModal} />
                 </div>
             </div>
             <div className="flex">
@@ -36,7 +50,8 @@ export default function StockDetail({ stock }) {
             <div className="max-h-[300px]">
                 <StockChart />
             </div>
-            <div></div>
+
+            {modalSee ? <OrderModal purpo={purpo} onHide={onHide} /> : null}
         </div>
     );
 }
