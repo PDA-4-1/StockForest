@@ -190,6 +190,9 @@ router.post("/sell", async (req, res) => {
                 holdSeedResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n"
         );
+    } else {
+        // 매도 불가능 경우
+        res.send("가지고있는 주식량보다 더 많이 팔 수 없어요.");
     }
 });
 
