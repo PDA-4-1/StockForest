@@ -1,4 +1,3 @@
-// src/components/ThreeModelViewer.js
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -16,17 +15,18 @@ const ThreeModelViewer = () => {
             return;
         }
 
-        // 카메라 설정
         const camera = new THREE.PerspectiveCamera(
             45,
             container.clientWidth / container.clientHeight,
             0.1,
-            2000 // 더 넓은 범위를 볼 수 있도록 far 값을 증가시킵니다.
+            2000
         );
-        camera.position.set(0, 400, 800); // 카메라 위치를 조정하여 모델이 보이도록 합니다.
+        // 카메라 위치 조정
+        camera.position.set(0, 500, 700);
 
         const scene = new THREE.Scene();
 
+        // 조명 세팅
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
 
@@ -38,9 +38,21 @@ const ThreeModelViewer = () => {
         directionalLight2.position.set(100, -200, 100).normalize();
         scene.add(directionalLight2);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight); // 렌더러 크기 조정
-        renderer.setClearColor(0x88c9a1); // 캔버스 배경색 설정
+        // 정면 좌우측 조명 추가
+        const frontLightLeft = new THREE.DirectionalLight(0xffffff, 0.5);
+        frontLightLeft.position.set(-300, 200, 300);
+        scene.add(frontLightLeft);
+
+        const frontLightRight = new THREE.DirectionalLight(0xffffff, 0.5);
+        frontLightRight.position.set(300, 200, 300);
+        scene.add(frontLightRight);
+
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+        }); // alpha 옵션 추가
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setClearColor(0x000000, 0); // 캔버스 배경을 투명하게 설정
         renderer.outputEncoding = THREE.sRGBEncoding;
         rendererRef.current = renderer;
         container.appendChild(renderer.domElement);
@@ -54,47 +66,86 @@ const ThreeModelViewer = () => {
         function onWindowResize() {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight); // 창 크기 변경 시 렌더러 크기 재조정
+            renderer.setSize(container.clientWidth, container.clientHeight);
         }
 
         const loader = new GLTFLoader();
+        const textureLoader = new THREE.TextureLoader();
         let model;
 
-        loader.load(
-            "/models/landingModel/Sol5.glb",
-            (gltf) => {
-                model = gltf.scene;
-                scene.add(model);
+        const textures = {
+            baseColor: textureLoader.load(
+                "models/solModel/Sol_color/Sol_Texture5.png",
+                (texture) => {
+                    texture.encoding = THREE.sRGBEncoding;
+                    texture.flipY = false;
+                },
+                undefined,
+                (err) => console.error("Texture loading error:", err)
+            ),
+            normal: textureLoader.load(
+                "models/solModel/Sol_color/Sol_color_normal.png",
+                (texture) => {
+                    texture.flipY = false;
+                },
+                undefined,
+                (err) => console.error("Texture loading error:", err)
+            ),
+        };
 
-                model.scale.set(500, 500, 500); // 모델의 크기를 더 크게 조정합니다.
-                model.rotation.y = Math.PI;
+        loader.load("models/solModel/Sol6.gltf", (gltf) => {
+            model = gltf.scene;
+            scene.add(model);
 
-                // 텍스처가 없는 경우 기본 재질 적용
-                model.traverse((node) => {
-                    if (node.isMesh) {
-                        if (!node.material.map) {
-                            node.material = new THREE.MeshStandardMaterial({
-                                color: 0x808080,
-                            }); // 기본 회색 재질
-                        }
-                    }
-                });
-            },
-            undefined,
-            (error) => {
-                console.error("An error happened during model loading:", error);
-            }
-        );
+            model.scale.set(700, 700, 700);
+            model.rotation.y = 0;
+            model.rotation.x = 0; // 초기 X축 회전 각도를 0으로 설정하여 직립 상태로 보이게 함
+            model.position.set(0, -600, 0); // 모델의 위치를 Y축 기준으로 덜 이동시킴
 
-        // 마우스 이벤트로 모델 회전
+            model.traverse((node) => {
+                if (node.isMesh) {
+                    node.material = new THREE.MeshStandardMaterial({
+                        map: textures.baseColor,
+                        normalMap: textures.normal,
+                    });
+                    node.material.needsUpdate = true;
+                }
+            });
+        });
+
         const handleMouseMove = (event) => {
             if (model) {
                 const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
                 const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                // 모델 Y축 회전 각도 기준으로 하한선 설정
+                const lowerBoundRotationY = -1; // 약 -10도
+                const upperBoundRotationY = 1; // 약 10도
 
-                model.rotation.y = mouseX * Math.PI * 0.45;
-                model.rotation.x = -mouseY * Math.PI * 0.38;
-                // 위아래 반전을 없애기 위해 -를 붙임
+                // 모델 X축 회전 각도 기준으로 하한선 설정
+                const lowerBoundRotationX = -0.8; // 약 -20도
+                const upperBoundRotationX = 0.05; // 약 20도
+
+                // 새로운 Y축 회전 각도 계산
+                const newRotationY = mouseX * Math.PI * 0.45;
+
+                // Y축 회전 각도 제한 적용
+                if (
+                    newRotationY >= lowerBoundRotationY &&
+                    newRotationY <= upperBoundRotationY
+                ) {
+                    model.rotation.y = newRotationY;
+                }
+
+                // 새로운 X축 회전 각도 계산
+                const newRotationX = -mouseY * Math.PI * 0.34;
+
+                // X축 회전 각도 제한 적용
+                if (
+                    newRotationX >= lowerBoundRotationX &&
+                    newRotationX <= upperBoundRotationX
+                ) {
+                    model.rotation.x = newRotationX;
+                }
             }
         };
 
@@ -114,21 +165,22 @@ const ThreeModelViewer = () => {
             controls.dispose();
             renderer.dispose();
             scene.clear();
-            container.removeChild(renderer.domElement);
+            if (renderer.domElement.parentNode) {
+                renderer.domElement.parentNode.removeChild(renderer.domElement);
+            }
         };
     }, []);
 
     return (
         <div
             ref={containerRef}
-            //임시 스타일 지정
             style={{
-                width: "100%", // 컨테이너 너비 조정
-                height: "300px", // 컨테이너 높이 조정
-                position: "absolute", // 절대 위치
-                bottom: 0, // 하단에 위치
-                left: "50%", // 수평 중앙 정렬
-                transform: "translateX(-50%)", // 수평 중앙 정렬 보정
+                width: "100%",
+                height: "300px",
+                position: "absolute",
+                bottom: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
             }}
         />
     );
