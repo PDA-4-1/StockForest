@@ -11,9 +11,11 @@ const Field = () => {
     useEffect(() => {
         const fetchData = async () => {
             const getStock = await axios.get("/api/farm");
-            console.log(getStock.data);
-            setUserStock(getStock.data);
-            console.log(userStock);
+            const stockdata = getStock.data;
+            const filteredStock = stockdata.filter(
+                (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
+            );
+            setUserStock(filteredStock);
         };
 
         fetchData();
@@ -22,6 +24,7 @@ const Field = () => {
     const handleButtonClick = (image) => {
         setSelectedImage(image);
         setIsVisible(true);
+        console.log(userStock);
     };
 
     const handleClose = () => {
