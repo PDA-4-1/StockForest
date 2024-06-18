@@ -97,10 +97,10 @@ const ThreeModelViewer = () => {
             model = gltf.scene;
             scene.add(model);
 
-            model.scale.set(600, 600, 600);
+            model.scale.set(700, 700, 700);
             model.rotation.y = 0;
             model.rotation.x = 0; // 초기 X축 회전 각도를 0으로 설정하여 직립 상태로 보이게 함
-            model.position.set(0, -500, 0); // 모델의 위치를 Y축 기준으로 덜 이동시킴
+            model.position.set(0, -700, 0); // 모델의 위치를 Y축 기준으로 덜 이동시킴
 
             model.traverse((node) => {
                 if (node.isMesh) {
@@ -176,7 +176,7 @@ const ThreeModelViewer = () => {
             ref={containerRef}
             style={{
                 width: "100%",
-                height: "600px",
+                height: "300px",
                 position: "absolute",
                 bottom: 0,
                 left: "50%",
