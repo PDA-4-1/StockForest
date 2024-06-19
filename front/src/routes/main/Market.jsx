@@ -6,6 +6,7 @@ import Ranking from "../../components/Ranking/Ranking";
 import { GetStockChart, GetStockList } from "../../lib/apis/stock";
 import { useDispatch } from "react-redux";
 import { savePrices } from "../../store/stockSlice";
+import Profile from "../../components/Profile";
 
 const Market = () => {
     const [stockList, setStockList] = useState([]);
@@ -47,8 +48,8 @@ const Market = () => {
                     </div>
                     {selected && <StockDetail stock={selected} />}
                 </div>
-                <div className="grid grid-rows-3 h-full">
-                    <div className="bg-back-yellow mb-4">여기 프로필 부분</div>
+                <div className="grid grid-rows-5 h-full">
+                    <Profile />
                     <Ranking />
                 </div>
             </div>
