@@ -4,9 +4,9 @@ import Signup from "../routes/signup/Signup";
 
 const authRouter = [
     {
-        path: "/",
+        path: "/login",
         element: <Login />,
-        index: true, //
+        index: true,
     },
     {
         path: "/signup",
