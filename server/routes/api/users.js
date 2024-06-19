@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
     const decoded = verifyToken(token);
     const userId = decoded.id;
 
-    const query = `SELECT nickname, user_returns, user_pdi, turn, img FROM user u join ranking r on u.id = r.user_id where u.id = ?`;
+    const query = `SELECT nickname, returns, avg_price as user_pdi, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
     try {
         const [result] = await pool.query(query, [userId]);
         if (result.length === 0) {
