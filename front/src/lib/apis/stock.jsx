@@ -30,7 +30,12 @@ export async function BuyStock(stockId, price, quantity) {
     return res.data;
 }
 
-export async function GetStockCount(id, stockId, turn) {
-    const res = await service.get(`sell/${id}/${stockId}/${turn}`);
+export async function GetStockCount(stockId, turn) {
+    const res = await service.get(`sell/${stockId}/${turn}`);
+    return res.data;
+}
+
+export async function NextTurn(turn) {
+    const res = await service.get(`next/${turn}`);
     return res.data;
 }

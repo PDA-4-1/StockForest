@@ -13,7 +13,8 @@ export default function StockDetail({ stock }) {
     const [count, setCount] = useState(0);
     const openSellModal = () => {
         setPurpo("sell");
-        GetStockCount(10, id, 1).then((data) => {
+        GetStockCount(id, 1).then((data) => {
+            console.log(data);
             if (data.length >= 1) {
                 setCount(data[0].quantity);
                 setModalSee(true);
