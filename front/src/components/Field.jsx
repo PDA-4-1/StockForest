@@ -20,11 +20,14 @@ const Field = () => {
                 const filteredStock = stockdata.filter(
                     (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
                 );
-                e;
                 setUserStock(filteredStock);
             } catch (error) {
-                alert("로그인하세요!");
-                navigate("/");
+                if (error.response && error.response.status === 401) {
+                    alert("로그인하세요!");
+                    navigate("/");
+                } else {
+                    console.error("Error :", error);
+                }
             }
         };
 
