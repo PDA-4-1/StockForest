@@ -19,6 +19,8 @@ module.exports = {
                 "select-green": "#88C9A1",
                 "back-red": "#FDE6EA",
                 "back-blue": "#F2F5FC",
+                "modal-yellow": "#FDF9EA",
+                "back-grey": "#EFF0F6",
             },
         },
     },
