@@ -5,7 +5,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { FaChevronUp } from "react-icons/fa";
 import { TbTriangleFilled } from "react-icons/tb";
 import { TbTriangleInvertedFilled } from "react-icons/tb";
-import { UpdateQuiz } from "~/lib/apis/quiz";
+import { dailyStock, UpdateQuiz } from "~/lib/apis/quiz";
 
 const Quiz = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +22,13 @@ const Quiz = () => {
     useEffect(() => {
         const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
         setDate(currentDate);
-        // console.log(currentDate);
-    });
+
+        console.log("appKey: " + import.meta.env.VITE_appKey);
+        const getQuizData = async () => {
+            await dailyStock(date);
+        };
+        getQuizData();
+    }, []);
 
     useEffect(() => {
         console.log(upDown);
