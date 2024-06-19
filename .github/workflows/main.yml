@@ -53,6 +53,8 @@ jobs:
         port: 22
         script: |
           cd StockForest
-          git pull https://github.com/PDA-4-1/StockForest.git
+          git pull origin main
+          cd ..
           docker-compose down
           docker-compose up --build -d
+          docker rmi $(sudo docker images -f "dangling=true" -q) --force
