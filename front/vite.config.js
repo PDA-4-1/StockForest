@@ -1,4 +1,3 @@
-                                                                                                                              9,5           Allimport { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
