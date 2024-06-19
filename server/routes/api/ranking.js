@@ -35,7 +35,7 @@ router.get("/:turn", async (req, res) => {
         on a.user_id=b.user_id set a.user_pdi=b.seed, a.user_returns=((a.user_pdi-100000)/100000)*100;`;
         const [rankingResult] = await pool.query(rankingQuery, []);
 
-        res.send(
+        res.status(200).send(
             "보유주식 테이블에 " +
                 returnsResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n" +
