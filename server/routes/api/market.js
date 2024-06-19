@@ -6,14 +6,13 @@ const moment = require("moment");
 router.get("/:turn", async (req, res) => {
     //TODO : 시장 화면 첫 진입 시 종목 목록 띄우기 위한 데이터 요청
     // 종목명, 설명, 산업 + 등락률
-    console.log(123555);
     const date = moment("2020-01-01");
     const query = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
     const [result] = await pool.query(query, [
         date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
     ]);
     // console.log(result);
-    res.send(result);
+    res.status(200).send(result);
 });
 
 router.get("/rank/:id", async (req, res) => {
@@ -32,7 +31,7 @@ router.get("/rank/:id", async (req, res) => {
         top5: result,
         amI: user_result,
     };
-    res.send(obj);
+    res.status(200).send(obj);
 });
 
 router.get("/:stockId/:turn", async (req, res) => {
@@ -45,7 +44,7 @@ router.get("/:stockId/:turn", async (req, res) => {
         date.add(6, "days").format("YYYY-MM-DD"),
     ]);
     // console.log(result);
-    res.send(result);
+    res.status(200).send(result);
 });
 
 router.get("/next/:turn/:id", async (req, res) => {
@@ -82,7 +81,7 @@ router.get("/next/:turn/:id", async (req, res) => {
         stocks: stockResult,
         news: newsResult,
     };
-    res.send(obj);
+    res.status(200).send(obj);
 });
 
 router.get("/sell/:id/:stockId/:turn", async (req, res) => {
@@ -95,7 +94,7 @@ router.get("/sell/:id/:stockId/:turn", async (req, res) => {
         date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
     ]);
     // console.log(result);
-    res.send(result);
+    res.status(200).send(result);
 });
 
 router.post("/buy", async (req, res) => {
@@ -146,7 +145,7 @@ router.post("/buy", async (req, res) => {
             req.userId,
         ]);
 
-        res.send(
+        res.status(200).send(
             "거래내역 테이블에 " +
                 stockHistoryResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n" +
@@ -159,7 +158,7 @@ router.post("/buy", async (req, res) => {
         );
     } else {
         // 매수 불가능할 경우
-        res.send("가지고있는 프디가 부족합니다.");
+        res.status(400).send("가지고있는 프디가 부족합니다.");
     }
 });
 
@@ -207,7 +206,7 @@ router.post("/sell", async (req, res) => {
             req.userId,
         ]);
 
-        res.send(
+        res.status(200).send(
             "거래내역 테이블에 " +
                 stockHistoryResult.affectedRows +
                 "개의 레코드가 업데이트 되었습니다\n" +
@@ -220,7 +219,7 @@ router.post("/sell", async (req, res) => {
         );
     } else {
         // 매도 불가능 경우
-        res.send("가지고있는 주식량보다 더 많이 팔 수 없어요.");
+        res.status(400).send("가지고있는 주식량보다 더 많이 팔 수 없어요.");
     }
 });
 
