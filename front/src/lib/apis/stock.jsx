@@ -29,3 +29,8 @@ export async function BuyStock(stockId, price, quantity) {
     const res = await service.post(`buy`, data);
     return res.data;
 }
+
+export async function GetStockCount(id, stockId, turn) {
+    const res = await service.get(`sell/${id}/${stockId}/${turn}`);
+    return res.data;
+}
