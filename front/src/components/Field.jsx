@@ -2,27 +2,43 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CompanyProfile from "./CompanyProfile";
 import Profile from "./Profile";
+import { useNavigate } from "react-router-dom";
+import { Toast } from "./Toast";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedStock, setSelectedStock] = useState([]);
+    const [selectedStockName, setSelectedStockName] = useState(null);
     const [userStock, setUserStock] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            const getStock = await axios.get("/api/farm");
-            const stockdata = getStock.data;
-            const filteredStock = stockdata.filter(
-                (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
-            );
-            setUserStock(filteredStock);
+            try {
+                const getStock = await axios.get("/api/farm");
+                const stockdata = getStock.data;
+                const filteredStock = stockdata.filter(
+                    (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
+                );
+                setUserStock(filteredStock);
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    Toast.fire("로그인 하세요!", "", "error");
+                    navigate("/");
+                } else {
+                    console.error("Error :", error);
+                }
+            }
         };
 
         fetchData();
     }, []);
 
-    const handleButtonClick = (image) => {
+    const handleButtonClick = (image, name, stock) => {
         setSelectedImage(image);
+        setSelectedStock(stock);
+        setSelectedStockName(name);
         setIsVisible(true);
         console.log(userStock);
     };
@@ -44,6 +60,18 @@ const Field = () => {
         9: "/imgs/banana/banana4.png",
     };
 
+    const stockName = {
+        1: "삼성",
+        2: "카카오",
+        3: "SM",
+        4: "현대",
+        5: "셀트리온",
+        6: "GS",
+        7: "아모레퍼시픽",
+        8: "신라호텔",
+        9: "lg화학",
+    };
+
     return (
         <div
             className="grid grid-cols-5 overflow-hidden"
@@ -63,7 +91,9 @@ const Field = () => {
                                 className="cursor-pointer object-cover z-30"
                                 onClick={() =>
                                     handleButtonClick(
-                                        stockImages[stock.stock_id]
+                                        stockImages[stock.stock_id],
+                                        stockName[stock.stock_id],
+                                        stock
                                     )
                                 }
                             />
@@ -88,6 +118,8 @@ const Field = () => {
                             visible={isVisible}
                             onClose={handleClose}
                             image={selectedImage}
+                            stock={selectedStock}
+                            name={selectedStockName}
                         />
                     </div>
                 </div>
