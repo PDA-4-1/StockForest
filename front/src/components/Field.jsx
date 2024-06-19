@@ -14,12 +14,18 @@ const Field = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const getStock = await axios.get("/api/farm");
-            const stockdata = getStock.data;
-            const filteredStock = stockdata.filter(
-                (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
-            );
-            setUserStock(filteredStock);
+            try {
+                const getStock = await axios.get("/api/farm");
+                const stockdata = getStock.data;
+                const filteredStock = stockdata.filter(
+                    (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
+                );
+                e;
+                setUserStock(filteredStock);
+            } catch (error) {
+                alert("로그인하세요!");
+                navigate("/");
+            }
         };
 
         fetchData();
