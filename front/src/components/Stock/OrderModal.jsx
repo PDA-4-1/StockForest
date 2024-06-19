@@ -19,7 +19,8 @@ export default function OrderModal(props) {
         console.log(num, stockId, price, price * num);
         SellStock(stockId, price, num)
             .then((data) => {
-                console.log(data);
+                // console.log(data);
+                Toast.fire("주식을 판매했습니다", "", "success");
                 onHide();
             })
             .catch((err) => console.log(err.response));
