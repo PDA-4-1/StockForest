@@ -7,6 +7,7 @@ export default function OrderModal(props) {
     const onHide = props.onHide;
     const stockId = props.stockId;
     const price = props.price;
+    const count = props.count;
     const [num, setNum] = useState(0);
     const handleModalClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -44,7 +45,7 @@ export default function OrderModal(props) {
                         <p className="text-2xl font-bold">판 매 서</p>
                         <div className="flex justify-between">
                             <p>내 나무</p>
-                            <p>?? 그루</p>
+                            <p>{count} 그루</p>
                         </div>
                         <div className="flex justify-between">
                             <p>팔 나무</p>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import StockButton from "./StockButton";
 import { IoTriangleSharp } from "react-icons/io5";
-import { GetStockChart } from "../lib/apis/stock";
+import { GetStockChart, GetStockCount } from "../lib/apis/stock";
 import StockChart from "./StockChart";
 import OrderModal from "./Stock/OrderModal";
 
@@ -9,9 +9,17 @@ export default function StockDetail({ stock }) {
     const { id, name, price, diff } = stock;
     const [purpo, setPurpo] = useState("");
     const [modalSee, setModalSee] = useState(false);
+    const [count, setCount] = useState(0);
     const openSellModal = () => {
         setPurpo("sell");
-        setModalSee(true);
+        GetStockCount(10, id, 1).then((data) => {
+            if (data.length >= 1) {
+                setCount(data[0].quantity);
+                setModalSee(true);
+            } else {
+                alert("주식 주가 부족해요!");
+            }
+        });
     };
     const openBuyModal = () => {
         setPurpo("buy");
@@ -54,7 +62,7 @@ export default function StockDetail({ stock }) {
                     <StockChart />
                 </div>
             </div>
-            {modalSee ? <OrderModal purpo={purpo} onHide={onHide} price={price} stockId={id} /> : null}
+            {modalSee ? <OrderModal purpo={purpo} onHide={onHide} price={price} stockId={id} count={count} /> : null}
         </>
     );
 }
