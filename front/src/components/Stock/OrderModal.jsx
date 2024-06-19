@@ -52,6 +52,7 @@ export default function OrderModal(props) {
                             <div className="flex space-x-1">
                                 <input
                                     type="number"
+                                    min="0"
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
@@ -79,6 +80,7 @@ export default function OrderModal(props) {
                             <div className="flex space-x-1">
                                 <input
                                     type="number"
+                                    min="0"
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
