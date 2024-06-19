@@ -81,11 +81,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(1);
-                                    setStockName("콩순전자");
+                                    setStockName("삼성전자");
                                     toggleDropdown();
                                 }}
                             >
-                                콩순전자
+                                삼성전자
                             </a>
                             <a
                                 href="#"
@@ -93,11 +93,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(2);
-                                    setStockName("초콜릿통신");
+                                    setStockName("카카오");
                                     toggleDropdown();
                                 }}
                             >
-                                초콜릿통신
+                                카카오
                             </a>
                             <a
                                 href="#"
@@ -105,11 +105,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(3);
-                                    setStockName("뉴진수퍼노바");
+                                    setStockName("SM");
                                     toggleDropdown();
                                 }}
                             >
-                                뉴진수퍼노바
+                                SM
                             </a>
                             <a
                                 href="#"
@@ -117,11 +117,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(4);
-                                    setStockName("주식회사붕붕");
+                                    setStockName("현대차");
                                     toggleDropdown();
                                 }}
                             >
-                                주식회사붕붕
+                                현대차
                             </a>
                             <a
                                 href="#"
@@ -129,11 +129,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(5);
-                                    setStockName("미미네약국");
+                                    setStockName("셀트리온");
                                     toggleDropdown();
                                 }}
                             >
-                                미미네약국
+                                셀트리온
                             </a>
                             <a
                                 href="#"
@@ -141,11 +141,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(6);
-                                    setStockName("철수건설");
+                                    setStockName("GS건설");
                                     toggleDropdown();
                                 }}
                             >
-                                철수건설
+                                GS건설
                             </a>
                             <a
                                 href="#"
@@ -153,11 +153,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(7);
-                                    setStockName("올리브업");
+                                    setStockName("아모레퍼시픽");
                                     toggleDropdown();
                                 }}
                             >
-                                올리브업
+                                아모레퍼시픽
                             </a>
                             <a
                                 href="#"
@@ -165,11 +165,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(8);
-                                    setStockName("숲속여관");
+                                    setStockName("신라호텔");
                                     toggleDropdown();
                                 }}
                             >
-                                숲속여관
+                                신라호텔
                             </a>
                             <a
                                 href="#"
@@ -177,11 +177,11 @@ const Quiz = () => {
                                 role="menuitem"
                                 onClick={() => {
                                     setStockId(9);
-                                    setStockName("과학나라");
+                                    setStockName("LG화학");
                                     toggleDropdown();
                                 }}
                             >
-                                과학나라
+                                LG화학
                             </a>
                         </div>
                     </div>
