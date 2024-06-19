@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BuyStock, SellStock } from "../../lib/apis/stock";
 import StockButton from "../StockButton";
+import { Toast } from "../Toast";
 
 export default function OrderModal(props) {
     const purpo = props.purpo;
@@ -28,7 +29,12 @@ export default function OrderModal(props) {
         BuyStock(stockId, price, num)
             .then((data) => {
                 console.log(data);
-                onHide();
+                if (data == "가지고있는 프디가 부족합니다.") {
+                    Toast.fire("가지고있는 프디가 부족합니다.", "", "error");
+                } else {
+                    Toast.fire("주식을 구매했습니다", "", "success");
+                    onHide();
+                }
             })
             .catch((err) => console.log(err.response));
         setNum(0);
