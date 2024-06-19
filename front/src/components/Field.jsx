@@ -3,6 +3,7 @@ import axios from "axios";
 import CompanyProfile from "./CompanyProfile";
 import Profile from "./Profile";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "./Toast";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -23,7 +24,7 @@ const Field = () => {
                 setUserStock(filteredStock);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    alert("로그인하세요!");
+                    Toast.fire("로그인 하세요!", "", "error");
                     navigate("/");
                 } else {
                     console.error("Error :", error);
