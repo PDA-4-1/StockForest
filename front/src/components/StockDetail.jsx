@@ -4,6 +4,7 @@ import { IoTriangleSharp } from "react-icons/io5";
 import { GetStockChart, GetStockCount } from "../lib/apis/stock";
 import StockChart from "./StockChart";
 import OrderModal from "./Stock/OrderModal";
+import { Toast } from "./Toast";
 
 export default function StockDetail({ stock }) {
     const { id, name, price, diff } = stock;
@@ -17,7 +18,7 @@ export default function StockDetail({ stock }) {
                 setCount(data[0].quantity);
                 setModalSee(true);
             } else {
-                alert("주식 주가 부족해요!");
+                Toast.fire("보유 주식이 없어요!", "", "error");
             }
         });
     };
