@@ -31,13 +31,21 @@ router.get("/:turn", async (req, res) => {
     //TODO : 시장 화면 첫 진입 시 종목 목록 띄우기 위한 데이터 요청
     try {
         // 종목명, 설명, 산업 + 등락률
-        const date = moment("2020-01-01");
-        const query = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
-        const [result] = await pool.query(query, [
-            date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
-        ]);
-        // console.log(result);
-        res.status(200).send(result);
+        for (let i = 0; i < 7; i++) {
+            const date = moment("2020-01-01");
+            const query = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+            const [result] = await pool.query(query, [
+                date
+                    .add(req.params.turn * 7 - 1 - i, "days")
+                    .format("YYYY-MM-DD"),
+            ]);
+            if (result.length > 0) {
+                // 해당하는 turn에 주식이 있으면 응답
+                // console.log(result);
+                res.status(200).send(result);
+                break;
+            }
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
@@ -48,11 +56,20 @@ router.get("/next/:turn", async (req, res) => {
     //TODO : 턴 넘기기. 다음 주 날짜로 바꾸기, 뉴스 정보 있으면 받아오기
     try {
         // 주식 목록 불러오기
+        let stockResult;
         const date = moment("2020-01-01");
-        const stocQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
-        const [stockResult] = await pool.query(stocQuery, [
-            date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
-        ]);
+        for (let i = 0; i < 7; i++) {
+            const stocQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+            [stockResult] = await pool.query(stocQuery, [
+                date
+                    .add(req.params.turn * 7 - 1 - i, "days")
+                    .format("YYYY-MM-DD"),
+            ]);
+            if (stockResult.length > 0) {
+                // 해당하는 turn에 주식이 있다면 break
+                break;
+            }
+        }
 
         // 수익률 업데이트
         const returnsQuery = `update hold_stock c inner join (
@@ -67,7 +84,7 @@ router.get("/next/:turn", async (req, res) => {
         // 뉴스받아오기
         const newsQuery = `select id, content from news where date>=? and date<=?;`;
         const [newsResult] = await pool.query(newsQuery, [
-            date.format("YYYY-MM-DD"),
+            date.subtract(6, "days").format("YYYY-MM-DD"),
             date.add(6, "days").format("YYYY-MM-DD"),
         ]);
 
@@ -93,9 +110,7 @@ router.get("/:stockId/:turn", async (req, res) => {
         const query = `select a.id, a.name, a.description, b.price, b.date, b.diff from stock a inner join stock_price b on a.id=b.stock_id where a.id=? and (b.date>=? and b.date<=?);`;
         const [result] = await pool.query(query, [
             req.params.stockId,
-            date
-                .add((req.params.turn - 1) * 7 + 1, "days")
-                .format("YYYY-MM-DD"),
+            date.add((req.params.turn - 1) * 7, "days").format("YYYY-MM-DD"),
             date.add(6, "days").format("YYYY-MM-DD"),
         ]);
         // console.log(result);
@@ -109,15 +124,24 @@ router.get("/:stockId/:turn", async (req, res) => {
 router.get("/sell/:stockId/:turn", async (req, res) => {
     //TODO : 현재 가지고 있는 주식 수, 가격 불러오기
     try {
-        const date = moment("2020-01-01");
-        const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
-        const [result] = await pool.query(query, [
-            req.params.id,
-            req.params.stockId,
-            date.add(req.params.turn * 7 - 1, "days").format("YYYY-MM-DD"),
-        ]);
-        // console.log(result);
-        res.status(200).send(result);
+        for (let i = 0; i < 7; i++) {
+            console.log(i);
+            const date = moment("2020-01-01");
+            const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
+            const [result] = await pool.query(query, [
+                req.userId,
+                req.params.stockId,
+                date
+                    .add(req.params.turn * 7 - 1 - i, "days")
+                    .format("YYYY-MM-DD"),
+            ]);
+            if (result.length > 0) {
+                // 해당하는 turn에 주식이 있으면 응답
+                // console.log(result);
+                res.status(200).send(result);
+                break;
+            }
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
