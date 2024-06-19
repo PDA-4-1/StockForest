@@ -11,6 +11,11 @@ function getRandomInt1to4() {
 router.get("/", async (req, res) => {
     //TODO : 사용자 정보 불러오기(nickname, 수익률, pdi, 턴, 프로필사진)
     const token = req.cookies.authToken;
+
+    if (!token) {
+        return res.status(401).json({ permission: "access denied" });
+    }
+
     const decoded = verifyToken(token);
     const userId = decoded.id;
 
