@@ -33,7 +33,7 @@ const Field = () => {
         };
 
         fetchData();
-    }, []);
+    }, [navigate]);
 
     const handleButtonClick = (image, name, stock) => {
         setSelectedImage(image);
@@ -60,15 +60,15 @@ const Field = () => {
     };
 
     const signImages = {
-        1: "/imgs/sign.png",
-        2: "/imgs/sign.png",
-        3: "/imgs/sign.png",
-        4: "/imgs/sign.png",
-        5: "/imgs/sign.png",
-        6: "/imgs/sign.png",
-        7: "/imgs/sign.png",
-        8: "/imgs/sign.png",
-        9: "/imgs/sign.png",
+        1: "/imgs/sign/samsung.png",
+        2: "/imgs/sign/kakao.png",
+        3: "/imgs/sign/sm.png",
+        4: "/imgs/sign/hyundai.png",
+        5: "/imgs/sign/cell.png",
+        6: "/imgs/sign/gs.png",
+        7: "/imgs/sign/amore.png",
+        8: "/imgs/sign/shilla.png",
+        9: "/imgs/sign/lg.png",
     };
 
     const stockName = {
@@ -88,7 +88,7 @@ const Field = () => {
             const stock = userStock[index];
             return (
                 <div
-                    className="w-full h-full flex justify-center bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center "
+                    className="w-full h-full flex justify-center items-end bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
                     key={stock.stock_id}
                 >
                     <img
@@ -103,36 +103,39 @@ const Field = () => {
                             )
                         }
                     />
-                    {/* <img
-                        src={signImages[stock.stock_id]}
-                        alt={`Field ${stock.stock_id}`}
-                        className="cursor-pointer object-cover relative"
-                        onClick={() =>
-                            handleButtonClick(
-                                stockImages[stock.stock_id],
-                                stockName[stock.stock_id],
-                                stock
-                            )
-                        }
-                    /> */}
+                    <div className="absolute bottom-0 right-0 mb-2 mr-2 flex items-end">
+                        <img
+                            src={signImages[stock.stock_id]}
+                            alt={`Sign ${stock.stock_id}`}
+                            className="cursor-pointer object-cover mb-[3vh] mr-[3vw]"
+                            onClick={() =>
+                                handleButtonClick(
+                                    stockImages[stock.stock_id],
+                                    stockName[stock.stock_id],
+                                    stock
+                                )
+                            }
+                        />
+                    </div>
                 </div>
             );
         } else {
             return (
                 <div
-                    className="w-full h-full flex justify-center overflow-hidden bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center"
+                    className="w-full h-full flex justify-center overflow-hidden bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
                     key={`placeholder-${index}`}
                 />
             );
         }
     });
+
     return (
         <div
             className="grid grid-cols-4 overflow-hidden"
             style={{ height: "calc(100vh - 70px)" }}
         >
             <div className="col-span-3 h-full relative overflow-hidden p-[100px] bg-[url('/imgs/file5.png')] bg-cover bg-no-repeat">
-                <div className="grid grid-cols-3 grid-rows-3 place-items-center  h-full relative">
+                <div className="grid grid-cols-3 grid-rows-3 place-items-center h-full relative">
                     {fieldImages}
                 </div>
             </div>
