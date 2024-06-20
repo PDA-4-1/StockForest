@@ -111,7 +111,8 @@ router.patch("/answer", async (req, res) => {
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     try {
         let isUp, isCorrect;
-        if(todayCost==yesterdayCost) isCorrect = 0; // 가격 변동 없으면 오답처리
+        if (todayCost == yesterdayCost)
+            isCorrect = 0; // 가격 변동 없으면 오답처리
         else {
             isUp = todayCost > yesterdayCost ? 1 : 0;
             isCorrect = userResponse[0].up_down == isUp ? 1 : 0; // 정답 여부
@@ -120,19 +121,18 @@ router.patch("/answer", async (req, res) => {
         await pool.query(answerQuery, [isCorrect, 10, yesterday]); //userId req.userId
 
         // 맞았을 경우 사용자의 pdi 추가
-        const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
+        if (isCorrect) {
+            const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
+            await pool.query(addPointQuery, [10]); // userId req.userId
+        }
 
         res.send({
-            // stock_name:
+            stockCode: stockCode,
+            answerCheck: isUp,
             isCorrect: isCorrect,
         });
     } catch (e) {
         console.log(e);
-    }
-
-    let result2;
-    if (isCorrect) {
-        [result2] = await pool.query(addPointQuery, [userId]);
     }
 });
 
