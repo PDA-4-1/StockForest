@@ -40,7 +40,6 @@ const Field = () => {
         setSelectedStock(stock);
         setSelectedStockName(name);
         setIsVisible(true);
-        console.log(userStock);
     };
 
     const handleClose = () => {
@@ -51,13 +50,25 @@ const Field = () => {
     const stockImages = {
         1: "/imgs/tomato/tomato1.png",
         2: "/imgs/tomato/tomato2.png",
-        3: "/imgs/tomato/tomato3.png",
+        3: "/imgs/banana/banana5.png",
         4: "/imgs/tomato/tomato4.png",
         5: "/imgs/tomato/tomato5.png",
         6: "/imgs/banana/banana1.png",
         7: "/imgs/banana/banana2.png",
         8: "/imgs/banana/banana3.png",
         9: "/imgs/banana/banana4.png",
+    };
+
+    const signImages = {
+        1: "/imgs/sign.png",
+        2: "/imgs/sign.png",
+        3: "/imgs/sign.png",
+        4: "/imgs/sign.png",
+        5: "/imgs/sign.png",
+        6: "/imgs/sign.png",
+        7: "/imgs/sign.png",
+        8: "/imgs/sign.png",
+        9: "/imgs/sign.png",
     };
 
     const stockName = {
@@ -72,33 +83,57 @@ const Field = () => {
         9: "lg화학",
     };
 
+    const fieldImages = Array.from({ length: 9 }, (_, index) => {
+        if (index < userStock.length) {
+            const stock = userStock[index];
+            return (
+                <div
+                    className="w-full h-full flex justify-center bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center "
+                    key={stock.stock_id}
+                >
+                    <img
+                        src={stockImages[stock.stock_id]}
+                        alt={`Field ${stock.stock_id}`}
+                        className="cursor-pointer object-cover relative bottom-[40%]"
+                        onClick={() =>
+                            handleButtonClick(
+                                stockImages[stock.stock_id],
+                                stockName[stock.stock_id],
+                                stock
+                            )
+                        }
+                    />
+                    {/* <img
+                        src={signImages[stock.stock_id]}
+                        alt={`Field ${stock.stock_id}`}
+                        className="cursor-pointer object-cover relative"
+                        onClick={() =>
+                            handleButtonClick(
+                                stockImages[stock.stock_id],
+                                stockName[stock.stock_id],
+                                stock
+                            )
+                        }
+                    /> */}
+                </div>
+            );
+        } else {
+            return (
+                <div
+                    className="w-full h-full flex justify-center overflow-hidden bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center"
+                    key={`placeholder-${index}`}
+                />
+            );
+        }
+    });
     return (
         <div
-            className="grid grid-cols-5 overflow-hidden"
+            className="grid grid-cols-4 overflow-hidden"
             style={{ height: "calc(100vh - 70px)" }}
         >
-            <div className="col-span-4 h-full relative overflow-hidden">
-                <div className="bg-[url('/imgs/fence.png')] bg-cover bg-no-repeat w-full h-full z-10 absolute top-0 left-0"></div>
-                <div className="grid grid-cols-3 grid-rows-3 place-items-center bg-[url('/imgs/field1.png')] h-full z-1 relative">
-                    {userStock.map((stock) => (
-                        <div
-                            className="w-[250px] h-[200px] flex justify-center overflow-hidden"
-                            key={stock.stock_id}
-                        >
-                            <img
-                                src={stockImages[stock.stock_id]}
-                                alt={`Field ${stock.stock_id}`}
-                                className="cursor-pointer object-cover z-30"
-                                onClick={() =>
-                                    handleButtonClick(
-                                        stockImages[stock.stock_id],
-                                        stockName[stock.stock_id],
-                                        stock
-                                    )
-                                }
-                            />
-                        </div>
-                    ))}
+            <div className="col-span-3 h-full relative overflow-hidden p-[100px] bg-[url('/imgs/file5.png')] bg-cover bg-no-repeat">
+                <div className="grid grid-cols-3 grid-rows-3 place-items-center  h-full relative">
+                    {fieldImages}
                 </div>
             </div>
             <div className="col-span-1 bg-[url('/imgs/grass.png')] relative overflow-hidden">
