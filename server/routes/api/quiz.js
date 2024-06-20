@@ -49,6 +49,30 @@ router.patch("/answer", async (req, res) => {
 
     //사용자가 응답한 기록 불러오기
 
+    // 한국투자증권 API 연결 - 일일 주가 요청하기
+    const KIS_URL =
+        "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
+    headers = {
+        "content-type": "application/json",
+        authorization: `Bearer ${accessToken}`,
+        appkey: process.env.appKey,
+        appsecret: process.env.appSecret,
+        tr_id: process.env.tr_id,
+    };
+    const params = {
+        FID_COND_MRKT_DIV_CODE: "J",
+        FID_INPUT_ISCD: "005930",
+        FID_INPUT_DATE_1: "20240619",
+        FID_INPUT_DATE_2: "20240620",
+        FID_PERIOD_DIV_CODE: "D",
+        FID_ORG_ADJ_PRC: 0,
+    };
+
+    try {
+        const stockReq = await axios.get(KIS_URL, { headers, params });
+        console.log(stockReq.data);
+    } catch (e) {
+        console.log(e);
     }
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
