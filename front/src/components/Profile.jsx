@@ -1,30 +1,24 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { GetUserProfile } from "../lib/apis/user";
 import { NextTurn } from "../lib/apis/stock";
 import { useDispatch, useSelector } from "react-redux";
-import { saveUser } from "../store/userSlice";
+import { saveTurn } from "../store/userSlice";
+import { saveStockList } from "../store/stockSlice";
 
 const Profile = () => {
     const userInfo = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
     const nextTurn = () => {
         NextTurn(userInfo.turn, 16)
-            .then((data) => console.log(data))
+            .then((data) => {
+                console.log(data);
+                dispatch(saveStockList(data.stocks));
+                dispatch(saveTurn());
+            })
             .catch((err) => console.log(err.response));
     };
 
-    useEffect(() => {
-        GetUserProfile()
-            .then((data) => {
-                console.log(data);
-                dispatch(saveUser(data));
-            })
-            .catch((err) => console.log(err.response));
-    }, []);
-
     return (
-        <div className="w-full h-full row-span-2 scale-110 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-cover flex flex-col justify-center items-center space-y-3">
+        <div className="w-full h-full row-span-2 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-auto flex flex-col justify-center items-center space-y-3">
             <div className="flex items-center space-x-3 min-w-40">
                 <div className="w-10 h-10 rounded-full bg-black">
                     <img>{/* {userInfo.img} */}</img>
