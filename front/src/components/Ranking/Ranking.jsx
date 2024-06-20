@@ -7,51 +7,52 @@ export default function Ranking() {
     const [users, setUsers] = useState([
         {
             nickname: "닉네임은여덟글자",
-            stock_returns: 25.88,
+            user_pdi: 25.88,
             profile_img: "",
         },
         {
             nickname: "닉네임은여덟글자",
-            stock_returns: 23,
+            user_pdi: 23,
             profile_img: "",
         },
         {
             nickname: "닉네임은여덟글자",
-            stock_returns: 20.3,
+            user_pdi: 20.3,
             profile_img: "",
         },
         {
             nickname: "닉네임은여덟글자",
-            stock_returns: 23,
+            user_pdi: 23,
             profile_img: "",
         },
         {
             nickname: "닉네임은여덟글자",
-            stock_returns: 23,
+            user_pdi: 23,
             profile_img: "",
         },
     ]);
     const [my, setMy] = useState({
         nickname: "닉네임은여덟글자",
-        stock_returns: 23,
+        user_pdi: 23,
         profile_img: "",
     });
 
     useEffect(() => {
-        GetRanking(10)
+        GetRanking()
             .then((data) => {
+                console.log(data);
                 if (data.top5[0]) {
                     setUsers(data?.top5);
                 }
                 if (data.amI[0]) {
-                    setMy(data?.amI);
+                    setMy(data?.amI[0]);
                 }
             })
             .catch((err) => console.log(err.response));
     }, []);
 
     return (
-        <div className="row-span-2 bg-back-yellow px-2 py-3 grid content-between">
+        <div className="row-span-3 bg-back-yellow px-2 py-3 grid content-between">
             <div>
                 <div className="flex items-center justify-center space-x-3 mb-4">
                     <img src={trophy} alt="트로피" className="w-9 h-9" />

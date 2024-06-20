@@ -2,6 +2,8 @@ import { useState } from "react";
 import { BuyStock, SellStock } from "../../lib/apis/stock";
 import StockButton from "../StockButton";
 import { Toast } from "../Toast";
+import { useDispatch } from "react-redux";
+import { savePdi } from "../../store/userSlice";
 
 export default function OrderModal(props) {
     const purpo = props.purpo;
@@ -9,6 +11,7 @@ export default function OrderModal(props) {
     const stockId = props.stockId;
     const price = props.price;
     const count = props.count;
+    const dispatch = useDispatch();
     const [num, setNum] = useState(0);
     const handleModalClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -21,23 +24,29 @@ export default function OrderModal(props) {
             .then((data) => {
                 // console.log(data);
                 Toast.fire("주식을 판매했습니다", "", "success");
+                dispatch(savePdi(price * num));
                 onHide();
             })
-            .catch((err) => console.log(err.response));
+            .catch((err) => {
+                console.log(err.response);
+                Toast.fire(err.response.data, "", "error");
+                setNum(0);
+            });
     };
     const buyStock = () => {
         console.log(num, stockId, price, price * num);
         BuyStock(stockId, price, num)
             .then((data) => {
                 console.log(data);
-                if (data == "가지고있는 프디가 부족합니다.") {
-                    Toast.fire("가지고있는 프디가 부족합니다.", "", "error");
-                } else {
-                    Toast.fire("주식을 구매했습니다", "", "success");
-                    onHide();
-                }
+                Toast.fire("주식을 구매했습니다", "", "success");
+                dispatch(savePdi(-(price * num)));
+                onHide();
             })
-            .catch((err) => console.log(err.response));
+            .catch((err) => {
+                console.log(err.response);
+                Toast.fire(err.response.data, "", "error");
+                setNum(0);
+            });
         setNum(0);
     };
 
@@ -60,6 +69,7 @@ export default function OrderModal(props) {
                                 <input
                                     type="number"
                                     min="0"
+                                    value={num}
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
@@ -88,6 +98,7 @@ export default function OrderModal(props) {
                                 <input
                                     type="number"
                                     min="0"
+                                    value={num}
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
