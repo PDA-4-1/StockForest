@@ -13,8 +13,8 @@ export async function GetStockChart(stockId, turn) {
     return res.data;
 }
 
-export async function GetRanking(userId) {
-    const res = await service.get(`rank/${userId}`);
+export async function GetRanking() {
+    const res = await service.get(`rank`);
     return res.data;
 }
 

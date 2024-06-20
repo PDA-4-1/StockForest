@@ -1,5 +1,5 @@
 export default function RankComponent(props) {
-    const { nickname, stock_returns, profile_img } = props.user;
+    const { nickname, user_pdi, profile_img } = props.user;
     const rank = props.rank;
 
     return (
@@ -7,9 +7,9 @@ export default function RankComponent(props) {
             <p className="text-center min-w-6">{rank}</p>
             <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 rounded-full bg-black"></div>
-                <p>{nickname}</p>
+                <p className="min-w-[100px]">{nickname}</p>
             </div>
-            <p className="min-w-[57px] text-right">{stock_returns} %</p>
+            <p className="min-w-[57px] text-right">{user_pdi} 프디</p>
         </div>
     );
 }
