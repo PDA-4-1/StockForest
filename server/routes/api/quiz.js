@@ -7,6 +7,18 @@ var router = express.Router();
 
 dotenv.config();
 
+const realCode = [
+    "005930",
+    "035720",
+    "041510", //삼성전자 카카오 SM
+    "005380",
+    "068270",
+    "006360", //현대차 셀트리온 GS건설
+    "090430",
+    "008770",
+    "051910",
+]; //아모레퍼시픽 신라호텔 LG화학
+
 router.post("/response", async (req, res) => {
     //TODO : 사용자가 퀴즈에 답한 내용을 기록. 어떤 종목인지, 오를지 내릴지
     try {
@@ -48,19 +60,25 @@ router.patch("/answer", async (req, res) => {
     // Token 확인
     const accessToken = tokenReq.data.access_token;
 
-    //사용자가 응답한 기록 불러오기
-    const currentDate = moment()
+    // 사용자가 응답한 기록 불러오기
+    const yesterday = moment()
         .tz("Asia/Seoul")
         .subtract(1, "days")
-        .format("YYYY-MM-DD"); //오늘 날짜
-    console.log(currentDate);
+        .format("YYYY-MM-DD"); // 하루 전 날
+    console.log(yesterday);
     getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
-    const [userResponse] = await pool.query(getResponseSQL, [1, currentDate]);
+    const [userResponse] = await pool.query(getResponseSQL, [1, yesterday]);
     if (userResponse.length == 0)
         throw new Error("어제의 퀴즈 기록이 없습니다");
     console.log(userResponse[0]);
-    
+
     // 한국투자증권 API 연결 - 일일 주가 요청하기
+    const stockCode = realCode[userResponse[0].stock_id - 1];
+    const startDate = moment(yesterday).format("YYYYMMDD");
+    const endDate = moment(yesterday).add(1, "days").format("YYYYMMDD");
+    console.log("stockCode: " + stockCode);
+    console.log("startDate: " + startDate);
+    console.log("endDate: " + endDate);
     const KIS_URL =
         "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
     headers = {
@@ -72,9 +90,9 @@ router.patch("/answer", async (req, res) => {
     };
     const params = {
         FID_COND_MRKT_DIV_CODE: "J",
-        FID_INPUT_ISCD: "005930",
-        FID_INPUT_DATE_1: "20240619",
-        FID_INPUT_DATE_2: "20240620",
+        FID_INPUT_ISCD: stockCode,
+        FID_INPUT_DATE_1: startDate,
+        FID_INPUT_DATE_2: endDate,
         FID_PERIOD_DIV_CODE: "D",
         FID_ORG_ADJ_PRC: 0,
     };
@@ -89,7 +107,6 @@ router.patch("/answer", async (req, res) => {
     } catch (e) {
         console.log(e);
     }
-    
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     // const userId = req.body.userId;
