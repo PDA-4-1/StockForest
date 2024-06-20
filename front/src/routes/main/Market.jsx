@@ -5,11 +5,11 @@ import StockDetail from "../../components/StockDetail";
 import Ranking from "../../components/Ranking/Ranking";
 import { GetStockChart, GetStockList } from "../../lib/apis/stock";
 import { useDispatch, useSelector } from "react-redux";
-import { savePrices } from "../../store/stockSlice";
+import { savePrices, saveStockList } from "../../store/stockSlice";
 import Profile from "../../components/Profile";
 
 const Market = () => {
-    const [stockList, setStockList] = useState([]);
+    const stockList = useSelector((state) => state.stock.stockList);
     const [selected, setSelected] = useState(null);
     const turn = useSelector((state) => state.user.user.turn);
     const dispatch = useDispatch();
@@ -26,7 +26,9 @@ const Market = () => {
 
     useEffect(() => {
         GetStockList(turn)
-            .then((data) => setStockList(data))
+            .then((data) => {
+                dispatch(saveStockList(data));
+            })
             .catch((err) => console.log(err.response));
     }, []);
 
