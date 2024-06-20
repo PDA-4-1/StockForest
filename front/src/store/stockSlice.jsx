@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     prices: [],
+    stockList: [],
 };
 
 const stockSlice = createSlice({
@@ -13,11 +14,15 @@ const stockSlice = createSlice({
         },
         savePrices: (state, action) => {
             const newPrices = action.payload;
-            console.log(newPrices);
+            // console.log(newPrices);
             state.prices = newPrices;
+        },
+        saveStockList: (state, action) => {
+            const newStockList = action.payload;
+            state.stockList = newStockList;
         },
     },
 });
 
 export default stockSlice.reducer;
-export const { reset, savePrices } = stockSlice.actions;
+export const { reset, savePrices, saveStockList } = stockSlice.actions;

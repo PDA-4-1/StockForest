@@ -2,7 +2,35 @@ var express = require("express");
 var pool = require("../../config/db.connect.js");
 var router = express.Router();
 const bcrypt = require("bcrypt");
-const { createToken } = require("../../utils/auth");
+const { createToken, verifyToken } = require("../../utils/auth");
+
+function getRandomInt1to4() {
+    return Math.floor(Math.random() * 4) + 1;
+}
+
+router.get("/", async (req, res) => {
+    //TODO : 사용자 정보 불러오기(nickname, 수익률, pdi, 턴, 프로필사진)
+    const token = req.cookies.authToken;
+
+    if (!token) {
+        return res.status(401).json({ permission: "access denied" });
+    }
+
+    const decoded = verifyToken(token);
+    const userId = decoded.id;
+
+    const query = `SELECT nickname, returns, avg_price as user_pdi, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
+    try {
+        const [result] = await pool.query(query, [userId]);
+        if (result.length === 0) {
+            return res.status(404).send("유저를 찾을 수 없습니다.");
+        }
+        res.send(result[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+});
 
 router.post("/signup", async (req, res) => {
     //회원가입 로직
@@ -24,19 +52,23 @@ router.post("/signup", async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        const img = getRandomInt1to4();
         // 사용자 생성
         const [result] = await pool.query(
             "INSERT INTO user (nickname, password, turn, img) VALUES (?, ?, ?, ?)",
-            [nickname, hashedPassword, 0, 1]
+            [nickname, hashedPassword, 1, img]
         );
 
-         // 생성된 유저의 ID 가져오기
+        // 생성된 유저의 ID 가져오기
         const userId = result.insertId;
 
         // ranking 테이블에 유저 ID 삽입
+        await pool.query("INSERT INTO ranking (user_id) VALUES (?)", [userId]);
+
+        // hold_stock 테이블에 유저 기본 정보 삽입
         await pool.query(
-            "INSERT INTO ranking (user_id) VALUES (?)",
-            [userId]
+            "INSERT INTO hold_stock (user_id, stock_id, quantity, avg_price, returns) VALUES (?, ?, ?, ?, ?)",
+            [userId, 10, 1, 100000, 0]
         );
         // 생성된 사용자 정보 반환
         res.status(200).json(nickname);
@@ -99,21 +131,6 @@ router.post("/signin", async (req, res) => {
 
 router.get("/exist/:nick", async (req, res) => {
     //TODO : 닉네임 중복 확인 로직 구현
-});
-
-router.get("/:id", async (req, res) => {
-    //TODO : 사용자 정보 불러오기(nickname, 수익률, pdi, 턴, 프로필사진)
-    const query = `SELECT nickname, user_returns, user_pdi, turn, img FROM user u join ranking r on u.id = r.user_id where u.id = ?`;
-    try {
-        const [result] = await pool.query(query, [req.params.id]);
-        if (result.length === 0) {
-            return res.status(404).send("유저를 찾을 수 없습니다.");
-        }
-        res.send(result[0]);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Server error");
-    }
 });
 
 module.exports = router;

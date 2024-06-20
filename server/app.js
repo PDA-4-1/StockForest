@@ -8,8 +8,6 @@ var logger = require("morgan");
 var apiRouter = require("./routes/api/index");
 
 var app = express();
-
-//CORS 설정
 const cors = require("cors");
 app.use(cors());
 

@@ -6,7 +6,7 @@ const authRouter = [
     {
         path: "/login",
         element: <Login />,
-        index: true, //
+        index: true,
     },
     {
         path: "/signup",

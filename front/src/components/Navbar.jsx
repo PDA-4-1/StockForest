@@ -23,6 +23,7 @@ const Navbar = () => {
                         src="/imgs/Logo.svg"
                         alt="로고"
                         onClick={handleLogoClick}
+                        className="w-[90px] h-[60px] cursor-pointer"
                     />
                 </div>
                 <div className="flex-grow flex justify-center space-x-4 gap-20">
