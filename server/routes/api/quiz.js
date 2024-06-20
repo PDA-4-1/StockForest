@@ -48,14 +48,6 @@ router.patch("/answer", async (req, res) => {
     // Token 확인
     const accessToken = tokenReq.data.access_token;
 
-    //사용자가 응답한 기록 불러오기
-    const currentDate = moment().tz("Asia/Seoul").subtract(1, "days").format("YYYY-MM-DD");//오늘 날짜
-    console.log(currentDate);
-    getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
-    const [userResponse] = await pool.query(getResponseSQL, [1, currentDate]);
-    if(userResponse.length==0) throw new Error("어제의 퀴즈 기록이 없습니다")
-    console.log(userResponse[0]);
-
     // 한국투자증권 API 연결 - 일일 주가 요청하기
     const KIS_URL =
         "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
@@ -85,6 +77,18 @@ router.patch("/answer", async (req, res) => {
     } catch (e) {
         console.log(e);
     }
+    
+    //사용자가 응답한 기록 불러오기
+    const currentDate = moment()
+        .tz("Asia/Seoul")
+        .subtract(1, "days")
+        .format("YYYY-MM-DD"); //오늘 날짜
+    console.log(currentDate);
+    getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
+    const [userResponse] = await pool.query(getResponseSQL, [1, currentDate]);
+    if (userResponse.length == 0)
+        throw new Error("어제의 퀴즈 기록이 없습니다");
+    console.log(userResponse[0]);
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     // const userId = req.body.userId;
