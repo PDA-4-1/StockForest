@@ -45,7 +45,7 @@ export default function Ranking() {
                     setUsers(data?.top5);
                 }
                 if (data.amI[0]) {
-                    setMy(data?.amI);
+                    setMy(data?.amI[0]);
                 }
             })
             .catch((err) => console.log(err.response));
