@@ -26,8 +26,11 @@ const userSlice = createSlice({
             const newPdi = state.user.user_pdi + action.payload;
             state.user.user_pdi = newPdi;
         },
+        saveTurn: (state, action) => {
+            state.user.turn += 1;
+        },
     },
 });
 
 export default userSlice.reducer;
-export const { reset, saveUser, savePdi } = userSlice.actions;
+export const { reset, saveUser, savePdi, saveTurn } = userSlice.actions;
