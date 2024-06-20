@@ -49,10 +49,11 @@ router.patch("/answer", async (req, res) => {
     const accessToken = tokenReq.data.access_token;
 
     //사용자가 응답한 기록 불러오기
-    const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");//오늘 날짜
+    const currentDate = moment().tz("Asia/Seoul").subtract(1, "days").format("YYYY-MM-DD");//오늘 날짜
     console.log(currentDate);
     getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
     const [userResponse] = await pool.query(getResponseSQL, [1, currentDate]);
+    if(userResponse.length==0) throw new Error("어제의 퀴즈 기록이 없습니다")
     console.log(userResponse[0]);
 
     // 한국투자증권 API 연결 - 일일 주가 요청하기
