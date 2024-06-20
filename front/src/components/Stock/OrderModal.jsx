@@ -30,6 +30,7 @@ export default function OrderModal(props) {
             .catch((err) => {
                 console.log(err.response);
                 Toast.fire(err.response.data, "", "error");
+                setNum(0);
             });
     };
     const buyStock = () => {
@@ -37,16 +38,15 @@ export default function OrderModal(props) {
         BuyStock(stockId, price, num)
             .then((data) => {
                 console.log(data);
-                if (data == "가지고있는 프디가 부족합니다.") {
-                    Toast.fire("가지고있는 프디가 부족합니다.", "", "error");
-                } else {
-                    Toast.fire("주식을 구매했습니다", "", "success");
-                    dispatch(savePdi(-(price * num)));
-
-                    onHide();
-                }
+                Toast.fire("주식을 구매했습니다", "", "success");
+                dispatch(savePdi(-(price * num)));
+                onHide();
             })
-            .catch((err) => console.log(err.response));
+            .catch((err) => {
+                console.log(err.response);
+                Toast.fire(err.response.data, "", "error");
+                setNum(0);
+            });
         setNum(0);
     };
 
@@ -69,6 +69,7 @@ export default function OrderModal(props) {
                                 <input
                                     type="number"
                                     min="0"
+                                    value={num}
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
@@ -97,6 +98,7 @@ export default function OrderModal(props) {
                                 <input
                                     type="number"
                                     min="0"
+                                    value={num}
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
