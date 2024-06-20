@@ -2,6 +2,7 @@ var express = require("express");
 var pool = require("../../config/db.connect.js");
 const axios = require("axios");
 const dotenv = require("dotenv");
+const moment = require("moment-timezone");
 var router = express.Router();
 
 dotenv.config();
@@ -48,6 +49,11 @@ router.patch("/answer", async (req, res) => {
     const accessToken = tokenReq.data.access_token;
 
     //사용자가 응답한 기록 불러오기
+    const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");//오늘 날짜
+    console.log(currentDate);
+    getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
+    const [userResponse] = await pool.query(getResponseSQL, [1, currentDate]);
+    console.log(userResponse[0]);
 
     // 한국투자증권 API 연결 - 일일 주가 요청하기
     const KIS_URL =
@@ -68,9 +74,13 @@ router.patch("/answer", async (req, res) => {
         FID_ORG_ADJ_PRC: 0,
     };
 
+    let todayCost, yesterdayCost;
     try {
         const stockReq = await axios.get(KIS_URL, { headers, params });
-        console.log(stockReq.data);
+        todayCost = stockReq.data.output2[0].stck_clpr;
+        yesterdayCost = stockReq.data.output2[1].stck_clpr;
+        console.log(todayCost);
+        console.log(yesterdayCost);
     } catch (e) {
         console.log(e);
     }
