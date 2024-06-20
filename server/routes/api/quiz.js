@@ -109,23 +109,31 @@ router.patch("/answer", async (req, res) => {
     }
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
-    // const userId = req.body.userId;
-    // const date = req.body.date;
-    // const isCorrect = req.body.isCorrect;
+    try {
+        let isUp, isCorrect;
+        if(todayCost==yesterdayCost) isCorrect = 0; // 가격 변동 없으면 오답처리
+        else {
+            isUp = todayCost > yesterdayCost ? 1 : 0;
+            isCorrect = userResponse[0].up_down == isUp ? 1 : 0; // 정답 여부
+        }
+        const answerQuery = `UPDATE quiz SET is_correct = ? WHERE user_id = ? AND date = ?`;
+        await pool.query(answerQuery, [isCorrect, 10, yesterday]); //userId req.userId
 
-    // const answerQuery = `UPDATE quiz SET is_correct = ? WHERE user_id = ? AND date = ?`;
-    // const [result] = await pool.query(answerQuery, [isCorrect, userId, date]);
+        // 맞았을 경우 사용자의 pdi 추가
+        const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
 
-    // // 맞았을 경우 사용자의 pdi 추가
-    // const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
-    // let result2;
-    // if (isCorrect) {
-    //     [result2] = await pool.query(addPointQuery, [userId]);
-    // }
-    // res.send({
-    //     success: result.affectedRows,
-    //     isCorrect: result2.affectedRows,
-    // });
+        res.send({
+            // stock_name:
+            isCorrect: isCorrect,
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
+    let result2;
+    if (isCorrect) {
+        [result2] = await pool.query(addPointQuery, [userId]);
+    }
 });
 
 module.exports = router;
