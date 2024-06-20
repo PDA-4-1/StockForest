@@ -18,7 +18,7 @@ router.use("/users", usersRouter);
 
 router.use("/farm", loginRequired, farmRouter);
 router.use("/market", loginRequired, marketRouter);
-router.use("/quiz", quizRouter);
+router.use("/quiz", loginRequired, quizRouter);
 router.use("/ranking", loginRequired, rankingRouter);
 
 module.exports = router;

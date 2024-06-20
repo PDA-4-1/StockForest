@@ -67,7 +67,7 @@ router.patch("/answer", async (req, res) => {
         .format("YYYY-MM-DD"); // 하루 전 날
     console.log(yesterday);
     getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
-    const [userResponse] = await pool.query(getResponseSQL, [1, yesterday]);
+    const [userResponse] = await pool.query(getResponseSQL, [req.userId, yesterday]);
     if (userResponse.length == 0)
         throw new Error("어제의 퀴즈 기록이 없습니다");
     console.log(userResponse[0]);
@@ -118,18 +118,18 @@ router.patch("/answer", async (req, res) => {
             isCorrect = userResponse[0].up_down == isUp ? 1 : 0; // 정답 여부
         }
         const answerQuery = `UPDATE quiz SET is_correct = ? WHERE user_id = ? AND date = ?`;
-        await pool.query(answerQuery, [isCorrect, 10, yesterday]); //userId req.userId
+        await pool.query(answerQuery, [isCorrect, req.userId, yesterday]);
 
         // 맞았을 경우 사용자의 pdi 추가
         if (isCorrect) {
             const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
-            await pool.query(addPointQuery, [10]); // userId req.userId
+            await pool.query(addPointQuery, [req.userId]);
         }
 
         res.send({
-            stockCode: stockCode,
-            answerCheck: isUp,
-            isCorrect: isCorrect,
+            stockCode: stockCode, // 고른 종목
+            answerCheck: isUp, //가격이 올랐나?
+            isCorrect: isCorrect, // 사용자가 맞았나?
         });
     } catch (e) {
         console.log(e);
