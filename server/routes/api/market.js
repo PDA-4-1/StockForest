@@ -12,8 +12,8 @@ router.get("/rank", async (req, res) => {
         // console.log(result);
 
         // 본인 랭킹
-        const user_query = `select a.user_id, a.user_pdi, b.nickname, b.img, rank() over(order by a.user_pdi desc) as ranking from ranking a inner join user b on a.user_id=b.id where b.id=?;`;
-        const [user_result] = await pool.query(user_query, [req.params.id]);
+        const user_query = `select a.user_id, a.user_pdi, b.nickname, b.img, (select count(*) +1  from ranking c where c.user_pdi>a.user_pdi) as ranking from ranking a inner join user b on a.user_id=b.id where b.id=?;`;
+        const [user_result] = await pool.query(user_query, [req.userId]);
         // console.log(user_result);
 
         const obj = {
@@ -142,6 +142,8 @@ router.get("/sell/:stockId/:turn", async (req, res) => {
                 break;
             }
         }
+
+        내가가진주식;
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
