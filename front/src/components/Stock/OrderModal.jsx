@@ -27,7 +27,10 @@ export default function OrderModal(props) {
                 dispatch(savePdi(price * num));
                 onHide();
             })
-            .catch((err) => console.log(err.response));
+            .catch((err) => {
+                console.log(err.response);
+                Toast.fire(err.response.data, "", "error");
+            });
     };
     const buyStock = () => {
         console.log(num, stockId, price, price * num);
