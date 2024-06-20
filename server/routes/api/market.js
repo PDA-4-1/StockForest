@@ -31,6 +31,7 @@ router.get("/:turn", async (req, res) => {
     //TODO : 시장 화면 첫 진입 시 종목 목록 띄우기 위한 데이터 요청
     try {
         // 종목명, 설명, 산업 + 등락률
+        let flag = false;
         for (let i = 0; i < 7; i++) {
             const date = moment("2020-01-01");
             const query = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
@@ -43,8 +44,12 @@ router.get("/:turn", async (req, res) => {
                 // 해당하는 turn에 주식이 있으면 응답
                 // console.log(result);
                 res.status(200).send(result);
+                flag = true;
                 break;
             }
+        }
+        if (!flag) {
+            res.status(204).send("일주일간 장이 열리지 않았습니다.");
         }
     } catch (error) {
         console.error(error);
