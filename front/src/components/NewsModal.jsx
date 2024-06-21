@@ -17,23 +17,22 @@ export default function NewsModal(props) {
                     THE DALIY <span className="text-[#EA071B]">NEWS</span>
                 </p>
                 {newsList && (
-                    <div className="p-6 text-left w-full max-w-[625px] grid gap-6">
+                    <div className="p-6 text-left w-full max-w-[625px] grid gap-12">
                         {newsList.map((el, i) => (
-                            <p className="text-left text-wrap" key={i}>
+                            <p className="text-left text-wrap text-lg" key={i}>
                                 {el.content}
                             </p>
                         ))}
                         {newsList.length < 2 && (
                             <div className="grid gap-2">
-                                <div className="w-full bg-[#D9D9D9] h-4" />
-                                <div className="w-full bg-[#D9D9D9] h-4" />
-                                <div className="w-3/5 bg-[#D9D9D9] h-4" />
+                                <div className="w-full bg-[#EBEBEB] h-4" />
+                                <div className="w-3/5 bg-[#EBEBEB] h-4" />
                             </div>
                         )}
                         {newsList.length <= 2 && (
                             <div className="grid gap-2">
-                                <div className="w-full bg-[#D9D9D9] h-4" />
-                                <div className="w-2/5 bg-[#D9D9D9] h-4" />
+                                <div className="w-full bg-[#EBEBEB] h-4" />
+                                <div className="w-2/5 bg-[#EBEBEB] h-4" />
                             </div>
                         )}
                     </div>
