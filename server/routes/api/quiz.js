@@ -67,7 +67,10 @@ router.patch("/answer", async (req, res) => {
         .format("YYYY-MM-DD"); // 하루 전 날
     console.log(yesterday);
     getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
-    const [userResponse] = await pool.query(getResponseSQL, [req.userId, yesterday]);
+    const [userResponse] = await pool.query(getResponseSQL, [
+        req.userId,
+        yesterday,
+    ]);
     if (userResponse.length == 0)
         throw new Error("어제의 퀴즈 기록이 없습니다");
     console.log(userResponse[0]);
