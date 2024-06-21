@@ -81,10 +81,12 @@ router.get("/next/:turn", async (req, res) => {
         select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
         on c.stock_id=d.id set c.returns=((d.price-c.avg_price)/c.avg_price)*100;`;
         await pool.query(returnsQuery, [date.format("YYYY-MM-DD")]);
-        const rankingQuery = `update ranking a inner join (
-        select user_id, sum(avg_price*quantity) as seed from hold_stock group by user_id) b
-        on a.user_id=b.user_id set a.user_pdi=b.seed, a.user_returns=((a.user_pdi-100000)/100000)*100;`;
-        await pool.query(rankingQuery, []);
+        const rankingQuery = `update ranking e inner join (
+        select c.user_id, sum(case when c.stock_id=10 then c.avg_price*c.quantity else d.price*c.quantity end) as seed from hold_stock c left outer join (
+        select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
+        on c.stock_id=d.id group by c.user_id) f
+        on e.user_id=f.user_id set e.user_pdi=f.seed, e.user_returns=((e.user_pdi-100000)/100000)*100;`;
+        await pool.query(rankingQuery, [date.format("YYYY-MM-DD")]);
 
         // 뉴스받아오기
         const newsQuery = `select id, content from news where date>=? and date<=?;`;
