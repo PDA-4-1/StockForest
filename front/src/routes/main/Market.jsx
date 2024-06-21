@@ -38,6 +38,7 @@ const Market = () => {
                 }
                 dispatch(saveStockList(data.stocks));
                 dispatch(saveTurn());
+                setSelected(null);
             })
             .catch((err) => console.log(err.response));
     };
