@@ -17,33 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
-    - name: Build the project
-      run: npm run build --if-present
-      working-directory: ./server
-
-    - name: Log in to Docker Hub
-      env:
-        DOCKER_USER: ${{ secrets.DOCKER_ID }}
-        DOCKER_PASS: ${{ secrets.DOCKER_PW }}
-      run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-
-    - name: Build Docker image
-      id: build-docker
-      run: |
-        TIMESTAMP=$(date +%Y%m%d%H%M%S)
-        IMAGE_NAME=yoon97/stockforest
-        docker build -t $IMAGE_NAME ./server
-        echo "::set-output name=image_name::$IMAGE_NAME"
-    - name: Push Docker image to Docker Hub
-      run: |
-        IMAGE_NAME=${{ steps.build-docker.outputs.image_name }}
-        docker push $IMAGE_NAME
     - name: Execute remote commands via SSH
       uses: appleboy/ssh-action@v0.1.6
       with:
@@ -54,6 +27,6 @@ jobs:
         script: |
           cd StockForest
           git pull origin main
-          cd ..
+          cd ~
           docker-compose down
           docker-compose up --build -d
