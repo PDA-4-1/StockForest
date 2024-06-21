@@ -15,18 +15,8 @@ const Market = () => {
     const stockList = useSelector((state) => state.stock.stockList);
     const [selected, setSelected] = useState(null);
     const turn = useSelector((state) => state.user.user.turn);
-    const [modalSee, setModalSee] = useState(true);
-    const [newsList, setNewsList] = useState([
-        {
-            content:
-                "원인을 알 수 없는 독감이 발생했어요. 이 독감은 전염성이 아주 강하고, 걸리면 너무 너무 아파요. 많은 의사, 과학자들이 독감 바이러스를 연구하고 있지만 치료제가 나오려면 오래 걸릴거 같아요. 독감의 이름은 말벌독감이라고 지었어요",
-            id: 1,
-        },
-        // {
-        //     content: "말벌 독감으로 인해 여행을 가는 사람들이 엄청 줄어들었어요.",
-        //     id: 1,
-        // },
-    ]);
+    const [modalSee, setModalSee] = useState(false);
+    const [newsList, setNewsList] = useState([]);
     const dispatch = useDispatch();
     const saveStock = (el) => {
         setSelected(el);
@@ -42,7 +32,7 @@ const Market = () => {
         NextTurn(turn, 16)
             .then((data) => {
                 console.log(data);
-                if (data.news) {
+                if (data.news.length > 0) {
                     setModalSee(true);
                     setNewsList(data.news);
                 }
