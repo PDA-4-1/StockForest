@@ -9,7 +9,8 @@ import { savePrices, saveStockList } from "../../store/stockSlice";
 import Profile from "../../components/Profile";
 import { GetUserProfile } from "../../lib/apis/user";
 import { saveTurn, saveUser } from "../../store/userSlice";
-import NewsModal from "../../components/NewsModal";
+import NewsModal from "../../components/Modal/NewsModal";
+import NumModal from "../../components/Modal/NumModal";
 
 const Market = () => {
     const stockList = useSelector((state) => state.stock.stockList);
@@ -83,6 +84,7 @@ const Market = () => {
                 </div>
             </div>
             {modalSee && <NewsModal onHide={() => setModalSee(false)} newsList={newsList} />}
+            <NumModal turn={100} />
         </div>
     );
 };
