@@ -146,6 +146,7 @@ router.get("/sell/:stockId/:turn", async (req, res) => {
                     date.format("YYYY-MM-DD"),
                 ]);
                 res.status(200).send(result);
+                break;
             }
         }
     } catch (error) {
