@@ -120,7 +120,7 @@ const doKIS = async () => {
             }
         }
     };
-    await executeJob();
+    // await executeJob();
     schedule.scheduleJob("0 0 17 * * *", executeJob);
 }
 
