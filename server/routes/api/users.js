@@ -3,6 +3,7 @@ var pool = require("../../config/db.connect.js");
 var router = express.Router();
 const bcrypt = require("bcrypt");
 const { createToken, verifyToken } = require("../../utils/auth");
+const INITIAL_ASSET = 100000;
 
 function getRandomInt1to4() {
     return Math.floor(Math.random() * 4) + 1;
@@ -19,12 +20,19 @@ router.get("/", async (req, res) => {
     const decoded = verifyToken(token);
     const userId = decoded.id;
 
-    const query = `SELECT nickname, returns, avg_price as user_pdi, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
+    const query = `SELECT nickname, avg_price as user_pdi, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
+    const query2 = `SELECT user_returns from ranking WHERE user_id = ?;`;
+
     try {
         const [result] = await pool.query(query, [userId]);
-        if (result.length === 0) {
+        const [result2] = await pool.query(query2, [userId]);
+        if (result.length === 0 || result2.length === 0) {
             return res.status(404).send("유저를 찾을 수 없습니다.");
         }
+        result[0] = {
+            ...result[0],
+            user_returns: result2[0].user_returns,
+        };
         res.send(result[0]);
     } catch (error) {
         console.error(error);
