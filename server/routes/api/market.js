@@ -132,25 +132,26 @@ router.get("/sell/:stockId/:turn", async (req, res) => {
     //TODO : 현재 가지고 있는 주식 수, 가격 불러오기
     try {
         for (let i = 0; i < 7; i++) {
-            console.log(i);
+            // 주식 시장이 열렸는지 확인
             const date = moment("2020-01-01");
-            const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
-            const [result] = await pool.query(query, [
-                req.userId,
-                req.params.stockId,
+            const stockQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+            const [stockResult] = await pool.query(stockQuery, [
                 date
                     .add(req.params.turn * 7 - 1 - i, "days")
                     .format("YYYY-MM-DD"),
             ]);
-            if (result.length > 0) {
-                // 해당하는 turn에 주식이 있으면 응답
-                // console.log(result);
+
+            // 열려있다면 보내기
+            if (stockResult.length > 0) {
+                const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
+                const [result] = await pool.query(query, [
+                    req.userId,
+                    req.params.stockId,
+                    date.format("YYYY-MM-DD"),
+                ]);
                 res.status(200).send(result);
-                break;
             }
         }
-
-        내가가진주식;
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
