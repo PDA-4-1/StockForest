@@ -20,9 +20,9 @@ router.get("/", async (req, res) => {
     const decoded = verifyToken(token);
     const userId = decoded.id;
 
-    const query = `SELECT nickname, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
+    const query = `SELECT nickname, avg_price as user_pdi, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
+    const query2 = `SELECT user_returns from ranking WHERE user_id = ?;`;
 
-    const query2 = `SELECT user_pdi, user_returns from ranking WHERE user_id = ?;`;
     try {
         const [result] = await pool.query(query, [userId]);
         const [result2] = await pool.query(query2, [userId]);
@@ -31,7 +31,6 @@ router.get("/", async (req, res) => {
         }
         result[0] = {
             ...result[0],
-            user_pdi: result2[0].user_pdi,
             user_returns: result2[0].user_returns,
         };
         res.send(result[0]);
