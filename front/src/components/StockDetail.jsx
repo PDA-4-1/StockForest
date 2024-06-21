@@ -3,7 +3,7 @@ import StockButton from "./StockButton";
 import { IoTriangleSharp } from "react-icons/io5";
 import { GetStockChart, GetStockCount } from "../lib/apis/stock";
 import StockChart from "./StockChart";
-import OrderModal from "./Stock/OrderModal";
+import OrderModal from "./Modal/OrderModal";
 import { Toast } from "./Toast";
 import { useSelector } from "react-redux";
 
