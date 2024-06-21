@@ -3,17 +3,20 @@ import Navbar from "../../components/Navbar";
 import StockCard from "../../components/StockCard";
 import StockDetail from "../../components/StockDetail";
 import Ranking from "../../components/Ranking/Ranking";
-import { GetStockChart, GetStockList } from "../../lib/apis/stock";
+import { GetStockChart, GetStockList, NextTurn } from "../../lib/apis/stock";
 import { useDispatch, useSelector } from "react-redux";
 import { savePrices, saveStockList } from "../../store/stockSlice";
 import Profile from "../../components/Profile";
 import { GetUserProfile } from "../../lib/apis/user";
-import { saveUser } from "../../store/userSlice";
+import { saveTurn, saveUser } from "../../store/userSlice";
+import NewsModal from "../../components/NewsModal";
 
 const Market = () => {
     const stockList = useSelector((state) => state.stock.stockList);
     const [selected, setSelected] = useState(null);
     const turn = useSelector((state) => state.user.user.turn);
+    const [modalSee, setModalSee] = useState(false);
+    const [newsList, setNewsList] = useState([]);
     const dispatch = useDispatch();
     const saveStock = (el) => {
         setSelected(el);
@@ -24,6 +27,20 @@ const Market = () => {
                 dispatch(savePrices(prices));
             })
             .catch((err) => console.log(err));
+    };
+    const nextTurn = () => {
+        NextTurn(turn)
+            .then((data) => {
+                console.log(data);
+                if (data.news.length > 0) {
+                    setModalSee(true);
+                    setNewsList(data.news);
+                }
+                dispatch(saveStockList(data.stocks));
+                dispatch(saveTurn());
+                setSelected(null);
+            })
+            .catch((err) => console.log(err.response));
     };
 
     useEffect(() => {
@@ -61,10 +78,11 @@ const Market = () => {
                     {selected && <StockDetail stock={selected} />}
                 </div>
                 <div className="grid grid-rows-5 h-full">
-                    <Profile />
+                    <Profile nextTurn={nextTurn} />
                     <Ranking />
                 </div>
             </div>
+            {modalSee && <NewsModal onHide={() => setModalSee(false)} newsList={newsList} />}
         </div>
     );
 };
