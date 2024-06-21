@@ -29,7 +29,7 @@ const Market = () => {
             .catch((err) => console.log(err));
     };
     const nextTurn = () => {
-        NextTurn(turn, 16)
+        NextTurn(turn)
             .then((data) => {
                 console.log(data);
                 if (data.news.length > 0) {
