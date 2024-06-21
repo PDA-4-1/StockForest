@@ -139,4 +139,18 @@ router.patch("/answer", async (req, res) => {
     }
 });
 
+router.get("/content", async (req, res) => {
+    //TODO : 퀴즈에 띄울 투자전략 내용 반환하기
+    try {
+        const resQuery = `SELECT content FROM quiz_news WHERE date = ?`;
+        const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
+        const [result] = await pool.query(resQuery, [currentDate]);
+        console.log(result[0].content);
+        res.send({ content: result[0].content });
+    } catch (err) {
+        console.log(err);
+        res.send(err);
+    }
+});
+
 module.exports = router;

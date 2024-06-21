@@ -38,7 +38,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     await executeJob();
-    schedule.scheduleJob("*/30 * * * * *", executeJob);
+    schedule.scheduleJob("0 0 8 * * *", executeJob);
 };
 
 module.exports = doJob;
