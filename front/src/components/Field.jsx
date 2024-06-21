@@ -48,11 +48,11 @@ const Field = () => {
     };
 
     const stockImages = {
-        1: "/imgs/tomato/tomato1.png",
-        2: "/imgs/tomato/tomato2.png",
-        3: "/imgs/banana/banana5.png",
-        4: "/imgs/tomato/tomato4.png",
-        5: "/imgs/tomato/tomato5.png",
+        1: "/imgs/strawberry/strawberry1.png",
+        2: "/imgs/strawberry/strawberry2.png",
+        3: "/imgs/strawberry/strawberry3.png",
+        4: "/imgs/strawberry/strawberry4.png",
+        5: "/imgs/strawberry/strawberry5.png",
         6: "/imgs/banana/banana1.png",
         7: "/imgs/banana/banana2.png",
         8: "/imgs/banana/banana3.png",
