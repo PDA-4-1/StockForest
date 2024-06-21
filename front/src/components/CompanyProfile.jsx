@@ -18,9 +18,9 @@ const CompanyProfile = ({ visible, onClose, image, stock, name }) => {
             )}
             <div className="absolute left-[220px] top-[80px]">{name}</div>
             <div className="absolute grid grid-cols-1 gap-4 mb-4 top-[200px] left-[120px]">
-                <div>나의 주식수 : {stock.quantity}</div>
-                <div>평단가 : {stock.avg_price}</div>
-                <div>수익률 : {stock.returns}</div>
+                <div>나의 주식수 : {stock.quantity}개</div>
+                <div>평단가 : {stock.avg_price}원</div>
+                <div>수익률 : {stock.returns}%</div>
             </div>
             <button className="absolute top-[400px] left-[170px]">
                 팔러가기

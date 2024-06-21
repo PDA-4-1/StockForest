@@ -22,6 +22,9 @@ module.exports = {
                 "modal-yellow": "#FDF9EA",
                 "back-grey": "#EFF0F6",
             },
+            animation: {
+                "spin-fast": "spin 0.3s linear infinite",
+            },
         },
     },
     plugins: [],

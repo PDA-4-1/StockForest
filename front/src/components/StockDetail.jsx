@@ -5,16 +5,19 @@ import { GetStockChart, GetStockCount } from "../lib/apis/stock";
 import StockChart from "./StockChart";
 import OrderModal from "./Stock/OrderModal";
 import { Toast } from "./Toast";
+import { useSelector } from "react-redux";
 
 export default function StockDetail({ stock }) {
     const { id, name, price, diff } = stock;
     const [purpo, setPurpo] = useState("");
     const [modalSee, setModalSee] = useState(false);
     const [count, setCount] = useState(0);
+    const turn = useSelector((state) => state.user.user.turn);
     const openSellModal = () => {
         setPurpo("sell");
-        GetStockCount(10, id, 1).then((data) => {
-            if (data.length >= 1) {
+        GetStockCount(id, turn).then((data) => {
+            console.log(data);
+            if (data.length > 0) {
                 setCount(data[0].quantity);
                 setModalSee(true);
             } else {
@@ -29,14 +32,6 @@ export default function StockDetail({ stock }) {
     const onHide = () => {
         setModalSee(false);
     };
-    // const [prices, setPrices] = useState(null);
-
-    // useEffect(() => {
-    //     GetStockChart(id, 1).then((data) => {
-    //         const priceList = data.map((el) => el.price);
-    //         setPrices(priceList);
-    //     });
-    // }, []);
 
     return (
         <>

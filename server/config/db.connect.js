@@ -12,11 +12,10 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    connectTimeout: 60000,
+    connectTimeout: 10000,
 });
 
 module.exports = pool;
-
 
 // 연결 확인용 테스트 코드
 async function testConnection() {
