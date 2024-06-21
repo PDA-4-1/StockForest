@@ -22,22 +22,17 @@ router.get("/", async (req, res) => {
 
     const query = `SELECT nickname, turn, img FROM user u join hold_stock h on u.id = h.user_id where u.id = ? and h.stock_id = 10;`;
 
-    const query2 = `SELECT SUM(quantity*avg_price) AS asset FROM hold_stock WHERE user_id = ?;`;
+    const query2 = `SELECT user_pdi, user_returns from ranking WHERE user_id = ?;`;
     try {
         const [result] = await pool.query(query, [userId]);
         const [result2] = await pool.query(query2, [userId]);
         if (result.length === 0 || result2.length === 0) {
             return res.status(404).send("유저를 찾을 수 없습니다.");
         }
-        const returnRate =
-            ((result2[0].asset - INITIAL_ASSET) / INITIAL_ASSET) * 100;
-        console.log(
-            `현재 자본 - 초기 자본:${result2[0].asset - INITIAL_ASSET}, 수익률: ${returnRate}`
-        );
         result[0] = {
             ...result[0],
-            asset: result2[0].asset,
-            returnRate: returnRate,
+            user_pdi: result2[0].user_pdi,
+            user_returns: result2[0].user_returns,
         };
         res.send(result[0]);
     } catch (error) {
