@@ -24,6 +24,18 @@ const doJob = async () => {
         const res = await axios(config);
         const data = res.data.dataBody.list
         // console.log(data);
+        let todayData;
+        if(data[1].reg_date===date && data[1].content.length>=300) {
+            todayData = data[1].content;
+        }
+        else if(data[0].reg_date===date && data[0].content.length>=300) {
+            todayData = data[0].content;
+        }
+        else todayData = data[4].content;
+        // console.log(todayData.length);
+
+        const query = `INSERT INTO quiz_news (date, content) VALUES (?,?)`;
+        await pool.query(query, [date, todayData]);
     };
     await executeJob();
     schedule.scheduleJob("*/30 * * * * *", executeJob);
