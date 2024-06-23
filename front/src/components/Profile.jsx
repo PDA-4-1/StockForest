@@ -6,7 +6,7 @@ const Profile = (props) => {
     const nextTurn = props.nextTurn;
 
     return (
-        <div className="w-full h-full row-span-2 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-auto flex flex-col justify-center items-center space-y-3">
+        <div className="w-full h-full row-span-2 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center space-y-3">
             <div className="flex items-center space-x-3 min-w-40">
                 <div className="w-10 h-10 rounded-full bg-black">
                     <img>{/* {userInfo.img} */}</img>
