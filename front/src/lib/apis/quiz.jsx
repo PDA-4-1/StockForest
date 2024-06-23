@@ -10,7 +10,6 @@ const shinhanService = axios.create({ baseURL: SHINHAN_URL });
 // 퀴즈 응답 기록 요청
 export async function UpdateQuiz(stockId, date, upDown) {
     const res = await service.post("/response", {
-        userId: 10,
         stockId: stockId,
         date: date,
         upDown: upDown,
