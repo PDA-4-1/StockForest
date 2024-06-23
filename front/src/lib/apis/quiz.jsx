@@ -6,17 +6,6 @@ const SHINHAN_URL = "/shin-api";
 const service = axios.create({ withCredentials: true, baseURL: BASE_URL });
 const shinhanService = axios.create({ baseURL: SHINHAN_URL });
 
-const realName = [
-    "005930",
-    "035720",
-    "041510", //삼성전자 카카오 SM
-    "005380",
-    "068270",
-    "006360", //현대차 셀트리온 GS건설
-    "090430",
-    "008770",
-    "051910",
-]; //아모레퍼시픽 신라호텔 LG화학
 
 // 퀴즈 응답 기록 요청
 export async function UpdateQuiz(stockId, date, upDown) {
