@@ -18,6 +18,8 @@ const Market = () => {
     const turn = useSelector((state) => state.user.user.turn);
     const [modalSee, setModalSee] = useState(false);
     const [newsList, setNewsList] = useState([]);
+    const [roundSee, setRoundSee] = useState(false);
+    const [round, setRound] = useState(0);
     const dispatch = useDispatch();
     const saveStock = (el) => {
         setSelected(el);
@@ -30,13 +32,19 @@ const Market = () => {
             .catch((err) => console.log(err));
     };
     const nextTurn = () => {
+        setRound(turn + 1);
+        setRoundSee(true);
         NextTurn(turn)
             .then((data) => {
                 console.log(data);
-                if (data.news.length > 0) {
-                    setModalSee(true);
-                    setNewsList(data.news);
-                }
+                setTimeout(() => {
+                    setRoundSee(false);
+                    if (data.news.length > 0) {
+                        setRoundSee(false);
+                        setModalSee(true);
+                        setNewsList(data.news);
+                    }
+                }, 1000);
                 dispatch(saveStockList(data.stocks));
                 dispatch(saveTurn());
                 setSelected(null);
@@ -84,7 +92,7 @@ const Market = () => {
                 </div>
             </div>
             {modalSee && <NewsModal onHide={() => setModalSee(false)} newsList={newsList} />}
-            <NumModal turn={100} />
+            {roundSee && <NumModal turn={round} />}
         </div>
     );
 };
