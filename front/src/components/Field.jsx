@@ -57,6 +57,35 @@ const Field = () => {
         7: "/imgs/banana/banana2.png",
         8: "/imgs/banana/banana3.png",
         9: "/imgs/banana/banana4.png",
+    const getStockImage = (stockId, profit) => {
+        const stockImages = {
+            1: "tomato/tomato",
+            2: "banana/banana",
+            3: "blueberry/blueberry",
+            4: "peach/peach",
+            5: "orange/orange",
+            6: "melon/melon",
+            7: "grape/grape",
+            8: "apple/apple",
+            9: "strawberry/strawberry",
+        };
+
+        let imageType;
+        if (profit <= -30) {
+            return `/imgs/ground.png`;
+        } else if (profit > -30 && profit <= -15) {
+            imageType = "1.png";
+        } else if (profit > -15 && profit <= 0) {
+            imageType = "2.png";
+        } else if (profit > 0 && profit <= 15) {
+            imageType = "3.png";
+        } else if (profit > 15 && profit <= 30) {
+            imageType = "4.png";
+        } else {
+            imageType = "5.png";
+        }
+
+        return `/imgs/${stockImages[stockId]}${imageType}`;
     };
 
     const signImages = {
@@ -86,18 +115,21 @@ const Field = () => {
     const fieldImages = Array.from({ length: 9 }, (_, index) => {
         if (index < userStock.length) {
             const stock = userStock[index];
+            const profit = stock.returns;
+            const stockImage = getStockImage(stock.stock_id, profit);
+
             return (
                 <div
                     className="w-full h-full flex justify-center items-end bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
                     key={stock.stock_id}
                 >
                     <img
-                        src={stockImages[stock.stock_id]}
+                        src={stockImage}
                         alt={`Field ${stock.stock_id}`}
                         className="cursor-pointer object-cover relative bottom-[40%]"
                         onClick={() =>
                             handleButtonClick(
-                                stockImages[stock.stock_id],
+                                stockImage,
                                 stockName[stock.stock_id],
                                 stock
                             )
@@ -110,7 +142,7 @@ const Field = () => {
                             className="cursor-pointer object-cover mb-[3vh] mr-[3vw]"
                             onClick={() =>
                                 handleButtonClick(
-                                    stockImages[stock.stock_id],
+                                    stockImage,
                                     stockName[stock.stock_id],
                                     stock
                                 )
