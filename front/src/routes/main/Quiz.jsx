@@ -24,16 +24,15 @@ const Quiz = () => {
         const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
         setDate(currentDate);
 
-        async function getContent () {
+        async function getContent() {
             const data = await ContentQuiz();
-            setQuizNews(data);
+            setQuizNews(data.content);
         }
         getContent();
-        console.log(quizNews);
     }, []);
 
     useEffect(() => {
-        console.log(quizNews);  // quizNews가 변경될 때마다 출력
+        console.log(quizNews); // quizNews가 변경될 때마다 출력
     }, [quizNews]);
 
     const changeToUp = () => {
@@ -53,7 +52,7 @@ const Quiz = () => {
         if (text.length <= length) {
             return text;
         }
-        return text.substring(0, length) + '...';
+        return text.substring(0, length) + "...";
     };
     /* 퀴즈 내용 불러오기
         
@@ -63,11 +62,10 @@ const Quiz = () => {
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">
             <Navbar />
-            <div className="h-1/2 relative flex items-center">
-            <div className="absolute w-full h-full pl-50 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat">
-                <p>{truncateText(quizNews.content, 100)}</p>
-            </div>
-            <div className="absolute right-0 w-1/5 h-80 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/sol_character.png')] bg-no-repeat"></div>
+            <div className="h-300px relative flex items-center">
+                <div className="w-full h-[300px] pl-50 bg-contain bg-center bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat">
+                    <div className="relative w-1/2 top-[100px] left-[20vw] ">{truncateText(quizNews, 150)}</div>
+                </div>
             </div>
             <div className="flex flex-row">
                 <div className="basis-1/2 flex justify-center">
