@@ -66,7 +66,7 @@ const Navbar = () => {
                         오늘의 퀴즈
                     </button>
                 </div>
-                <div>
+                <div className="flex mr-10 bg-white rounded-[20px] cursor-pointer">
                     <BgmBtn />
                 </div>
             </div>
