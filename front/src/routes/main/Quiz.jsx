@@ -5,7 +5,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { FaChevronUp } from "react-icons/fa";
 import { TbTriangleFilled } from "react-icons/tb";
 import { TbTriangleInvertedFilled } from "react-icons/tb";
-import { AnswerQuiz, UpdateQuiz } from "~/lib/apis/quiz";
+import { ContentQuiz, AnswerQuiz, UpdateQuiz } from "~/lib/apis/quiz";
 
 const Quiz = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +13,7 @@ const Quiz = () => {
     const [stockId, setStockId] = useState(0);
     const [date, setDate] = useState("2024-06-18");
     const [upDown, setUpDown] = useState(true); //상승이면 true
+    const [quizNews, setQuizNews] = useState("");
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -22,6 +23,13 @@ const Quiz = () => {
     useEffect(() => {
         const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
         setDate(currentDate);
+
+        async function getContent() {
+            const data = await ContentQuiz();
+            setQuizNews(data);
+        }
+        getContent();
+        console.log(quizNews);
     }, []);
 
     useEffect(() => {
