@@ -64,7 +64,15 @@ const Quiz = () => {
             <Navbar />
             <div className="h-300px relative flex items-center">
                 <div className="w-full h-[300px] pl-50 bg-contain bg-center bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat">
-                    <div className="relative w-1/2 top-[100px] left-[20vw] ">{truncateText(quizNews, 150)}</div>
+                    <div className="relative w-1/2 top-[100px] left-[20vw] ">
+                        <div>{truncateText(quizNews, 150)}</div>
+                        <button
+                            className="absolute right-0 text-center text-sky-400 flex items-center justify-evenly"
+                            // onClick={} 모달 띄우기
+                        >
+                            더보기
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="flex flex-row">
