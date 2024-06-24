@@ -1,7 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const CompanyProfile = ({ visible, onClose, image, stock, name }) => {
+const CompanyProfile = ({
+    visible,
+    onClose,
+    image,
+    stock,
+    name,
+    currentPrice,
+}) => {
+    const navigate = useNavigate();
+    const userInfo = useSelector((state) => state.user.user);
+
+    const goMarket = () => {
+        navigate("/market");
+    };
 
     return (
         <div
