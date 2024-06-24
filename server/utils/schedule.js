@@ -34,19 +34,19 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("0 0 8 * * *", executeJob);
+    schedule.scheduleJob("0 30 8 * * *", executeJob);
 };
 
 const realCode = [
-    "005930",
-    "035720",
-    "041510", //삼성전자 카카오 SM
-    "005380",
-    "068270",
-    "006360", //현대차 셀트리온 GS건설
-    "090430",
-    "008770",
-    "051910",
+    ["005930", "삼성전자"],
+    ["035720", "카카오"],
+    ["041510", "SM"], //삼성전자 카카오 SM
+    ["005380", "현대차"],
+    ["068270", "셀트리온"],
+    ["006360", "GS건설"], //현대차 셀트리온 GS건설
+    ["090430", "아모레퍼시픽"],
+    ["008770", "신라호텔"],
+    ["051910", "LG화학"],
 ]; //아모레퍼시픽 신라호텔 LG화학
 
 const doKIS = async () => {
@@ -108,7 +108,7 @@ const doKIS = async () => {
         for (let i = 0; i < realCode.length; i++) {
             const params = {
                 FID_COND_MRKT_DIV_CODE: "J",
-                FID_INPUT_ISCD: realCode[i],
+                FID_INPUT_ISCD: realCode[i][0],
                 FID_INPUT_DATE_1: startDate,
                 FID_INPUT_DATE_2: endDate,
                 FID_PERIOD_DIV_CODE: "D",
@@ -125,16 +125,22 @@ const doKIS = async () => {
                         : todayCost < yesterdayCost
                         ? 0
                         : 3;
-                const query = `INSERT INTO quiz_answer (date, stock_id, answer, today_cost, yesterday_cost) VALUES (?,?,?,?,?)`;
-                const [res] = await pool.query(query, [today, i + 1, isUp, todayCost, yesterdayCost]);
-                console.log(res.insertId);
+                const query = `INSERT INTO quiz_answer (date, stock_id, stock_name, answer, today_cost, yesterday_cost) VALUES (?,?,?,?,?,?)`;
+                await pool.query(query, [
+                    today,
+                    i + 1,
+                    realCode[i][1],
+                    isUp,
+                    todayCost,
+                    yesterdayCost,
+                ]);
             } catch (e) {
                 console.log(e);
             }
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 0 17 * * *", executeJob);
+    schedule.scheduleJob("0 35 8 * * *", executeJob);//한국시간 기준으로 변경
 };
 
 module.exports = { doJob, doKIS };
