@@ -5,7 +5,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { FaChevronUp } from "react-icons/fa";
 import { TbTriangleFilled } from "react-icons/tb";
 import { TbTriangleInvertedFilled } from "react-icons/tb";
-import { dailyStock, UpdateQuiz } from "~/lib/apis/quiz";
+import { AnswerQuiz, UpdateQuiz } from "~/lib/apis/quiz";
 
 const Quiz = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,12 +22,6 @@ const Quiz = () => {
     useEffect(() => {
         const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
         setDate(currentDate);
-
-        console.log("appKey: " + import.meta.env.VITE_appKey);
-        const getQuizData = async () => {
-            await dailyStock(date);
-        };
-        getQuizData();
     }, []);
 
     useEffect(() => {
@@ -54,6 +48,9 @@ const Quiz = () => {
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">
             <Navbar />
+            <div className="flex h-1/2 justify-center">
+            <div className="w-full h-full bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat"></div>
+            </div>
             <div className="flex flex-row">
                 <div className="basis-1/2 flex justify-center">
                     <button
