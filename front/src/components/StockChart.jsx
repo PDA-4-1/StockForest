@@ -59,7 +59,7 @@ const StockChart = () => {
             series: [
                 {
                     ...prevOptions.series[0],
-                    data: prices,
+                    data: prices.slice().reverse(),
                 },
             ],
         }));
