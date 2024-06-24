@@ -49,6 +49,7 @@ const Market = () => {
                     console.log(data);
                     dispatch(saveStockList(data));
                 });
+                GetUserProfile().then((data) => dispatch(saveUser(data)));
                 dispatch(saveTurn());
                 setSelected(null);
             })
