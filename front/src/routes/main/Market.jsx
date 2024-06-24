@@ -45,7 +45,10 @@ const Market = () => {
                         setNewsList(data.news);
                     }
                 }, 1000);
-                dispatch(saveStockList(data.stocks));
+                GetStockList(turn + 1).then((data) => {
+                    console.log(data);
+                    dispatch(saveStockList(data));
+                });
                 dispatch(saveTurn());
                 setSelected(null);
             })
