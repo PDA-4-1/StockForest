@@ -25,7 +25,7 @@ const Login = () => {
                 }
             } catch (error) {
                 if (error.response) {
-                    alert(error.response.data.message);
+                    Toast.fire(error.response.data.message, "", "error");
                 } else {
                     Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
                 }
@@ -45,7 +45,7 @@ const Login = () => {
             }
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.message);
+                Toast.fire(error.response.data.message, "", "error");
             } else {
                 Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
             }
@@ -65,9 +65,9 @@ const Login = () => {
                 <div className="flex flex-col items-center justify-center p-4 w-full">
                     <div className="grid grid-rows-2">
                         <div className="flex items-center justify-center row-span-1">
-                            <h1 className="text-[3vw] text-[#505050] mb-10">
+                            <h3 className="text-[3vw] text-[#505050] mb-10">
                                 로그인
-                            </h1>
+                            </h3>
                         </div>
                         <div className="flex flex-col items-center justify-center row-span-1">
                             <input

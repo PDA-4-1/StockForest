@@ -26,7 +26,7 @@ const Signup = () => {
             }
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.message);
+                Toast.fire(error.response.data.message, "", "error");
             } else {
                 Toast.fire("회원가입 중 오류가 발생했습니다!", "", "error");
             }
