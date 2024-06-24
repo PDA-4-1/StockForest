@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "../../components/Toast";
 
 const Login = () => {
     const [nickname, setNickname] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    const handleSignup = () => {
+        navigate("/signup");
+    };
 
     const handleEnter = async (e) => {
         if (e.key === "Enter") {
@@ -22,7 +27,7 @@ const Login = () => {
                 if (error.response) {
                     alert(error.response.data.message);
                 } else {
-                    alert("로그인 중 오류가 발생했습니다.");
+                    Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
                 }
             }
         }
@@ -42,7 +47,7 @@ const Login = () => {
             if (error.response) {
                 alert(error.response.data.message);
             } else {
-                alert("로그인 중 오류가 발생했습니다.");
+                Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
             }
         }
     };
@@ -58,9 +63,11 @@ const Login = () => {
             </div>
             <div className="flex justify-center bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-contain row-span-3">
                 <div className="flex flex-col items-center justify-center p-4 w-full">
-                    <div className="grid grid-rows-3">
-                        <div className="flex items-center justify-center row-span-1 mb-10">
-                            <h1 className="text-[3vw] text-[#505050]">로그인</h1>
+                    <div className="grid grid-rows-2">
+                        <div className="flex items-center justify-center row-span-1">
+                            <h1 className="text-[3vw] text-[#505050] mb-10">
+                                로그인
+                            </h1>
                         </div>
                         <div className="flex flex-col items-center justify-center row-span-1">
                             <input
@@ -80,13 +87,23 @@ const Login = () => {
                                 onKeyDown={handleEnter}
                             />
                         </div>
-                        <div className="flex items-center justify-center row-span-1">
-                            <button
-                                className="p-2 bg-yellow-400 rounded w-full"
-                                onClick={handleLogin}
-                            >
-                                로그인
-                            </button>
+                        <div className="flex w-full justify-between">
+                            <div className="flex items-center justify-center ">
+                                <button
+                                    className="p-2 bg-yellow-400 rounded w-[100px]"
+                                    onClick={handleLogin}
+                                >
+                                    로그인
+                                </button>
+                            </div>
+                            <div className="flex items-center justify-center">
+                                <button
+                                    className="p-2 bg-yellow-400 rounded w-[100px]"
+                                    onClick={handleSignup}
+                                >
+                                    회원가입
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
