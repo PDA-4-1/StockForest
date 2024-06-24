@@ -59,6 +59,17 @@ const doKIS = async () => {
             console.log("주말입니다 !");
             return;
         }
+        //오후 4시 확인
+        const startOfDay = moment.tz("Asia/Seoul").startOf("day"); // 오늘의 시작 시간 (00:00:00)
+        const endOfQuizTime = moment
+            .tz("Asia/Seoul")
+            .startOf("day")
+            .add(16, "hours"); // 오늘의 오후 4시 (16:00:00)
+        if (date.isBetween(startOfDay, endOfQuizTime)) {
+            console.log("오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.");
+            console.log(date.format());
+            return;
+        }
         let headers;
         const URL = "https://openapi.koreainvestment.com:9443/oauth2/tokenP";
         headers = {
