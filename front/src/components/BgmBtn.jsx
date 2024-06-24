@@ -1,13 +1,15 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setBgm } from "../store/stockSlice";
 
 const BgmBtn = () => {
-    const bgmStatus = useSelector((state) => state.user.bgmOn);
-
+    const bgmStatus = useSelector((state) => state.stock.bgmOn);
+    const dispatch = useDispatch();
+    console.log(`음악 실행 여부: ${bgmStatus}`);
     return (
         <div>
-            {bgmStatus &
-            (
+            {bgmStatus && (
                 <button
+                    className="border-2 border-black rounded-lg bg-red-300"
                     onClick={() => {
                         dispatch(setBgm());
                     }}
@@ -15,9 +17,9 @@ const BgmBtn = () => {
                     BGM 끄기
                 </button>
             )}
-            {!bgmStatus &
-            (
+            {!bgmStatus && (
                 <button
+                    className="border-2 border-black rounded-lg bg-red-300"
                     onClick={() => {
                         dispatch(setBgm());
                     }}
