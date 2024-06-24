@@ -55,7 +55,8 @@ const doKIS = async () => {
         // 요청 내용 작성, 요청 보내기
         const date = moment().tz("Asia/Seoul");
         const dateDay = date.day();
-        if (dateDay === 0 || dateDay === 6) {//주말 확인
+        if (dateDay === 0 || dateDay === 6) {
+            //주말 확인
             console.log("주말입니다 !");
             return;
         }
@@ -124,8 +125,8 @@ const doKIS = async () => {
                         : todayCost < yesterdayCost
                         ? 0
                         : 3;
-                const query = `INSERT INTO quiz_answer (date, stock_id, answer) VALUES (?,?,?)`;
-                const [res] = await pool.query(query, [today, i + 1, isUp]);
+                const query = `INSERT INTO quiz_answer (date, stock_id, answer, today_cost, yesterday_cost) VALUES (?,?,?,?,?)`;
+                const [res] = await pool.query(query, [today, i + 1, isUp, todayCost, yesterdayCost]);
                 console.log(res.insertId);
             } catch (e) {
                 console.log(e);

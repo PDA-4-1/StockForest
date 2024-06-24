@@ -48,7 +48,7 @@ router.patch("/answer", async (req, res) => {
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     try {
-        const getAnswerQuery = `SELECT answer FROM quiz_answer WHERE date = ? AND stock_id = ?`;
+        const getAnswerQuery = `SELECT answer, today_cost, yesterday_cost FROM quiz_answer WHERE date = ? AND stock_id = ?`;
         const [answerResponse] = await pool.query(getAnswerQuery, [
             today,
             userResponse[0].stock_id,
