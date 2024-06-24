@@ -236,7 +236,12 @@ router.post("/sell", async (req, res) => {
 
             // 매도 정보 보유주식 테이블에 업데이트
             // 해당 주식 update
-            const holdStockQuery = `update hold_stock set quantity=quantity-? where user_id=? and stock_id=?;`;
+            let holdStockQuery;
+            if (holdStock == quantity) {
+                holdStockQuery = `update hold_stock set quantity=quantity-?, avg_price=0 where user_id=? and stock_id=?;`;
+            } else {
+                holdStockQuery = `update hold_stock set quantity=quantity-? where user_id=? and stock_id=?;`;
+            }
             const [holdStockResult] = await pool.query(holdStockQuery, [quantity, req.userId, stockId]);
 
             // 보유 시드 update
