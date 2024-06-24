@@ -6,6 +6,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var apiRouter = require("./routes/api/index");
+var {doJob, doKIS} = require("./utils/schedule");
 
 var app = express();
 const cors = require("cors");
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+doJob();
+doKIS();
 app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
