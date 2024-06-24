@@ -8,6 +8,7 @@ const initialState = {
         turn: 1,
         img: 1,
     },
+    bgmOn: true,
 };
 
 const userSlice = createSlice({
@@ -19,7 +20,6 @@ const userSlice = createSlice({
         },
         saveUser: (state, action) => {
             const newUser = action.payload;
-            // console.log(newUser);
             state.user = newUser;
         },
         savePdi: (state, action) => {
@@ -29,8 +29,11 @@ const userSlice = createSlice({
         saveTurn: (state, action) => {
             state.user.turn += 1;
         },
+        setBgm: (state, action) => {
+            state.bgmOn = !state.bgmOn;
+        },
     },
 });
 
 export default userSlice.reducer;
-export const { reset, saveUser, savePdi, saveTurn } = userSlice.actions;
+export const { reset, saveUser, savePdi, saveTurn, setBgm } = userSlice.actions;
