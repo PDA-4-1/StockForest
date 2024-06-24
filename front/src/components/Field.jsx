@@ -163,25 +163,27 @@ const Field = () => {
 
     return (
         <div
-            className="grid grid-cols-4 overflow-hidden"
+            className="grid grid-cols-4 overflow-hidden bg-[url('imgs/file5.png')]"
             style={{ height: "calc(100vh - 70px)" }}
         >
-            <div className="col-span-3 h-full relative overflow-hidden p-[100px] bg-[url('/imgs/file5.png')] bg-cover bg-no-repeat">
+            {/* <img src="imgs/pat.png" className="w-[200px] absolute z-30 left-[870px]"></img> */}
+            <div className="col-span-3 h-full relative overflow-hidden p-[70px]">
                 <div className="grid grid-cols-3 grid-rows-3 place-items-center h-full relative">
                     {fieldImages}
                 </div>
             </div>
             <div className="col-span-1 bg-[url('/imgs/grass.png')] relative overflow-hidden">
+            <div className="col-span-1 relative overflow-hidden">
                 <div className="grid grid-rows-3 h-full">
-                    <div className="row-span-1 bg-[url('/imgs/grass.png')]">
-                        <Profile />
+                    <div className="row-span-1 ">
+                        <FarmProfile />
                     </div>
-                    <div className="row-span-2 relative flex items-center justify-center bg-[url('/imgs/grass.png')]">
+                    <div className="row-span-2 relative flex items-center justify-center">
                         {!isVisible && (
                             <img
-                                src="/imgs/character.png"
+                                src="imgs/house.png"
                                 alt="Character"
-                                className="w-full h-[400px]"
+                                className="w-full"
                             />
                         )}
                         <CompanyProfile
@@ -190,6 +192,7 @@ const Field = () => {
                             image={selectedImage}
                             stock={selectedStock}
                             name={selectedStockName}
+                            currentPrice={currentPrice}
                         />
                     </div>
                 </div>
