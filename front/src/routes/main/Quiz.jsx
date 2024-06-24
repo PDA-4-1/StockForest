@@ -24,7 +24,7 @@ const Quiz = () => {
         const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
         setDate(currentDate);
 
-        async function getContent() {
+        async function getContent () {
             const data = await ContentQuiz();
             setQuizNews(data);
         }
@@ -33,8 +33,8 @@ const Quiz = () => {
     }, []);
 
     useEffect(() => {
-        console.log(upDown);
-    }, [upDown]);
+        console.log(quizNews);  // quizNews가 변경될 때마다 출력
+    }, [quizNews]);
 
     const changeToUp = () => {
         setUpDown(true);
@@ -48,6 +48,13 @@ const Quiz = () => {
         const result = await UpdateQuiz(stockId, date, upDown);
         console.log(result);
     };
+
+    const truncateText = (text, length) => {
+        if (text.length <= length) {
+            return text;
+        }
+        return text.substring(0, length) + '...';
+    };
     /* 퀴즈 내용 불러오기
         
     */
@@ -58,7 +65,7 @@ const Quiz = () => {
             <Navbar />
             <div className="h-1/2 relative flex items-center">
             <div className="absolute w-full h-full pl-50 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat">
-                <p>{quizNews}</p>
+                <p>{truncateText(quizNews.content, 100)}</p>
             </div>
             <div className="absolute right-0 w-1/5 h-80 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/sol_character.png')] bg-no-repeat"></div>
             </div>
