@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { RouterProvider, Route, Routes, BrowserRouter } from "react-router-dom";
 import { routerObj } from "./routers/router";
 import "./index.css";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import persistStore from "redux-persist/es/persistStore";
+const persistor = persistStore(store);
 
 function renderRoutes(routesObj) {
     return routesObj.map((route) => {
@@ -30,9 +35,13 @@ function renderRoutes(routesObj) {
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>{renderRoutes(routerObj)}</Routes>
-        </BrowserRouter>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <BrowserRouter>
+                    <Routes>{renderRoutes(routerObj)}</Routes>
+                </BrowserRouter>
+            </PersistGate>
+        </Provider>
     );
 }
 

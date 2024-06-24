@@ -23,10 +23,6 @@ module.exports = {
             animation: {
                 "spin-fast": "spin 0.3s linear infinite",
             },
-            fontFamily: {
-                mango: ["MangoByeolbyeol", "sans-serif"],
-                jamsil: ["TheJamsil5Bold", "sans-serif"],
-            },
         },
     },
     plugins: [],

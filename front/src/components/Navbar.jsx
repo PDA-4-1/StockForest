@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import BgmBtn from "./BgmBtn";
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -23,6 +23,7 @@ const Navbar = () => {
                         src="/imgs/Logo.svg"
                         alt="로고"
                         onClick={handleLogoClick}
+                        className="w-[90px] h-[60px] cursor-pointer"
                     />
                 </div>
                 <div className="flex-grow flex justify-center space-x-4 gap-20">
@@ -64,6 +65,9 @@ const Navbar = () => {
                     <button className="text-xl ml-2 text-[#505050]">
                         오늘의 퀴즈
                     </button>
+                </div>
+                <div>
+                    <BgmBtn />
                 </div>
             </div>
             <div className="border-b-2 border-[#FDF9EA] mt-2"></div>
