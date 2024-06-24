@@ -9,11 +9,6 @@ export default defineConfig({
             "/api": {
                 target: "http://127.0.0.1:4000",
                 // changeOrigin: true,
-            },
-            "/shin-api": {
-                target: "https://openapi.koreainvestment.com:9443",
-                changeOrigin: true,
-                 rewrite: (path) => path.replace(/^\/shinhan-api/, ""),
             }
         },
     },
