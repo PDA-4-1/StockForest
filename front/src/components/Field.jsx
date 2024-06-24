@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
 import FarmProfile from "./FarmProfile";
 import { useSelector } from "react-redux";
+import { GetStockCount } from "../lib/apis/stock";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -38,37 +39,20 @@ const Field = () => {
         fetchData();
     }, [navigate]);
 
-    // const fetchData2 = async () => {
-    //     try {
-    //         console.log("get하기전");
-    //         const getCurrentPrice = await axios.get(
-    //             `/api/market/sell/${selectedStock.stock_id}/${userInfo.turn}`
-    //         );
-    //         const stockdata = getCurrentPrice.data;
-    //         setCurrentPrice(stockdata.price);
-    //         console.log("get한 후");
-    //     } catch (error) {
-    //         if (error.response && error.response.status === 401) {
-    //             Toast.fire("로그인 하세요!", "", "error");
-    //             navigate("/");
-    //         } else {
-    //             console.error("Error :", error);
-    //         }
-    //     }
-    // };
-
     const handleButtonClick = (image, name, stock) => {
         setSelectedImage(image);
         setSelectedStock(stock);
+        GetStockCount(stock.stock_id, userInfo.turn).then((data) => {
+            console.log(data);
+            if (data.length > 0) {
+                setCurrentPrice(data[0].price);
+            } else {
+                Toast.fire("보유 주식이 없어요!", "", "error");
+            }
+        });
         setSelectedStockName(name);
         setIsVisible(true);
     };
-
-    // useEffect(() => {
-    //     if (selectedStock && selectedStock.stock_id) {
-    //         fetchData2();
-    //     }
-    // }, [selectedStock]);
 
     const handleClose = () => {
         setIsVisible(false);
