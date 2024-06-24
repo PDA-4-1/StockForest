@@ -6,7 +6,7 @@ const Farm = () => {
     return (
         <div className="bg-background-pattern bg-cover bg-center max-h-full">
             <Navbar />
-            <Field />
+            <Field/>
         </div>
     );
 };

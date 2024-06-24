@@ -4,18 +4,16 @@ import CompanyProfile from "./CompanyProfile";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
 import FarmProfile from "./FarmProfile";
-import { useSelector } from "react-redux";
-import { GetStockCount } from "../lib/apis/stock";
+// import { useSelector } from "react-redux";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedStock, setSelectedStock] = useState([]);
     const [selectedStockName, setSelectedStockName] = useState(null);
-    const [currentPrice, setCurrentPrice] = useState(null);
     const [userStock, setUserStock] = useState([]);
     const navigate = useNavigate();
-    const userInfo = useSelector((state) => state.user.user);
+    // const userInfo = useSelector((state) => state.user.user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,14 +40,6 @@ const Field = () => {
     const handleButtonClick = (image, name, stock) => {
         setSelectedImage(image);
         setSelectedStock(stock);
-        GetStockCount(stock.stock_id, userInfo.turn).then((data) => {
-            console.log(data);
-            if (data.length > 0) {
-                setCurrentPrice(data[0].price);
-            } else {
-                Toast.fire("보유 주식이 없어요!", "", "error");
-            }
-        });
         setSelectedStockName(name);
         setIsVisible(true);
     };
@@ -73,15 +63,15 @@ const Field = () => {
         };
 
         let imageType;
-        if (profit <= -30) {
+        if (profit < 0) {
             return `/imgs/ground.png`;
-        } else if (profit > -30 && profit <= -15) {
+        } else if (profit <= 5) {
             imageType = "1.png";
-        } else if (profit > -15 && profit <= 0) {
+        } else if (profit <= 10) {
             imageType = "2.png";
-        } else if (profit > 0 && profit <= 15) {
+        } else if (profit >= 10 && profit <= 15) {
             imageType = "3.png";
-        } else if (profit > 15 && profit <= 30) {
+        } else if (profit >= 15 && profit <= 20) {
             imageType = "4.png";
         } else {
             imageType = "5.png";
@@ -91,15 +81,15 @@ const Field = () => {
     };
 
     const signImages = {
-        1: "/imgs/sign/samsung.png",
-        2: "/imgs/sign/kakao.png",
-        3: "/imgs/sign/sm.png",
-        4: "/imgs/sign/hyundai.png",
-        5: "/imgs/sign/cell.png",
-        6: "/imgs/sign/gs.png",
-        7: "/imgs/sign/amore.png",
-        8: "/imgs/sign/shilla.png",
-        9: "/imgs/sign/lg.png",
+        1: "imgs/sign/samsung.png",
+        2: "imgs/sign/kakao.png",
+        3: "imgs/sign/sm.png",
+        4: "imgs/sign/hyundai.png",
+        5: "imgs/sign/cell.png",
+        6: "imgs/sign/gs.png",
+        7: "imgs/sign/amore.png",
+        8: "imgs/sign/shilla.png",
+        9: "imgs/sign/lg.png",
     };
 
     const stockName = {
@@ -115,20 +105,36 @@ const Field = () => {
     };
 
     const fieldImages = Array.from({ length: 9 }, (_, index) => {
-        if (index < userStock.length) {
-            const stock = userStock[index];
-            const profit = stock.returns;
-            const stockImage = getStockImage(stock.stock_id, profit);
+        const stockId = index + 1;
+        const stock = userStock.find((s) => s.stock_id === stockId) || {
+            stock_id: stockId,
+        };
+        const profit = 115;
+        // const profit = userInfo.user_returns;
+        const stockImage = getStockImage(stock.stock_id, profit);
 
-            return (
-                <div
-                    className="w-full h-full flex justify-center items-end bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
-                    key={stock.stock_id}
-                >
+        return (
+            <div
+                className="w-full h-full flex justify-center items-end bg-[url('imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
+                key={stock.stock_id}
+            >
+                <img
+                    src={stockImage}
+                    alt={`Field ${stock.stock_id}`}
+                    className="cursor-pointer object-cover relative bottom-[30%] transform transition-transform duration-200 scale-[0.7] 3xl:scale-[1] 2xl:scale-[0.9] xl:scale-[0.8]"
+                    onClick={() =>
+                        handleButtonClick(
+                            stockImage,
+                            stockName[stock.stock_id],
+                            stock
+                        )
+                    }
+                />
+                <div className="absolute bottom-0 right-0 mb-2 mr-2 flex items-end">
                     <img
-                        src={stockImage}
-                        alt={`Field ${stock.stock_id}`}
-                        className="cursor-pointer object-cover relative bottom-[40%]"
+                        src={signImages[stock.stock_id]}
+                        alt={`Sign ${stock.stock_id}`}
+                        className="cursor-pointer object-cover mb-[3vh] mr-[3vw]"
                         onClick={() =>
                             handleButtonClick(
                                 stockImage,
@@ -137,30 +143,9 @@ const Field = () => {
                             )
                         }
                     />
-                    <div className="absolute bottom-0 right-0 mb-2 mr-2 flex items-end">
-                        <img
-                            src={signImages[stock.stock_id]}
-                            alt={`Sign ${stock.stock_id}`}
-                            className="cursor-pointer object-cover mb-[3vh] mr-[3vw]"
-                            onClick={() =>
-                                handleButtonClick(
-                                    stockImage,
-                                    stockName[stock.stock_id],
-                                    stock
-                                )
-                            }
-                        />
-                    </div>
                 </div>
-            );
-        } else {
-            return (
-                <div
-                    className="w-full h-full flex justify-center overflow-hidden bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
-                    key={`placeholder-${index}`}
-                />
-            );
-        }
+            </div>
+        );
     });
 
     return (
@@ -193,7 +178,6 @@ const Field = () => {
                             image={selectedImage}
                             stock={selectedStock}
                             name={selectedStockName}
-                            currentPrice={currentPrice}
                         />
                     </div>
                 </div>
