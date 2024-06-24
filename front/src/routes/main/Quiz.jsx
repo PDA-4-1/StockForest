@@ -48,8 +48,10 @@ const Quiz = () => {
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">
             <Navbar />
-            <div className="h-1/2 relative">
-            <div className="absolute w-full h-full pl-50 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat"></div>
+            <div className="h-1/2 relative flex items-center">
+            <div className="absolute w-full h-full pl-50 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] bg-no-repeat">
+                <p>{quizNews}</p>
+            </div>
             <div className="absolute right-0 w-1/5 h-80 bg-contain bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/sol_character.png')] bg-no-repeat"></div>
             </div>
             <div className="flex flex-row">
