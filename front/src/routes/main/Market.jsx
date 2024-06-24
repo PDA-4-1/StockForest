@@ -11,6 +11,7 @@ import { GetUserProfile } from "../../lib/apis/user";
 import { saveTurn, saveUser } from "../../store/userSlice";
 import NewsModal from "../../components/Modal/NewsModal";
 import NumModal from "../../components/Modal/NumModal";
+import pli from "~/public/imgs/pli.png";
 
 const Market = () => {
     const stockList = useSelector((state) => state.stock.stockList);
@@ -83,7 +84,13 @@ const Market = () => {
                             />
                         ))}
                     </div>
-                    {selected && <StockDetail stock={selected} />}
+                    {selected ? (
+                        <StockDetail stock={selected} />
+                    ) : (
+                        <div className="col-span-3 flex h-full justify-end items-end">
+                            <img className="h-4/5" src={pli} alt="플리" />
+                        </div>
+                    )}
                 </div>
                 <div className="grid grid-rows-5 h-full">
                     <Profile nextTurn={nextTurn} />
