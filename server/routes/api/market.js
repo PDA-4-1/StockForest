@@ -84,7 +84,7 @@ router.get("/next/:turn", async (req, res) => {
         select c.user_id, sum(case when c.stock_id=10 then c.avg_price*c.quantity else d.price*c.quantity end) as seed from hold_stock c left outer join (
         select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
         on c.stock_id=d.id group by c.user_id) f
-        on e.user_id=f.user_id set e.user_pdi=f.seed, e.user_returns=((e.user_pdi-100000)/100000)*100;`;
+        on e.user_id=f.user_id set e.user_pdi=f.seed, e.user_returns=((f.seed-100000)/100000)*100;`;
         await pool.query(rankingQuery, [
             date.add(6, "days").format("YYYY-MM-DD"),
             date.subtract(6, "days").format("YYYY-MM-DD"),
