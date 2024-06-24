@@ -6,6 +6,7 @@ import { FaChevronUp } from "react-icons/fa";
 import { TbTriangleFilled } from "react-icons/tb";
 import { TbTriangleInvertedFilled } from "react-icons/tb";
 import { ContentQuiz, AnswerQuiz, UpdateQuiz } from "~/lib/apis/quiz";
+import QuizModal from "../../components/QuizModal";
 
 const Quiz = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ const Quiz = () => {
     const [date, setDate] = useState("2024-06-18");
     const [upDown, setUpDown] = useState(true); //상승이면 true
     const [quizNews, setQuizNews] = useState("");
+    const [modalSee, setModalSee] = useState(false);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -30,10 +32,6 @@ const Quiz = () => {
         }
         getContent();
     }, []);
-
-    useEffect(() => {
-        console.log(quizNews); // quizNews가 변경될 때마다 출력
-    }, [quizNews]);
 
     const changeToUp = () => {
         setUpDown(true);
@@ -68,7 +66,7 @@ const Quiz = () => {
                         <div>{truncateText(quizNews, 150)}</div>
                         <button
                             className="absolute right-0 text-center text-sky-400 flex items-center justify-evenly"
-                            // onClick={} 모달 띄우기
+                            onClick={() => setModalSee(true)}
                         >
                             더보기
                         </button>
@@ -233,6 +231,12 @@ const Quiz = () => {
                     </div>
                 </div>
             </div>
+            {modalSee && (
+                <QuizModal
+                    onHide={() => setModalSee(false)}
+                    content={quizNews}
+                />
+            )}
         </div>
     );
 };
