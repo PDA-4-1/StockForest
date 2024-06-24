@@ -45,11 +45,6 @@ const Market = () => {
                         setNewsList(data.news);
                     }
                 }, 1000);
-                GetStockList(turn + 1).then((data) => {
-                    console.log(data);
-                    dispatch(saveStockList(data));
-                });
-                GetUserProfile().then((data) => dispatch(saveUser(data)));
                 dispatch(saveTurn());
                 setSelected(null);
             })
@@ -69,7 +64,7 @@ const Market = () => {
                     .catch((err) => console.log(err.response));
             })
             .catch((err) => console.log(err.response));
-    }, []);
+    }, [turn]);
 
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">

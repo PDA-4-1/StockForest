@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import RankComponent from "./RankComponent";
 import trophy from "~/public/imgs/trophy.png";
 import { GetRanking } from "../../lib/apis/stock";
+import { useSelector } from "react-redux";
 
 export default function Ranking() {
+    const turn = useSelector((state) => state.user.user.turn);
     const [users, setUsers] = useState([
         {
             nickname: "닉네임은여덟글자",
@@ -49,7 +51,7 @@ export default function Ranking() {
                 }
             })
             .catch((err) => console.log(err.response));
-    }, []);
+    }, [turn]);
 
     return (
         <div className="row-span-3 bg-back-yellow px-2 py-3 grid content-between">
