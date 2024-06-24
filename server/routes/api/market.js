@@ -76,13 +76,19 @@ router.get("/next/:turn", async (req, res) => {
         const returnsQuery = `update hold_stock c inner join (
         select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
         on c.stock_id=d.id set c.returns=((d.price-c.avg_price)/c.avg_price)*100;`;
-        await pool.query(returnsQuery, [date.format("YYYY-MM-DD")]);
+        await pool.query(returnsQuery, [
+            date.add(6, "days").format("YYYY-MM-DD"),
+            date.subtract(6, "days").format("YYYY-MM-DD"),
+        ]);
         const rankingQuery = `update ranking e inner join (
         select c.user_id, sum(case when c.stock_id=10 then c.avg_price*c.quantity else d.price*c.quantity end) as seed from hold_stock c left outer join (
         select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
         on c.stock_id=d.id group by c.user_id) f
         on e.user_id=f.user_id set e.user_pdi=f.seed, e.user_returns=((e.user_pdi-100000)/100000)*100;`;
-        await pool.query(rankingQuery, [date.format("YYYY-MM-DD")]);
+        await pool.query(rankingQuery, [
+            date.add(6, "days").format("YYYY-MM-DD"),
+            date.subtract(6, "days").format("YYYY-MM-DD"),
+        ]);
 
         // 뉴스받아오기
         const newsQuery = `select id, content from news where date>=? and date<=?;`;
@@ -132,19 +138,13 @@ router.get("/sell/:stockId/:turn", async (req, res) => {
             const date = moment("2020-01-01");
             const stockQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
             const [stockResult] = await pool.query(stockQuery, [
-                date
-                    .add(req.params.turn * 7 - 1 - i, "days")
-                    .format("YYYY-MM-DD"),
+                date.add(req.params.turn * 7 - 1 - i, "days").format("YYYY-MM-DD"),
             ]);
 
             // 열려있다면 보내기
             if (stockResult.length > 0) {
                 const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
-                const [result] = await pool.query(query, [
-                    req.userId,
-                    req.params.stockId,
-                    date.format("YYYY-MM-DD"),
-                ]);
+                const [result] = await pool.query(query, [req.userId, req.params.stockId, date.format("YYYY-MM-DD")]);
                 res.status(200).send(result);
                 break;
             }
