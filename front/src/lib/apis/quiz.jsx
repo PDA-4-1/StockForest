@@ -22,3 +22,8 @@ export async function AnswerQuiz() {
     const res = await service.patch("/answer");
     return res.data;
 }
+
+export async function ContentQuiz() {
+    const res = await service.get("/content");
+    return res.data;
+}
