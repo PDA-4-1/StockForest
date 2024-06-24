@@ -20,7 +20,7 @@ const CompanyProfile = ({
 
     return (
         <div
-            className={`bg-[url('/imgs/companyprofile.svg')] bg-no-repeat bg-center bg-contain w-full h-full scale-95 transition-transform duration-300 ${
+            className={`bg-[url('/imgs/companyprofile.png')] bg-no-repeat bg-center bg-contain w-full h-full scale-95 transition-transform duration-300 ${
                 visible ? "translate-x-0" : "translate-x-full"
             }`}
         >
