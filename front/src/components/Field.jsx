@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CompanyProfile from "./CompanyProfile";
-import Profile from "./Profile";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
+import FarmProfile from "./FarmProfile";
+import { useSelector } from "react-redux";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedStock, setSelectedStock] = useState([]);
     const [selectedStockName, setSelectedStockName] = useState(null);
+    const [currentPrice, setCurrentPrice] = useState(null);
     const [userStock, setUserStock] = useState([]);
     const navigate = useNavigate();
+    const userInfo = useSelector((state) => state.user.user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +38,25 @@ const Field = () => {
         fetchData();
     }, [navigate]);
 
+    // const fetchData2 = async () => {
+    //     try {
+    //         console.log("get하기전");
+    //         const getCurrentPrice = await axios.get(
+    //             `/api/market/sell/${selectedStock.stock_id}/${userInfo.turn}`
+    //         );
+    //         const stockdata = getCurrentPrice.data;
+    //         setCurrentPrice(stockdata.price);
+    //         console.log("get한 후");
+    //     } catch (error) {
+    //         if (error.response && error.response.status === 401) {
+    //             Toast.fire("로그인 하세요!", "", "error");
+    //             navigate("/");
+    //         } else {
+    //             console.error("Error :", error);
+    //         }
+    //     }
+    // };
+
     const handleButtonClick = (image, name, stock) => {
         setSelectedImage(image);
         setSelectedStock(stock);
@@ -42,21 +64,17 @@ const Field = () => {
         setIsVisible(true);
     };
 
+    // useEffect(() => {
+    //     if (selectedStock && selectedStock.stock_id) {
+    //         fetchData2();
+    //     }
+    // }, [selectedStock]);
+
     const handleClose = () => {
         setIsVisible(false);
         setSelectedImage(null);
     };
 
-    const stockImages = {
-        1: "/imgs/strawberry/strawberry1.png",
-        2: "/imgs/strawberry/strawberry2.png",
-        3: "/imgs/strawberry/strawberry3.png",
-        4: "/imgs/strawberry/strawberry4.png",
-        5: "/imgs/strawberry/strawberry5.png",
-        6: "/imgs/banana/banana1.png",
-        7: "/imgs/banana/banana2.png",
-        8: "/imgs/banana/banana3.png",
-        9: "/imgs/banana/banana4.png",
     const getStockImage = (stockId, profit) => {
         const stockImages = {
             1: "tomato/tomato",
@@ -172,7 +190,6 @@ const Field = () => {
                     {fieldImages}
                 </div>
             </div>
-            <div className="col-span-1 bg-[url('/imgs/grass.png')] relative overflow-hidden">
             <div className="col-span-1 relative overflow-hidden">
                 <div className="grid grid-rows-3 h-full">
                     <div className="row-span-1 ">
