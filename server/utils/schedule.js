@@ -8,9 +8,9 @@ const agent = new https.Agent({
     rejectUnauthorized: false,
 });
 
-const date = moment().format("YYYY.MM.DD");
-
+// 신한투자증권 투자전략 API
 const doJob = async () => {
+    const date = moment().tz("Asia/Seoul").format("YYYY.MM.DD");
     const executeJob = async () => {
         const config = {
             method: "get",
@@ -23,14 +23,12 @@ const doJob = async () => {
         };
         const res = await axios(config);
         const data = res.data.dataBody.list;
-        // console.log(data);
         let todayData;
         if (data[1].reg_date === date && data[1].content.length >= 300) {
             todayData = data[1].content;
         } else if (data[0].reg_date === date && data[0].content.length >= 300) {
             todayData = data[0].content;
         } else todayData = data[4].content;
-        // console.log(todayData.length);
 
         const query = `INSERT INTO quiz_news (date, content) VALUES (?,?)`;
         await pool.query(query, [date, todayData]);
@@ -55,6 +53,23 @@ const doKIS = async () => {
     const executeJob = async () => {
         // 한국투자증권 API 연결 - OAuth2 토큰 받기
         // 요청 내용 작성, 요청 보내기
+        const date = moment().tz("Asia/Seoul");
+        const dateDay = date.day();
+        if (dateDay === 0 || dateDay === 6) {//주말 확인
+            console.log("주말입니다 !");
+            return;
+        }
+        //오후 4시 확인
+        const startOfDay = moment.tz("Asia/Seoul").startOf("day"); // 오늘의 시작 시간 (00:00:00)
+        const endOfQuizTime = moment
+            .tz("Asia/Seoul")
+            .startOf("day")
+            .add(16, "hours"); // 오늘의 오후 4시 (16:00:00)
+        if (date.isBetween(startOfDay, endOfQuizTime)) {
+            console.log("오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.");
+            console.log(date.format());
+            return;
+        }
         let headers;
         const URL = "https://openapi.koreainvestment.com:9443/oauth2/tokenP";
         headers = {
@@ -76,7 +91,6 @@ const doKIS = async () => {
             .subtract(1, "days")
             .format("YYYY-MM-DD"); // 하루 전 날
         const today = moment(yesterday).add(1, "days").format("YYYY-MM-DD");
-        console.log("today: " + today);
         const startDate = moment(yesterday).format("YYYYMMDD");
         const endDate = moment(yesterday).add(1, "days").format("YYYYMMDD");
 
@@ -104,8 +118,6 @@ const doKIS = async () => {
                 const stockReq = await axios.get(KIS_URL, { headers, params });
                 todayCost = stockReq.data.output2[0].stck_clpr;
                 yesterdayCost = stockReq.data.output2[1].stck_clpr;
-                console.log(todayCost);
-                console.log(yesterdayCost);
                 const isUp =
                     todayCost > yesterdayCost
                         ? 1
@@ -120,8 +132,8 @@ const doKIS = async () => {
             }
         }
     };
-    await executeJob();
+    // await executeJob();
     schedule.scheduleJob("0 0 17 * * *", executeJob);
-}
+};
 
-module.exports = {doJob, doKIS};
+module.exports = { doJob, doKIS };
