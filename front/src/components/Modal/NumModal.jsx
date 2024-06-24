@@ -1,4 +1,3 @@
-// import { useSelector } from "react-redux";
 import num1 from "~/public/imgs/num/1.png";
 import num2 from "~/public/imgs/num/2.png";
 import num3 from "~/public/imgs/num/3.png";
@@ -15,10 +14,9 @@ import { useState } from "react";
 
 export default function NumModal(props) {
     const turn = props.turn;
-    // const turn = useSelector((state) => state.user.user.turn);
     const units = turn % 10;
-    const tens = turn >= 10 && (turn / 10) % 10;
-    const hundreds = turn >= 100 && (turn / 100) % 10;
+    const tens = turn >= 10 ? Math.trunc((turn / 10) % 10) : null;
+    const hundreds = turn >= 100 ? Math.trunc((turn / 100) % 10) : null;
     const imgs = {
         num0,
         num1,
@@ -55,8 +53,8 @@ export default function NumModal(props) {
                 className={`w-fit bg-transparent p-12 flex flex-col items-center animate__animated ${animation} animated-element`}
             >
                 <div className="flex">
-                    {hundreds >= 0 && <img className={common} src={imgs[`num${hundreds}`]} />}
-                    {tens >= 0 && <img className={common} src={imgs[`num${tens}`]} />}
+                    {hundreds && <img className={common} src={imgs[`num${hundreds}`]} />}
+                    {tens && <img className={common} src={imgs[`num${tens}`]} />}
                     <img className="w-40" src={imgs[`num${units}`]} />
                 </div>
             </div>
