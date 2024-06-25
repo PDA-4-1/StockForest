@@ -59,7 +59,7 @@ router.patch("/answer", async (req, res) => {
         const answer = answerResponse[0].answer; // 실제 정답
         let isCorrect = userResponse[0].up_down == answer ? 1 : 0; // 정답 여부
 
-        const answerQuery = `UPDATE quiz SET is_correct = ? WHERE user_id = ? AND date = ?`;
+        const answerQuery = `UPDATE quiz SET is_correct = ?, is_checked = 1 WHERE user_id = ? AND date = ?`;
         await pool.query(answerQuery, [isCorrect, req.userId, yesterday]);
 
         // 맞았을 경우 사용자의 pdi 추가
