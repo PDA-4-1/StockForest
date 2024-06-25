@@ -24,6 +24,24 @@
     font-style: normal;
 }
 
+@media (min-height: 400px) {
+  .responsive-height {
+      @apply max-h-[150px]; 
+  }
+}
+
+@media (min-height: 640px) {
+    .responsive-height {
+        @apply max-h-[170px];
+    }
+}
+
+@media (min-height: 800px) {
+    .responsive-height {
+        @apply max-h-[200px];
+    }
+}
+
 body {
     font-family: "a_younggothic";
 }

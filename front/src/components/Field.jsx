@@ -23,7 +23,10 @@ const Field = () => {
                 const getStock = await axios.get("/api/farm");
                 const stockdata = getStock.data;
                 const filteredStock = stockdata.filter(
-                    (stock) => stock.stock_id >= 1 && stock.stock_id <= 9 && stock.quantity > 0
+                    (stock) =>
+                        stock.stock_id >= 1 &&
+                        stock.stock_id <= 9 &&
+                        stock.quantity > 0
                 );
                 setUserStock(filteredStock);
             } catch (error) {
@@ -128,7 +131,7 @@ const Field = () => {
                     <img
                         src={stockImage}
                         alt={`Field ${stock.stock_id}`}
-                        className="cursor-pointer object-cover relative bottom-[40%]"
+                        className="cursor-pointer object-cover relative bottom-[40%] responsive-height"
                         onClick={() =>
                             handleButtonClick(
                                 stockImage,
@@ -169,7 +172,7 @@ const Field = () => {
             style={{ height: "calc(100vh - 70px)" }}
         >
             {/* <img src="imgs/pat.png" className="w-[200px] absolute z-30 left-[870px]"></img> */}
-            <div className="col-span-3 h-full relative overflow-hidden p-[70px]">
+            <div className="col-span-3 h-full relative overflow-hidden pt-[70px] pl-[70px] pr-[70px]">
                 <div className="grid grid-cols-3 grid-rows-3 place-items-center h-full relative">
                     {fieldImages}
                 </div>
@@ -178,7 +181,7 @@ const Field = () => {
                 <div className="grid grid-rows-3 h-full">
                     <div className="row-span-1 ">
                         <FarmProfile />
-                    </div>  
+                    </div>
                     <div className="row-span-2 relative flex items-center justify-center">
                         {!isVisible && (
                             <img
