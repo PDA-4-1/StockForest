@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { MdCancel } from "react-icons/md";
 
 const CompanyProfile = ({
     visible,
@@ -35,10 +36,14 @@ const CompanyProfile = ({
                             </div>
                         )}
                         <div>{name}</div>
-                        <button
+                        {/* <button
                             onClick={onClose}
-                            className="bg-wood-opacity-50 text-white px-2 py-2 rounded hover:brightness-75"
-                        ></button>
+                            className="relative left-[10px] bg-wood-opacity-50 text-white px-2 py-2 rounded hover:brightness-75"
+                        ></button> */}
+                        <MdCancel
+                            onClick={onClose}
+                            className="relative left-[10px] cursor-pointer"
+                        />
                     </div>
                     <div className="grid grid-cols-1 gap-2 mb-4 row-span-2">
                         <div>나의 주식수 : {stock.quantity}개</div>
