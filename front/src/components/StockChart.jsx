@@ -22,7 +22,7 @@ const StockChart = () => {
     const [chartOptions, setChartOptions] = useState({
         series: [
             {
-                name: "Desktops",
+                name: "가격",
                 data: [],
             },
         ],
