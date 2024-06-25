@@ -25,7 +25,7 @@ const CompanyProfile = ({
             }`}
         >
             <div className="relative top-[8vh] font-[TheJamsil5Bold] text-[14px] l:text-[16px] xl:text-[18px] 2xl:text-[20px] 3xl:text-[24px] flex justify-center">
-                <div className="bg-wood-opacity-50 grid grid-row-4 place-items-center w-3/5">
+                <div className="bg-wood-opacity-50 grid grid-row-4 place-items-center rounded-3xl w-3/5">
                     <div className="relative flex items-center row-span-1 justify-between mb-2">
                         {image && (
                             <div className="">
