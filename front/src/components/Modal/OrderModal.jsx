@@ -19,7 +19,11 @@ export default function OrderModal(props) {
         }
     };
     const sellStock = () => {
-        console.log(num, stockId, price, price * num);
+        // console.log(num, stockId, price, price * num);
+        if (!num) {
+            Toast.fire("팔 나무를 1개 이상 골라주세요", "", "error");
+            return;
+        }
         SellStock(stockId, price, num)
             .then((data) => {
                 // console.log(data);
@@ -34,7 +38,11 @@ export default function OrderModal(props) {
             });
     };
     const buyStock = () => {
-        console.log(num, stockId, price, price * num);
+        // console.log(num, stockId, price, price * num);
+        if (!num) {
+            Toast.fire("살 나무를 1개 이상 골라주세요", "", "error");
+            return;
+        }
         BuyStock(stockId, price, num)
             .then((data) => {
                 console.log(data);
