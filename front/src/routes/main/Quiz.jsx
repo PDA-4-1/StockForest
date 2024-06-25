@@ -7,6 +7,7 @@ import { TbTriangleFilled } from "react-icons/tb";
 import { TbTriangleInvertedFilled } from "react-icons/tb";
 import { ContentQuiz, AnswerQuiz, UpdateQuiz } from "~/lib/apis/quiz";
 import QuizModal from "../../components/QuizModal";
+import QuizAnswerModal from "../../components/QuizAnswerModal";
 
 const Quiz = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,14 @@ const Quiz = () => {
     const [upDown, setUpDown] = useState(true); //상승이면 true
     const [quizNews, setQuizNews] = useState("");
     const [modalSee, setModalSee] = useState(false);
+    const [answerModalSee, setAnswerModalSee] = useState(false);
+    const [result, setResult] = useState({
+        answerCheck: 0,
+        isCorrect: 0,
+        stockName: "",
+        todayCost: 0,
+        yesterdayCost: 0,
+    });
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -46,11 +55,19 @@ const Quiz = () => {
         console.log(result);
     };
 
-    const checkAnswer = async() => {
+    const checkAnswer = async () => {
         const result = await AnswerQuiz();
         console.log(result);
-    }
-
+        setResult({
+            answerCheck: result.answerCheck,
+            isCorrect: result.isCorrect,
+            stockName: result.stockName,
+            todayCost: result.todayCost,
+            yesterdayCost: result.yesterdayCost,
+        });
+        console.log("result: " + result);
+        setAnswerModalSee(true);
+    };
 
     const truncateText = (text, length) => {
         if (text.length <= length) {
@@ -235,13 +252,21 @@ const Quiz = () => {
                     </div>
                 </div>
                 <div className="basis-1/3 flex justify-start">
-                    <button className="text-center" onClick={checkAnswer}>어제 푼 퀴즈 확인하기</button>
+                    <button className="text-center" onClick={checkAnswer}>
+                        어제 푼 퀴즈 확인하기
+                    </button>
                 </div>
             </div>
             {modalSee && (
                 <QuizModal
                     onHide={() => setModalSee(false)}
                     content={quizNews}
+                />
+            )}
+            {answerModalSee && (
+                <QuizAnswerModal
+                    onHide={() => setAnswerModalSee(false)}
+                    result={result}
                 />
             )}
         </div>
