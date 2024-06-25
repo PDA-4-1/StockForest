@@ -8,7 +8,7 @@ import { Toast } from "./Toast";
 import { useSelector } from "react-redux";
 
 export default function StockDetail({ stock }) {
-    const { id, name, price, diff } = stock;
+    const { id, name, price, diff, description } = stock;
     const [purpo, setPurpo] = useState("");
     const [modalSee, setModalSee] = useState(false);
     const [count, setCount] = useState(0);
@@ -61,9 +61,9 @@ export default function StockDetail({ stock }) {
                         <StockButton purpo="sell" onClick={openSellModal} />
                     </div>
                 </div>
-                <div className="flex">
+                <div className="flex space-x-6">
                     <img src={stockImages[id]} className="w-24 h-24 bg-back-yellow rounded-full" />
-                    <p>여기 회사 설명할거임</p>
+                    <p className="break-keep">{description}</p>
                 </div>
                 <div className="max-h-[300px]">
                     <StockChart />
