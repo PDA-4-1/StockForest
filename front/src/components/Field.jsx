@@ -126,8 +126,7 @@ const Field = () => {
                     key={stock.stock_id}
                 >
                     <img
-                        // src={stockImage}
-                        src="/imgs/field/banana/banana5.png"
+                        src={stockImage}
                         alt={`Field ${stock.stock_id}`}
                         className="cursor-pointer object-cover relative bottom-[40%] max-h-[170px] l:max-h-[200px] 2xl:max-h-[250px] responsive-height "
                         onClick={() =>
