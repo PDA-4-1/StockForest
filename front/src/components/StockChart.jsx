@@ -41,6 +41,11 @@ const StockChart = () => {
             stroke: {
                 curve: "straight",
             },
+            fill: {
+                type: "gradient",
+                gradient: { gradientToColors: ["blue"], stops: [0, 100] },
+            },
+            colors: ["red"],
             grid: {
                 row: {
                     colors: ["#FEED9F", "transparent"], // takes an array which will be repeated on columns
@@ -50,7 +55,7 @@ const StockChart = () => {
             xaxis: {
                 labels: { show: false },
             },
-            colors: ["#88C9A1"],
+            // colors: ["#88C9A1"],
         },
     });
 
