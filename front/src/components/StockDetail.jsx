@@ -62,7 +62,10 @@ export default function StockDetail({ stock }) {
                     </div>
                 </div>
                 <div className="flex space-x-6">
-                    <img src={stockImages[id]} className="w-24 h-24 bg-back-yellow rounded-full" />
+                    <img
+                        src={stockImages[id]}
+                        className="min-w-24 w-24 h-24 bg-back-yellow rounded-full object-contain"
+                    />
                     <p className="break-keep">{description}</p>
                 </div>
                 <div className="max-h-[300px]">
