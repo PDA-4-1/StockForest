@@ -139,6 +139,14 @@ router.post("/signin", async (req, res) => {
 router.patch("/ending", async (req, res) => {
     //TODO: 모든 턴 종료시 사용자 정보 비우기
     try {
+        const token = req.cookies.authToken;
+
+        if (!token) {
+            return res.status(401).json({ permission: "access denied" });
+        }
+
+        const decoded = verifyToken(token);
+        const userId = decoded.id;
         //user table -> turn 초기화
         const query = `Update user set turn=0 where id=?;`;
         await pool.query(query, [userId]);
