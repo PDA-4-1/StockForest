@@ -28,6 +28,7 @@ const StockChart = () => {
         ],
         options: {
             chart: {
+                toolbar: { show: false },
                 height: "auto",
                 type: "line",
                 zoom: {
@@ -68,7 +69,12 @@ const StockChart = () => {
     return (
         <div>
             <div id="chart">
-                <ReactApexChart options={chartOptions.options} series={chartOptions.series} type="line" height={300} />
+                <ReactApexChart
+                    options={chartOptions.options}
+                    series={chartOptions.series}
+                    type="line"
+                    height={300}
+                />
             </div>
             <div id="html-dist"></div>
         </div>
