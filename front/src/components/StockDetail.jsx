@@ -17,7 +17,7 @@ export default function StockDetail({ stock }) {
         setPurpo("sell");
         GetStockCount(id, turn).then((data) => {
             console.log(data);
-            if (data.length > 0) {
+            if (data.length > 0 && data[0].quantity > 0) {
                 setCount(data[0].quantity);
                 setModalSee(true);
             } else {
