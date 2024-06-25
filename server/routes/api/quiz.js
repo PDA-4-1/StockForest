@@ -44,11 +44,10 @@ router.patch("/answer", async (req, res) => {
     ]);
     if (userResponse.length == 0)
         throw new Error("어제의 퀴즈 기록이 없습니다");
-    console.log(userResponse[0]);
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     try {
-        const getAnswerQuery = `SELECT answer FROM quiz_answer WHERE date = ? AND stock_id = ?`;
+        const getAnswerQuery = `SELECT stock_name, answer, today_cost, yesterday_cost FROM quiz_answer WHERE date = ? AND stock_id = ?`;
         const [answerResponse] = await pool.query(getAnswerQuery, [
             today,
             userResponse[0].stock_id,
@@ -66,7 +65,10 @@ router.patch("/answer", async (req, res) => {
         }
 
         res.send({
-            stockCode: userResponse[0].stock_id, // 고른 종목
+            stockCode: userResponse[0].stock_id, // 고른 종목 코드
+            stockName: answerResponse[0].stock_name, // 고른 종목 이름
+            yesterdayCost: answerResponse[0].yesterday_cost,
+            todayCost: answerResponse[0].today_cost,
             answerCheck: answer, //가격이 올랐나?
             isCorrect: isCorrect, // 사용자가 맞았나?
         });
