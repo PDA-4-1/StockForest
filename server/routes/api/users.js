@@ -148,7 +148,7 @@ router.patch("/ending", async (req, res) => {
         const decoded = verifyToken(token);
         const userId = decoded.id;
         //user table -> turn 초기화
-        const query = `Update user set turn=0 where id=?;`;
+        const query = `Update user set turn=1 where id=?;`;
         await pool.query(query, [userId]);
 
         //hold_stock table -> 해당 유저 값 다 삭제
