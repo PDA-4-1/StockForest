@@ -19,6 +19,7 @@ const Quiz = () => {
     const [modalSee, setModalSee] = useState(false);
     const [answerModalSee, setAnswerModalSee] = useState(false);
     const [result, setResult] = useState({
+        code: 2,
         answerCheck: 0,
         isCorrect: 0,
         stockName: "",
@@ -59,6 +60,7 @@ const Quiz = () => {
         const result = await AnswerQuiz();
         console.log(result);
         setResult({
+            code: result.code,
             answerCheck: result.answerCheck,
             isCorrect: result.isCorrect,
             stockName: result.stockName,
