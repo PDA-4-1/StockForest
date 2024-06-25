@@ -149,6 +149,10 @@ router.patch("/ending", async (req, res) => {
         const add_hold_stock_query = `Insert into hold_stock values (?,10,1,10000,0);`;
         await pool.query(add_hold_stock_query, [userId]);
 
+        //ranking table -> 해당 유저 값 다 삭제
+        const set_ranking_query = `Update ranking set user_pdi=100000, user_returns=0 where user_id=?;`;
+        await pool.query(set_ranking_query, [userId]);
+
         res.status(200).send("reset success");
     } catch (error) {
         console.error(error);
