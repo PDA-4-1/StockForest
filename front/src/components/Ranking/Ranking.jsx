@@ -6,33 +6,7 @@ import { useSelector } from "react-redux";
 
 export default function Ranking() {
     const turn = useSelector((state) => state.user.user.turn);
-    const [users, setUsers] = useState([
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 25.88,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 23,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 20.3,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 23,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 23,
-            profile_img: "",
-        },
-    ]);
+    const [users, setUsers] = useState([]);
     const [my, setMy] = useState({
         nickname: "닉네임은여덟글자",
         user_pdi: 23,
