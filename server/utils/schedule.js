@@ -55,7 +55,12 @@ const doKIS = async () => {
         // 요청 내용 작성, 요청 보내기
         const date = moment().tz("Asia/Seoul");
         const dateDay = date.day();
+<<<<<<< HEAD
+        if (dateDay === 0 || dateDay === 6) {
+            //주말 확인
+=======
         if (dateDay === 0 || dateDay === 6) {//주말 확인
+>>>>>>> cb156ba (Merge branch 'develop' of https://github.com/PDA-4-1/StockForest into dev/be/fix/market/rank)
             console.log("주말입니다 !");
             return;
         }
@@ -133,7 +138,11 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
+<<<<<<< HEAD
+    schedule.scheduleJob("0 35 8 * * *", executeJob);//한국시간 기준으로 변경
+=======
     schedule.scheduleJob("0 0 17 * * *", executeJob);
+>>>>>>> cb156ba (Merge branch 'develop' of https://github.com/PDA-4-1/StockForest into dev/be/fix/market/rank)
 };
 
 module.exports = { doJob, doKIS };
