@@ -48,7 +48,7 @@ const StockChart = () => {
                 },
             },
             xaxis: {
-                categories: ["D-5", "D-4", "D-3", "D-2", "D-1"],
+                labels: { show: false },
             },
             colors: ["#88C9A1"],
         },
