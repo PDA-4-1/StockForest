@@ -17,7 +17,7 @@ export default function StockDetail({ stock }) {
         setPurpo("sell");
         GetStockCount(id, turn).then((data) => {
             console.log(data);
-            if (data[0].quantity > 0) {
+            if (data.length > 0) {
                 setCount(data[0].quantity);
                 setModalSee(true);
             } else {
@@ -32,14 +32,6 @@ export default function StockDetail({ stock }) {
     const onHide = () => {
         setModalSee(false);
     };
-    // const [prices, setPrices] = useState(null);
-
-    // useEffect(() => {
-    //     GetStockChart(id, 1).then((data) => {
-    //         const priceList = data.map((el) => el.price);
-    //         setPrices(priceList);
-    //     });
-    // }, []);
 
     return (
         <>

@@ -4,10 +4,8 @@ module.exports = {
     theme: {
         extend: {
             screens: {
-                "max-md": { max: "768px" },
-                "max-lg": { max: "1024px" },
-                "max-570": { max: "570px" },
-                "max-400": { max: "400px" },
+                "3xl": "1820px",
+                // "2xl": "1500px",
             },
             backgroundImage: {
                 "background-pattern": "url('/imgs/background.svg')",
@@ -21,6 +19,9 @@ module.exports = {
                 "back-blue": "#F2F5FC",
                 "modal-yellow": "#FDF9EA",
                 "back-grey": "#EFF0F6",
+            },
+            animation: {
+                "spin-fast": "spin 0.3s linear infinite",
             },
         },
     },

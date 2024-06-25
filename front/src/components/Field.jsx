@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CompanyProfile from "./CompanyProfile";
-import Profile from "./Profile";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "./Toast";
+import FarmProfile from "./FarmProfile";
+import { useSelector } from "react-redux";
+import { GetStockCount } from "../lib/apis/stock";
 
 const Field = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedStock, setSelectedStock] = useState([]);
     const [selectedStockName, setSelectedStockName] = useState(null);
+    const [currentPrice, setCurrentPrice] = useState(null);
     const [userStock, setUserStock] = useState([]);
     const navigate = useNavigate();
+    const userInfo = useSelector((state) => state.user.user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +23,7 @@ const Field = () => {
                 const getStock = await axios.get("/api/farm");
                 const stockdata = getStock.data;
                 const filteredStock = stockdata.filter(
-                    (stock) => stock.stock_id >= 1 && stock.stock_id <= 9
+                    (stock) => stock.stock_id >= 1 && stock.stock_id <= 9 && stock.quantity > 0
                 );
                 setUserStock(filteredStock);
             } catch (error) {
@@ -33,14 +37,21 @@ const Field = () => {
         };
 
         fetchData();
-    }, []);
+    }, [navigate]);
 
     const handleButtonClick = (image, name, stock) => {
         setSelectedImage(image);
         setSelectedStock(stock);
+        GetStockCount(stock.stock_id, userInfo.turn).then((data) => {
+            console.log(data);
+            if (data.length > 0) {
+                setCurrentPrice(data[0].price);
+            } else {
+                Toast.fire("보유 주식이 없어요!", "", "error");
+            }
+        });
         setSelectedStockName(name);
         setIsVisible(true);
-        console.log(userStock);
     };
 
     const handleClose = () => {
@@ -48,16 +59,47 @@ const Field = () => {
         setSelectedImage(null);
     };
 
-    const stockImages = {
-        1: "/imgs/tomato/tomato1.png",
-        2: "/imgs/tomato/tomato2.png",
-        3: "/imgs/tomato/tomato3.png",
-        4: "/imgs/tomato/tomato4.png",
-        5: "/imgs/tomato/tomato5.png",
-        6: "/imgs/banana/banana1.png",
-        7: "/imgs/banana/banana2.png",
-        8: "/imgs/banana/banana3.png",
-        9: "/imgs/banana/banana4.png",
+    const getStockImage = (stockId, profit) => {
+        const stockImages = {
+            1: "tomato/tomato",
+            2: "banana/banana",
+            3: "blueberry/blueberry",
+            4: "peach/peach",
+            5: "orange/orange",
+            6: "melon/melon",
+            7: "grape/grape",
+            8: "apple/apple",
+            9: "strawberry/strawberry",
+        };
+
+        let imageType;
+        if (profit <= -30) {
+            return `/imgs/ground.png`;
+        } else if (profit > -30 && profit <= -15) {
+            imageType = "1.png";
+        } else if (profit > -15 && profit <= 0) {
+            imageType = "2.png";
+        } else if (profit > 0 && profit <= 15) {
+            imageType = "3.png";
+        } else if (profit > 15 && profit <= 30) {
+            imageType = "4.png";
+        } else {
+            imageType = "5.png";
+        }
+
+        return `/imgs/${stockImages[stockId]}${imageType}`;
+    };
+
+    const signImages = {
+        1: "/imgs/sign/samsung.png",
+        2: "/imgs/sign/kakao.png",
+        3: "/imgs/sign/sm.png",
+        4: "/imgs/sign/hyundai.png",
+        5: "/imgs/sign/cell.png",
+        6: "/imgs/sign/gs.png",
+        7: "/imgs/sign/amore.png",
+        8: "/imgs/sign/shilla.png",
+        9: "/imgs/sign/lg.png",
     };
 
     const stockName = {
@@ -72,46 +114,77 @@ const Field = () => {
         9: "lg화학",
     };
 
+    const fieldImages = Array.from({ length: 9 }, (_, index) => {
+        if (index < userStock.length) {
+            const stock = userStock[index];
+            const profit = stock.returns;
+            const stockImage = getStockImage(stock.stock_id, profit);
+
+            return (
+                <div
+                    className="w-full h-full flex justify-center items-end bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
+                    key={stock.stock_id}
+                >
+                    <img
+                        src={stockImage}
+                        alt={`Field ${stock.stock_id}`}
+                        className="cursor-pointer object-cover relative bottom-[40%]"
+                        onClick={() =>
+                            handleButtonClick(
+                                stockImage,
+                                stockName[stock.stock_id],
+                                stock
+                            )
+                        }
+                    />
+                    <div className="absolute bottom-0 right-0 mb-2 mr-2 flex items-end">
+                        <img
+                            src={signImages[stock.stock_id]}
+                            alt={`Sign ${stock.stock_id}`}
+                            className="cursor-pointer object-cover mb-[3vh] mr-[3vw]"
+                            onClick={() =>
+                                handleButtonClick(
+                                    stockImage,
+                                    stockName[stock.stock_id],
+                                    stock
+                                )
+                            }
+                        />
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div
+                    className="w-full h-full flex justify-center overflow-hidden bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
+                    key={`placeholder-${index}`}
+                />
+            );
+        }
+    });
+
     return (
         <div
-            className="grid grid-cols-5 overflow-hidden"
+            className="grid grid-cols-4 overflow-hidden bg-[url('imgs/file5.png')]"
             style={{ height: "calc(100vh - 70px)" }}
         >
-            <div className="col-span-4 h-full relative overflow-hidden">
-                <div className="bg-[url('/imgs/fence.png')] bg-cover bg-no-repeat w-full h-full z-10 absolute top-0 left-0"></div>
-                <div className="grid grid-cols-3 grid-rows-3 place-items-center bg-[url('/imgs/field1.png')] h-full z-1 relative">
-                    {userStock.map((stock) => (
-                        <div
-                            className="w-[250px] h-[200px] flex justify-center overflow-hidden"
-                            key={stock.stock_id}
-                        >
-                            <img
-                                src={stockImages[stock.stock_id]}
-                                alt={`Field ${stock.stock_id}`}
-                                className="cursor-pointer object-cover z-30"
-                                onClick={() =>
-                                    handleButtonClick(
-                                        stockImages[stock.stock_id],
-                                        stockName[stock.stock_id],
-                                        stock
-                                    )
-                                }
-                            />
-                        </div>
-                    ))}
+            {/* <img src="imgs/pat.png" className="w-[200px] absolute z-30 left-[870px]"></img> */}
+            <div className="col-span-3 h-full relative overflow-hidden p-[70px]">
+                <div className="grid grid-cols-3 grid-rows-3 place-items-center h-full relative">
+                    {fieldImages}
                 </div>
             </div>
-            <div className="col-span-1 bg-[url('/imgs/grass.png')] relative overflow-hidden">
+            <div className="col-span-1 relative overflow-hidden">
                 <div className="grid grid-rows-3 h-full">
-                    <div className="row-span-1 bg-[url('/imgs/grass.png')]">
-                        <Profile />
-                    </div>
-                    <div className="row-span-2 relative flex items-center justify-center bg-[url('/imgs/grass.png')]">
+                    <div className="row-span-1 ">
+                        <FarmProfile />
+                    </div>  
+                    <div className="row-span-2 relative flex items-center justify-center">
                         {!isVisible && (
                             <img
-                                src="/imgs/character.png"
+                                src="imgs/house.png"
                                 alt="Character"
-                                className="w-full h-[400px]"
+                                className="w-full"
                             />
                         )}
                         <CompanyProfile
@@ -120,6 +193,7 @@ const Field = () => {
                             image={selectedImage}
                             stock={selectedStock}
                             name={selectedStockName}
+                            currentPrice={currentPrice}
                         />
                     </div>
                 </div>
