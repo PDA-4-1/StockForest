@@ -5,10 +5,15 @@ module.exports = {
         extend: {
             screens: {
                 "3xl": "1820px",
-                // "2xl": "1500px",
+                "2xl": "1700px",
+                "xl": "1600px",
+                "l": "1500px",
             },
             backgroundImage: {
                 "background-pattern": "url('/imgs/background.svg')",
+            },
+            backgroundColor: {
+                "wood-opacity-50": "rgba(255, 255, 255, 0.4)",
             },
             colors: {
                 "back-yellow": "#FEED9F",

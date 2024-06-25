@@ -61,15 +61,15 @@ const Field = () => {
 
     const getStockImage = (stockId, profit) => {
         const stockImages = {
-            1: "tomato/tomato",
-            2: "banana/banana",
-            3: "blueberry/blueberry",
-            4: "peach/peach",
-            5: "orange/orange",
-            6: "melon/melon",
-            7: "grape/grape",
-            8: "apple/apple",
-            9: "strawberry/strawberry",
+            1: "field/tomato/tomato",
+            2: "field/banana/banana",
+            3: "field/blueberry/blueberry",
+            4: "field/peach/peach",
+            5: "field/orange/orange",
+            6: "field/melon/melon",
+            7: "field/grape/grape",
+            8: "field/apple/apple",
+            9: "field/strawberry/strawberry",
         };
 
         let imageType;
@@ -91,27 +91,27 @@ const Field = () => {
     };
 
     const signImages = {
-        1: "/imgs/sign/samsung.png",
-        2: "/imgs/sign/kakao.png",
-        3: "/imgs/sign/sm.png",
-        4: "/imgs/sign/hyundai.png",
-        5: "/imgs/sign/cell.png",
-        6: "/imgs/sign/gs.png",
-        7: "/imgs/sign/amore.png",
-        8: "/imgs/sign/shilla.png",
-        9: "/imgs/sign/lg.png",
+        1: "/imgs/field/sign/samsung.png",
+        2: "/imgs/field/sign/kakao.png",
+        3: "/imgs/field/sign/sm.png",
+        4: "/imgs/field/sign/hyundai.png",
+        5: "/imgs/field/sign/cell.png",
+        6: "/imgs/field/sign/gs.png",
+        7: "/imgs/field/sign/amore.png",
+        8: "/imgs/field/sign/shilla.png",
+        9: "/imgs/field/sign/lg.png",
     };
 
     const stockName = {
-        1: "삼성",
-        2: "카카오",
-        3: "SM",
-        4: "현대",
-        5: "셀트리온",
-        6: "GS",
-        7: "아모레퍼시픽",
-        8: "신라호텔",
-        9: "lg화학",
+        1: "콩순전자",
+        2: "도토리톡",
+        3: "뉴진수퍼노바",
+        4: "주식회사붕붕",
+        5: "미미네약국",
+        6: "철수건설",
+        7: "올리브업",
+        8: "숲속여관",
+        9: "과학나라",
     };
 
     const fieldImages = Array.from({ length: 9 }, (_, index) => {

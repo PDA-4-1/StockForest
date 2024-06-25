@@ -10,7 +10,7 @@ dotenv.config();
 router.post("/response", async (req, res) => {
     //TODO : 사용자가 퀴즈에 답한 내용을 기록. 어떤 종목인지, 오를지 내릴지
     try {
-        const userId = req.body.userId;
+        const userId = req.userId;
         const stockId = req.body.stockId;
         const date = req.body.date;
         const upDown = req.body.upDown;
