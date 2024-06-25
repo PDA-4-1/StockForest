@@ -10,6 +10,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@kokr/date": "^0.4.0",
         "@reduxjs/toolkit": "^2.2.5",
         "animate.css": "^4.1.1",
         "autoprefixer": "^10.4.19",
