@@ -19,7 +19,6 @@ const userSlice = createSlice({
         },
         saveUser: (state, action) => {
             const newUser = action.payload;
-            // console.log(newUser);
             state.user = newUser;
         },
         savePdi: (state, action) => {

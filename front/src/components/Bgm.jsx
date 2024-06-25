@@ -1,30 +1,25 @@
 import React from "react";
-import { useState, useEffect } from "react";
-
+import { useSelector } from "react-redux";
+import { useRef, useEffect } from "react";
 
 const Bgm = () => {
-  const audioRef = React.useRef()
-  const [isPlay, setIsPlay] = useState(true);
-  const bgmUrl = "/bgm/bgm_1h.mp3";
-  // useEffect(()=>{
-  //   console.log(audioRef)
-  // audioRef.current.play()
-  // }, [])
-  console.log(`음악 실행 여부: ${isPlay}`);
+    const bgmStatus = useSelector((state) => state.stock.bgmOn);
+    const bgmUrl = "/bgm/bgm_1h.mp3";
+    const audioRef = useRef(null);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            if (bgmStatus) {
+                audioRef.current.play();
+            } else {
+                audioRef.current.pause();
+            }
+        }
+    }, [bgmStatus]);
+
+    console.log(`음악 실행 여부: ${bgmStatus}`);
     return (
-      //isPlay redux 처리
-      <>
-        {/* {isPlay && (
-          <audio
-            src= {bgmUrl}
-            ref={audioRef}
-            // autoPlay={isPlay}
-            volume={1.0}
-            > 
-          </audio>
-        )} */}
-        <iframe src= {bgmUrl} allow="autoplay" style={{ display: "none" }}></iframe>
-      </>
+        <audio ref={audioRef} src={bgmUrl} loop style={{ display: "none" }} />
     );
 };
 

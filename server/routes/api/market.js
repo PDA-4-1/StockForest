@@ -12,7 +12,7 @@ router.get("/rank", async (req, res) => {
         // console.log(result);
 
         // 본인 랭킹
-        const user_query = `select a.user_id, a.user_pdi, b.nickname, b.img, (select count(*) +1  from ranking c where c.user_pdi>a.user_pdi) as ranking from ranking a inner join user b on a.user_id=b.id where b.id=?;`;
+        const user_query = `select a.user_id, a.user_pdi, b.nickname, b.img, (select count(*) + 1 from ranking c where c.user_pdi > a.user_pdi) as ranking from ranking a inner join user b on a.user_id=b.id where b.id=?;`;
         const [user_result] = await pool.query(user_query, [req.userId]);
         // console.log(user_result);
 
@@ -230,7 +230,12 @@ router.post("/sell", async (req, res) => {
 
             // 매도 정보 보유주식 테이블에 업데이트
             // 해당 주식 update
-            const holdStockQuery = `update hold_stock set quantity=quantity-? where user_id=? and stock_id=?;`;
+            let holdStockQuery;
+            if (holdStock == quantity) {
+                holdStockQuery = `update hold_stock set quantity=quantity-?, avg_price=0 where user_id=? and stock_id=?;`;
+            } else {
+                holdStockQuery = `update hold_stock set quantity=quantity-? where user_id=? and stock_id=?;`;
+            }
             const [holdStockResult] = await pool.query(holdStockQuery, [quantity, req.userId, stockId]);
 
             // 보유 시드 update

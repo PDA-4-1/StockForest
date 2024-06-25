@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import BgmBtn from "./BgmBtn";
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -65,6 +65,9 @@ const Navbar = () => {
                     <button className="text-xl ml-2 text-[#505050]">
                         오늘의 퀴즈
                     </button>
+                </div>
+                <div className="flex mr-10 bg-white rounded-[20px] cursor-pointer">
+                    <BgmBtn />
                 </div>
             </div>
             <div className="border-b-2 border-[#FDF9EA] mt-2"></div>
