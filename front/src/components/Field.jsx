@@ -126,9 +126,10 @@ const Field = () => {
                     key={stock.stock_id}
                 >
                     <img
-                        src={stockImage}
+                        // src={stockImage}
+                        src="/imgs/field/banana/banana5.png"
                         alt={`Field ${stock.stock_id}`}
-                        className="cursor-pointer object-cover relative bottom-[40%]"
+                        className="cursor-pointer object-cover relative bottom-[40%] max-h-[170px] l:max-h-[200px] 2xl:max-h-[250px] responsive-height "
                         onClick={() =>
                             handleButtonClick(
                                 stockImage,
@@ -169,7 +170,7 @@ const Field = () => {
             style={{ height: "calc(100vh - 70px)" }}
         >
             {/* <img src="imgs/pat.png" className="w-[200px] absolute z-30 left-[870px]"></img> */}
-            <div className="col-span-3 h-full relative overflow-hidden p-[70px]">
+            <div className="col-span-3 h-full relative overflow-hidden pt-[70px] pl-[70px] pr-[70px]">
                 <div className="grid grid-cols-3 grid-rows-3 place-items-center h-full relative">
                     {fieldImages}
                 </div>
