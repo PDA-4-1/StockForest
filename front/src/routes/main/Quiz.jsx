@@ -74,7 +74,7 @@ const Quiz = () => {
                 </div>
             </div>
             <div className="flex flex-row">
-                <div className="basis-1/2 flex justify-center relative">
+                <div className="basis-1/3 flex justify-end relative">
                     <div className="relative">
                         <button
                             type="button"
@@ -206,7 +206,7 @@ const Quiz = () => {
                         )}
                     </div>
                 </div>
-                <div className="flex basis-2/5 items-center">
+                <div className="flex basis-1/3 items-center">
                     <div className="flex basis-1/2 justify-between">
                         <button
                             className="basis-1/2 text-center flex items-center justify-evenly"
@@ -231,6 +231,9 @@ const Quiz = () => {
                             저장
                         </button>
                     </div>
+                </div>
+                <div className="basis-1/3 flex justify-start">
+                    <button className="text-center" onClick={checkAnswer}>어제 푼 퀴즈 확인하기</button>
                 </div>
             </div>
             {modalSee && (
