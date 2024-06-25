@@ -206,7 +206,7 @@ const Quiz = () => {
                         )}
                     </div>
                 </div>
-                <div className="flex basis-1/2 items-center">
+                <div className="flex basis-2/5 items-center">
                     <div className="flex basis-1/2 justify-between">
                         <button
                             className="basis-1/2 text-center flex items-center justify-evenly"
