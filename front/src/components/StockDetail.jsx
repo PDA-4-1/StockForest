@@ -35,7 +35,7 @@ export default function StockDetail({ stock }) {
 
     return (
         <>
-            <div className="bg-white w-full h-full col-span-3 px-6 py-9 flex flex-col space-y-3">
+            <div className="bg-white w-full h-full col-span-3 px-6 py-9 flex flex-col space-y-3 rounded-3xl">
                 <div className="flex justify-between items-center">
                     <span>{name}</span>
                     <span className={diff > 0 ? "text-shinhan-red" : "text-shinhan-blue"}>

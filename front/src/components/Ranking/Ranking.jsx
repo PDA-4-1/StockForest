@@ -28,7 +28,7 @@ export default function Ranking() {
     }, [turn]);
 
     return (
-        <div className="row-span-3 bg-back-yellow px-2 py-3 grid content-between">
+        <div className="row-span-3 bg-back-yellow px-2 py-3 grid content-between rounded-3xl">
             <div>
                 <div className="flex items-center justify-center space-x-3 mb-4">
                     <img src={trophy} alt="트로피" className="w-9 h-9" />
