@@ -32,6 +32,17 @@ export default function StockDetail({ stock }) {
     const onHide = () => {
         setModalSee(false);
     };
+    const stockImages = {
+        1: "/imgs/field/tomato/tomato1.png",
+        2: "/imgs/field/banana/banana1.png",
+        3: "/imgs/field/blueberry/blueberry1.png",
+        4: "/imgs/field/peach/peach1.png",
+        5: "/imgs/field/orange/orange1.png",
+        6: "/imgs/field/melon/melon1.png",
+        7: "/imgs/field/grape/grape1.png",
+        8: "/imgs/field/apple/apple1.png",
+        9: "/imgs/field/strawberry/strawberry2.png",
+    };
 
     return (
         <>
@@ -51,7 +62,7 @@ export default function StockDetail({ stock }) {
                     </div>
                 </div>
                 <div className="flex">
-                    <div className="w-20 h-20 bg-black rounded-full"></div>
+                    <img src={stockImages[id]} className="w-24 h-24 bg-back-yellow rounded-full" />
                     <p>여기 회사 설명할거임</p>
                 </div>
                 <div className="max-h-[300px]">
