@@ -48,14 +48,6 @@ const Quiz = () => {
         getContent();
     }, []);
 
-    // const changeToUp = () => {
-    //     setUpDown(true);
-    // };
-
-    // const changeToDown = () => {
-    //     setUpDown(false);
-    // };
-
     const postAnswer = async () => {
         const result = await UpdateQuiz(stockId, date, upDown);
         console.log(result);
