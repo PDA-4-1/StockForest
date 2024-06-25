@@ -8,6 +8,22 @@
     src: url("./fonts/a_younggothic.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "MangoByeolbyeol";
+    src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoByeolbyeol.woff2")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TheJamsil5Bold";
+    src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2")
+        format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+
 body {
     font-family: "a_younggothic";
 }
