@@ -3,22 +3,20 @@ import ReactApexChart from "react-apexcharts";
 import { useSelector } from "react-redux";
 
 const StockChart = () => {
-    /*
-  // 차트 데이터 예시
-  // name: 데이터 값의 이름
-  // data: 데이터 값 입력해주세용
-  series: [{
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-    }]
-
-
-
-  // X축 데이터 예시 ex) D-7, D-6, D-5... 1주일 데이터 넣을 예정
-  categories: [],
-
-  */
     const prices = useSelector((state) => state.stock.prices);
+
+    useEffect(() => {
+        setChartOptions((prevOptions) => ({
+            ...prevOptions,
+            series: [
+                {
+                    ...prevOptions.series[0],
+                    data: prices.slice().reverse(),
+                },
+            ],
+        }));
+    }, [prices]);
+
     const [chartOptions, setChartOptions] = useState({
         series: [
             {
@@ -48,28 +46,23 @@ const StockChart = () => {
             colors: ["red"],
             grid: {
                 row: {
-                    colors: ["#FEED9F", "transparent"], // takes an array which will be repeated on columns
+                    colors: ["#FEED9F", "transparent"], // takes an array which will be repeated on rows
                     opacity: 0.3,
+                },
+            },
+            tooltip: {
+                x: {
+                    show: false, // x축 정보 비활성화
+                },
+                y: {
+                    formatter: (value) => `${value.toFixed(2)}프디`,
                 },
             },
             xaxis: {
                 labels: { show: false },
             },
-            // colors: ["#88C9A1"],
         },
     });
-
-    useEffect(() => {
-        setChartOptions((prevOptions) => ({
-            ...prevOptions,
-            series: [
-                {
-                    ...prevOptions.series[0],
-                    data: prices.slice().reverse(),
-                },
-            ],
-        }));
-    }, [prices]);
 
     return (
         <div>
