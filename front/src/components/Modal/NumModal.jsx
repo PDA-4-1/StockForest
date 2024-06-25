@@ -53,9 +53,9 @@ export default function NumModal(props) {
                 className={`w-fit bg-transparent p-12 flex flex-col items-center animate__animated ${animation} animated-element`}
             >
                 <div className="flex">
-                    {hundreds && <img className={common} src={imgs[`num${hundreds}`]} />}
-                    {tens && <img className={common} src={imgs[`num${tens}`]} />}
-                    <img className="w-40" src={imgs[`num${units}`]} />
+                    {hundreds != null && <img className={common} src={imgs[`num${hundreds}`]} />}
+                    {tens != null && <img className={common} src={imgs[`num${tens}`]} />}
+                    <img className={common} src={imgs[`num${units}`]} />
                 </div>
             </div>
         </div>
