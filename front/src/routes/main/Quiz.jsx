@@ -46,16 +46,18 @@ const Quiz = () => {
         console.log(result);
     };
 
+    const checkAnswer = async() => {
+        const result = await AnswerQuiz();
+        console.log(result);
+    }
+
+
     const truncateText = (text, length) => {
         if (text.length <= length) {
             return text;
         }
         return text.substring(0, length) + "...";
     };
-    /* 퀴즈 내용 불러오기
-        
-    */
-    // 어제자 답 확인 클릭 시 -> 한국투자증권 api 요청해서 정답여부 확인
 
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">
