@@ -4,13 +4,17 @@ import { useSelector } from "react-redux";
 const Profile = (props) => {
     const userInfo = useSelector((state) => state.user.user);
     const nextTurn = props.nextTurn;
+    const imgs = {
+        1: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/moli.png",
+        2: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/pli.png",
+        3: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/lululala.png",
+        4: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/sol.png",
+    };
 
     return (
         <div className="w-full h-full row-span-2 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center space-y-3">
             <div className="flex items-center space-x-3 min-w-40">
-                <div className="w-10 h-10 rounded-full bg-black">
-                    <img>{/* {userInfo.img} */}</img>
-                </div>
+                <img className="w-14 h-14 rounded-full bg-white" src={imgs[userInfo.img]} />
                 <div className="text-left">
                     <div>{userInfo.nickname}</div>
                     <div className="mt-1">수익률: {userInfo.user_returns || 0}%</div>

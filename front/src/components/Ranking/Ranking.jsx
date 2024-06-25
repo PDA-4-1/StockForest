@@ -2,35 +2,11 @@ import { useEffect, useState } from "react";
 import RankComponent from "./RankComponent";
 import trophy from "~/public/imgs/trophy.png";
 import { GetRanking } from "../../lib/apis/stock";
+import { useSelector } from "react-redux";
 
 export default function Ranking() {
-    const [users, setUsers] = useState([
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 25.88,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 23,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 20.3,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 23,
-            profile_img: "",
-        },
-        {
-            nickname: "닉네임은여덟글자",
-            user_pdi: 23,
-            profile_img: "",
-        },
-    ]);
+    const turn = useSelector((state) => state.user.user.turn);
+    const [users, setUsers] = useState([]);
     const [my, setMy] = useState({
         nickname: "닉네임은여덟글자",
         user_pdi: 23,
@@ -49,10 +25,10 @@ export default function Ranking() {
                 }
             })
             .catch((err) => console.log(err.response));
-    }, []);
+    }, [turn]);
 
     return (
-        <div className="row-span-3 bg-back-yellow px-2 py-3 grid content-between">
+        <div className="row-span-3 bg-back-yellow px-2 py-3 grid content-between rounded-3xl">
             <div>
                 <div className="flex items-center justify-center space-x-3 mb-4">
                     <img src={trophy} alt="트로피" className="w-9 h-9" />
