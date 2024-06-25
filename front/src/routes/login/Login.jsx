@@ -3,6 +3,25 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "../../components/Toast";
 
+export const handleLogin = async (nickname, password, navigate) => {
+    try {
+        const response = await axios.post("api/users/signin", {
+            nickname,
+            password,
+        });
+
+        if (response.status === 200) {
+            navigate("/market");
+        }
+    } catch (error) {
+        if (error.response) {
+            Toast.fire(error.response.data.message, "", "error");
+        } else {
+            Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
+        }
+    }
+};
+
 const Login = () => {
     const [nickname, setNickname] = useState("");
     const [password, setPassword] = useState("");
@@ -14,41 +33,7 @@ const Login = () => {
 
     const handleEnter = async (e) => {
         if (e.key === "Enter") {
-            try {
-                const response = await axios.post("api/users/signin", {
-                    nickname,
-                    password,
-                });
-
-                if (response.status === 200) {
-                    navigate("/market");
-                }
-            } catch (error) {
-                if (error.response) {
-                    Toast.fire(error.response.data.message, "", "error");
-                } else {
-                    Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
-                }
-            }
-        }
-    };
-
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post("api/users/signin", {
-                nickname,
-                password,
-            });
-
-            if (response.status === 200) {
-                navigate("/market");
-            }
-        } catch (error) {
-            if (error.response) {
-                Toast.fire(error.response.data.message, "", "error");
-            } else {
-                Toast.fire("로그인 중 오류가 발생했습니다!", "", "error");
-            }
+            await handleLogin(nickname, password, navigate);
         }
     };
 
@@ -91,7 +76,13 @@ const Login = () => {
                             <div className="flex items-center justify-center ">
                                 <button
                                     className="p-2 bg-yellow-400 rounded w-[100px]"
-                                    onClick={handleLogin}
+                                    onClick={() =>
+                                        handleLogin(
+                                            nickname,
+                                            password,
+                                            navigate
+                                        )
+                                    }
                                 >
                                     로그인
                                 </button>
