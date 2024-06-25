@@ -24,30 +24,34 @@ const CompanyProfile = ({
                 visible ? "translate-x-0" : "translate-x-full"
             }`}
         >
-            <div className="relative top-[5vh] left-[3vw] flex items-center">
-                {image && (
-                    <div className="w-[10vw] h-[10vh]">
-                        <img
-                            src={image}
-                            className="w-full h-full object-contain"
-                            alt="Company"
-                        />
+            <div className="relative top-[8vh] font-[TheJamsil5Bold] text-[14px] l:text-[16px] xl:text-[18px] 2xl:text-[20px] 3xl:text-[24px] flex justify-center">
+                <div className="bg-wood-opacity-50 grid grid-row-4 place-items-center">
+                    <div className="relative flex items-center row-span-1 justify-between mb-2">
+                        {image && (
+                            <div className="">
+                                <img
+                                    src={image}
+                                    className="w-[5vw] h-[10vh] object-contain"
+                                    alt="Company"
+                                />
+                            </div>
+                        )}
+                        <div>{name}</div>
                     </div>
-                )}
-                <div>{name}</div>
+                    <div className="grid grid-cols-1 gap-2 mb-4 row-span-2">
+                        <div>나의 주식수 : {stock.quantity}개</div>
+                        <div>평단가 : {stock.avg_price}원</div>
+                        <div>현재가 : {currentPrice}</div>
+                        <div>수익률 : {stock.returns}%</div>
+                    </div>
+                    <button
+                        onClick={goMarket}
+                        className="bg-yellow-500 text-white px-2 py-2 rounded hover:brightness-75 row-span-1"
+                    >
+                        팔러가기
+                    </button>
+                </div>
             </div>
-            <div className="relative grid grid-cols-1 gap-4 mb-4 top-[10vh] left-[7vw]">
-                <div>나의 주식수 : {stock.quantity}개</div>
-                <div>평단가 : {stock.avg_price}원</div>
-                <div>현재가 : {currentPrice}</div>
-                <div>수익률 : {stock.returns}%</div>
-            </div>
-            <button
-                onClick={goMarket}
-                className="relative top-[15vh] left-[10vw] bg-yellow-500 text-white px-4 py-2 rounded hover:brightness-75"
-            >
-                팔러가기
-            </button>
         </div>
     );
 };
