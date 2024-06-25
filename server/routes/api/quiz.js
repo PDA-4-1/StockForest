@@ -37,13 +37,17 @@ router.patch("/answer", async (req, res) => {
         .subtract(1, "days")
         .format("YYYY-MM-DD"); // 하루 전 날
     const today = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
-    getResponseSQL = `SELECT stock_id, up_down FROM quiz WHERE user_id = ? AND date = ?`;
+    getResponseSQL = `SELECT stock_id, up_down, is_checked FROM quiz WHERE user_id = ? AND date = ?`;
     const [userResponse] = await pool.query(getResponseSQL, [
         req.userId,
         yesterday,
     ]);
-    if (userResponse.length == 0)
-        throw new Error("어제의 퀴즈 기록이 없습니다");
+    if (userResponse.length == 0) {
+        res.send({
+            code: 3,
+            message: "어제의 퀴즈 기록이 없습니다",
+        });
+    }
 
     // //TODO : 퀴즈 답 확인, 맞았을 경우 보상받은 포인트까지 계산할 것
     try {
@@ -65,6 +69,7 @@ router.patch("/answer", async (req, res) => {
         }
 
         res.send({
+            code: userResponse[0].is_checked ? 2 : 1,
             stockCode: userResponse[0].stock_id, // 고른 종목 코드
             stockName: answerResponse[0].stock_name, // 고른 종목 이름
             yesterdayCost: answerResponse[0].yesterday_cost,
