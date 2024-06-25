@@ -60,6 +60,7 @@ const ThreeModelViewer = () => {
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.125;
+        controls.enableZoom = false; // 마우스 휠 확대 및 축소 비활성화
 
         window.addEventListener("resize", onWindowResize);
 
@@ -137,7 +138,7 @@ const ThreeModelViewer = () => {
                 }
 
                 // 새로운 X축 회전 각도 계산
-                const newRotationX = -mouseY * Math.PI * 0.34;
+                const newRotationX = -mouseY * Math.PI * 0.35;
 
                 // X축 회전 각도 제한 적용
                 if (
