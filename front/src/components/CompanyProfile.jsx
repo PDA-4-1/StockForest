@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const CompanyProfile = ({
     visible,
@@ -12,7 +11,6 @@ const CompanyProfile = ({
     currentPrice,
 }) => {
     const navigate = useNavigate();
-    const userInfo = useSelector((state) => state.user.user);
 
     const goMarket = () => {
         navigate("/market");
@@ -37,12 +35,23 @@ const CompanyProfile = ({
                             </div>
                         )}
                         <div>{name}</div>
+                        <button
+                            onClick={onClose}
+                            className="bg-wood-opacity-50 text-white px-2 py-2 rounded hover:brightness-75"
+                        ></button>
                     </div>
                     <div className="grid grid-cols-1 gap-2 mb-4 row-span-2">
                         <div>나의 주식수 : {stock.quantity}개</div>
                         <div>평단가 : {stock.avg_price}원</div>
                         <div>현재가 : {currentPrice}</div>
-                        <div>수익률 : {stock.returns}%</div>
+                        <div>
+                            수익률 :{" "}
+                            {stock.returns !== undefined &&
+                            stock.returns !== null
+                                ? stock.returns.toFixed(2)
+                                : "데이터 없음"}
+                            %
+                        </div>
                     </div>
                     <button
                         onClick={goMarket}
