@@ -23,6 +23,10 @@ const Market = () => {
     const [round, setRound] = useState(0);
     const dispatch = useDispatch();
     const saveStock = (el) => {
+        if (selected == el) {
+            setSelected(null);
+            return;
+        }
         setSelected(el);
         GetStockChart(el.id, turn)
             .then((data) => {
