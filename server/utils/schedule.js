@@ -59,10 +59,20 @@ const doKIS = async () => {
         if (dateDay === 0 || dateDay === 6) {
             //주말 확인
             console.log("주말입니다 !");
-            const weekendQuery = `INSERT INTO holiday VALUES (?, ?)`
+            const weekendQuery = `INSERT INTO holiday VALUES (?, ?)`;
             await pool.query(weekendQuery, [date.format("YYYY-MM-DD"), "주말"]);
             return;
         }
+        //공휴일 확인
+        const holyQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
+        const [isHoly] = await pool.query(holyQuery, [
+            date.format("YYYY-MM-DD"),
+        ]);
+        if (isHoly[0].count > 0) {
+            console.log("오늘은 공휴일입니다!");
+            return;
+        }
+
         //오후 4시 확인
         const startOfDay = moment.tz("Asia/Seoul").startOf("day"); // 오늘의 시작 시간 (00:00:00)
         const endOfQuizTime = moment
