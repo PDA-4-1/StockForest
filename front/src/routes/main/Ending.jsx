@@ -10,6 +10,7 @@ import Confetti from "react-confetti";
 
 export default function Ending() {
     const returns = useSelector((state) => state.user.user.user_returns);
+    const common = "flex justify-between w-full";
     const [myInfo, setMyInfo] = useState({
         img: "",
         nickname: "",
@@ -57,15 +58,29 @@ export default function Ending() {
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen">
             <Navbar />
-            <Confetti width={width} height={height} gravity={0.05} numberOfPieces={150} />
+            {/* <Confetti width={width} height={height} gravity={0.05} numberOfPieces={150} /> */}
             <div className="w-full h-[calc(100%_-_69.6px)] flex justify-center items-center">
                 <div className="w-[400px] min-h-[400px] h-fit bg-modal-yellow rounded-3xl grid p-6 justify-items-center gap-6">
                     <img src={imgs[myInfo.img]} className="w-40 h-40 rounded-full bg-white object-contain" />
-                    <p>{myInfo.nickname}</p>
-                    <p>{myInfo.ranking} 위</p>
-                    <p>수익 : {returns} %</p>
-                    <p>총프디 : {myInfo.user_pdi.toLocaleString()} 프디</p>
-                    <button className="bg-button-yellow px-3 py-2 rounded-xl hover:brightness-75" onClick={restart}>
+                    <p className="text-2xl font-bold">{myInfo.nickname}</p>
+                    <div className="w-full grid gap-3">
+                        <div className={common}>
+                            <p>순위</p>
+                            <p>{myInfo.ranking} 위</p>
+                        </div>
+                        <div className={common}>
+                            <p>수익률</p>
+                            <p>{returns}%</p>
+                        </div>
+                        <div className={common}>
+                            <p>총 프디</p>
+                            <p>{myInfo.user_pdi.toLocaleString()} 프디</p>
+                        </div>
+                    </div>
+                    <button
+                        className="bg-button-yellow px-6 py-4 rounded-xl hover:brightness-75 text-2xl font-bold"
+                        onClick={restart}
+                    >
                         다시하기
                     </button>
                 </div>
