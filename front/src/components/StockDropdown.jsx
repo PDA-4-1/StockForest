@@ -21,7 +21,7 @@ const StockDropdown = ({ stockName, setStockName, setStockId }) => {
                 {isOpen ? <FaChevronDown /> : <FaChevronUp />}
             </button>
             {isOpen && (
-                <div className="origin-top-right absolute right-0 top-full mt-0 w-60 max-h-60 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="origin-top-right absolute right-0 top-full mt-0 w-60 max-h-40 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div
                         className="py-1"
                         role="menu"
