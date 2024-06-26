@@ -33,15 +33,15 @@ export default function StockDetail({ stock }) {
         setModalSee(false);
     };
     const stockImages = {
-        1: "/imgs/field/tomato/tomato1.png",
-        2: "/imgs/field/banana/banana1.png",
-        3: "/imgs/field/blueberry/blueberry1.png",
-        4: "/imgs/field/peach/peach1.png",
-        5: "/imgs/field/orange/orange1.png",
-        6: "/imgs/field/melon/melon1.png",
-        7: "/imgs/field/grape/grape1.png",
-        8: "/imgs/field/apple/apple1.png",
-        9: "/imgs/field/strawberry/strawberry2.png",
+        1: "/imgs/field/tomato/tomatoprofile.png",
+        2: "/imgs/field/banana/bananaprofile.png",
+        3: "/imgs/field/blueberry/blueberryprofile.png",
+        4: "/imgs/field/peach/peachprofile.png",
+        5: "/imgs/field/orange/orangeprofile.png",
+        6: "/imgs/field/melon/melonprofile.png",
+        7: "/imgs/field/grape/grapeprofile.png",
+        8: "/imgs/field/apple/appleprofile.png",
+        9: "/imgs/field/strawberry/strawberryprofile.png",
     };
 
     return (

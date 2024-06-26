@@ -15,6 +15,10 @@ const Navbar = () => {
         navigate("/farm");
     };
 
+    const handleQuizClick = () => {
+        navigate("/quiz");
+    }
+
     return (
         <>
             <div className="flex items-center justify-between">
@@ -62,7 +66,10 @@ const Navbar = () => {
                         alt="퀴즈"
                         className="size-10 cursor-pointer"
                     />
-                    <button className="text-xl ml-2 text-[#505050]">
+                    <button
+                        onClick={handleQuizClick}
+                        className="text-xl ml-2 text-[#505050]"
+                    >
                         오늘의 퀴즈
                     </button>
                 </div>
