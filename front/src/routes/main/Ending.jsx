@@ -11,6 +11,7 @@ import CongratsModal from "../../components/Modal/CongratsModal";
 
 export default function Ending() {
     const returns = useSelector((state) => state.user.user.user_returns);
+    const turn = useSelector((state) => state.user.user.turn);
     const common = "flex justify-between w-full";
     const [congSee, setCongSee] = useState(false);
     const [myInfo, setMyInfo] = useState({
@@ -50,6 +51,9 @@ export default function Ending() {
 
     // 유저 랭킹 정보 불러오기
     useEffect(() => {
+        if (turn < 156) {
+            navigate("/market");
+        }
         GetRanking()
             .then((data) => {
                 // console.log(data.amI);
