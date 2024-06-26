@@ -56,8 +56,8 @@ const doKIS = async () => {
         // 요청 내용 작성, 요청 보내기
         const date = moment().tz("Asia/Seoul");
         const dateDay = date.day();
+        //주말 확인
         if (dateDay === 0 || dateDay === 6) {
-            //주말 확인
             console.log("주말입니다 !");
             const weekendQuery = `INSERT INTO holiday VALUES (?, ?)`;
             await pool.query(weekendQuery, [date.format("YYYY-MM-DD"), "주말"]);
@@ -65,7 +65,7 @@ const doKIS = async () => {
         }
         //공휴일 확인
         const holyQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
-        const [isHoly] = await pool.query(holyQuery, [
+        var [isHoly] = await pool.query(holyQuery, [
             date.format("YYYY-MM-DD"),
         ]);
         if (isHoly[0].count > 0) {
@@ -100,13 +100,22 @@ const doKIS = async () => {
         const accessToken = tokenReq.data.access_token;
 
         // 한국투자증권 API 연결 - 일일 주가 요청하기
-        const yesterday = moment()
+        var yesterday = moment()
             .tz("Asia/Seoul")
-            .subtract(1, "days")
-            .format("YYYY-MM-DD"); // 하루 전 날
-        const today = moment(yesterday).add(1, "days").format("YYYY-MM-DD");
+            .subtract(1, "days");// 하루 전 날
+        // 공휴일인지 확인
+        [isHoly] = await pool.query(holyQuery, [
+            yesterday.format("YYYY-MM-DD"),
+        ]);
+        while (isHoly[0].count > 0) {
+            yesterday = yesterday.subtract(1, "days");
+            [isHoly] = await pool.query(holyQuery, [
+                yesterday.format("YYYY-MM-DD"),
+            ]); 
+        }
+        yesterday = yesterday.format("YYYY-MM-DD");
         const startDate = moment(yesterday).format("YYYYMMDD");
-        const endDate = moment(yesterday).add(1, "days").format("YYYYMMDD");
+        const endDate = date.format("YYYYMMDD");
 
         const KIS_URL =
             "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
@@ -140,7 +149,7 @@ const doKIS = async () => {
                         : 3;
                 const query = `INSERT INTO quiz_answer (date, stock_id, stock_name, answer, today_cost, yesterday_cost) VALUES (?,?,?,?,?,?)`;
                 await pool.query(query, [
-                    today,
+                    endDate,
                     i + 1,
                     realCode[i][1],
                     isUp,
