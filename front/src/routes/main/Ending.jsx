@@ -1,7 +1,10 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { GetRanking } from "../../lib/apis/stock";
+import { GetUserProfile, PatchEnding } from "../../lib/apis/user";
+import { useNavigate } from "react-router-dom";
+import { saveUser } from "../../store/userSlice";
 
 export default function Ending() {
     const returns = useSelector((state) => state.user.user.user_returns);
@@ -17,6 +20,23 @@ export default function Ending() {
         2: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/pli.png",
         3: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/lululala.png",
         4: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/sol.png",
+    };
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const restart = () => {
+        PatchEnding()
+            .then((data) => {
+                console.log(data);
+                if (data === "reset success") {
+                    GetUserProfile().then((data) => {
+                        console.log(data);
+                        dispatch(saveUser(data));
+                    });
+                    navigate("/farm");
+                }
+            })
+            .catch((err) => console.log(err));
     };
 
     useEffect(() => {
@@ -37,7 +57,9 @@ export default function Ending() {
                     <p>{myInfo.ranking} 위</p>
                     <p>수익 : {returns} %</p>
                     <p>총프디 : {myInfo.user_pdi.toLocaleString()} 프디</p>
-                    <button className="bg-button-yellow px-3 py-2 rounded-xl hover:brightness-75">다시하기</button>
+                    <button className="bg-button-yellow px-3 py-2 rounded-xl hover:brightness-75" onClick={restart}>
+                        다시하기
+                    </button>
                 </div>
             </div>
         </div>
