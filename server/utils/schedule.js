@@ -3,6 +3,7 @@ const axios = require("axios");
 const https = require("https");
 const moment = require("moment");
 const pool = require("../config/db.connect");
+const cron = require("node-cron");
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -196,6 +197,12 @@ const doHoly = async () => {
         }
     };
     await executeJob();
+    const schedule = cron.schedule('0 0 0 1 * *', () => {
+        executeJob();
+    }, {
+        timezone: "Asia/Seoul"
+    });
+    schedule.start();
 };
 
 module.exports = { doJob, doKIS, doHoly };
