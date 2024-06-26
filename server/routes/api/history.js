@@ -10,36 +10,43 @@ router.get("/:stockId/:action", async (req, res) => {
 
     try {
         // 전체 조회
-        const allQuery = `SELECT is_buy, price, quantity, turn FROM stock_history WHERE user_id = ?`;
-        if (stockId == 0 && action == 2) {
-            const [allResult] = await pool.query(allQuery, [userId]);
-            console.log(allResult);
-            if (allResult.length == 0) {
-                res.send({
-                    code: 0,
-                });
+        const baseQuery = `SELECT is_buy, price, quantity, turn FROM stock_history WHERE user_id = ?`;
+        let subQuery;
+        let params = [userId];
+        if (stockId == 0) {
+            allQuery = `SELECT stock_id, is_buy, price, quantity, turn FROM stock_history WHERE user_id = ?`;
+            if (action == 2) {
+                // 전체조회
+                subQuery = allQuery;
             } else {
-                res.send({
-                    code: 1,
-                    result: allResult,
-                });
+                // 종목만 전체
+                subQuery = allQuery + ` AND is_buy = ?`;
+                params.push(action);
+            }
+        } else {
+            if (action == 2) {
+                // 거래만 전체
+                subQuery = baseQuery + ` AND stock_id = ?`;
+                params.push(stockId);
+            } else {
+                // 종목, 거래 골라서
+                subQuery = baseQuery + ` AND stock_id = ? AND is_buy = ?`;
+                params.push(stockId);
+                params.push(action);
             }
         }
-        let subQuery = allQuery;
-        let params = [userId];
-        console.log(params);
-        if(stockId != 0) {
-            subQuery += ` AND stock_id = ?`;
-            params.push(stockId);
+        const [result] = await pool.query(subQuery, params);
+        console.log(result);
+        if (result.length == 0) {
+            res.send({
+                code: 0,
+            });
+        } else {
+            res.send({
+                code: 1,
+                result: result,
+            });
         }
-        if(action != 2) {
-            subQuery += ` AND is_buy = ?`;
-            params.push(action);
-        }
-        console.log(params);
-        const [subResult] = await pool.query(subQuery, params);
-        console.log(subResult);
-        res.send(subResult);
     } catch (err) {
         console.log(err);
         res.send(err);
