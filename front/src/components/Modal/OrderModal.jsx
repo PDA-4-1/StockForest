@@ -86,11 +86,11 @@ export default function OrderModal(props) {
                         </div>
                         <div className="flex justify-between">
                             <p>가격</p>
-                            <p>{price} 원</p>
+                            <p>{price} 프디</p>
                         </div>
                         <div className="flex justify-between">
                             <p>총 가격</p>
-                            <p>{price * num} 원</p>
+                            <p>{price * num} 프디</p>
                         </div>
                         <div className="flex justify-center space-x-6">
                             <StockButton purpo={"cancle"} onClick={onHide} />
@@ -115,11 +115,11 @@ export default function OrderModal(props) {
                         </div>
                         <div className="flex justify-between">
                             <p>가격</p>
-                            <p>{price} 원</p>
+                            <p>{price} 프디</p>
                         </div>
                         <div className="flex justify-between">
                             <p>총 가격</p>
-                            <p>{price * num} 원</p>
+                            <p>{price * num} 프디</p>
                         </div>
                         <div className="flex justify-center space-x-6">
                             <StockButton purpo={"cancle"} onClick={onHide} />
