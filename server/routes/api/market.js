@@ -35,7 +35,7 @@ router.get("/:turn", async (req, res) => {
         let date = moment("2020-01-01").add(req.params.turn * 7, "days"); // 시작 날짜 계산
 
         for (let i = 0; i < 7; i++) {
-            const query = `select a.id, a.name, a.description, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+            const query = `select a.id, a.name, a.description, b.price, b.diff_7 as diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
             const [result] = await pool.query(query, [date.add(i, "days").format("YYYY-MM-DD")]);
             if (result.length > 0) {
                 // 해당하는 turn에 주식이 있으면 응답
@@ -59,7 +59,7 @@ router.get("/next/:turn", async (req, res) => {
     try {
         // 주식 목록 불러오기
         let stockResult;
-        let date = moment("2020-01-01").add(req.params.turn * 7, "days"); // 시작 날짜 계산
+        let date = moment("2020-01-01").add(req.params.turn * 7 + 7, "days"); // 시작 날짜 계산
 
         for (let i = 0; i < 7; i++) {
             const stocQuery = `select a.id, a.name, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
@@ -73,13 +73,13 @@ router.get("/next/:turn", async (req, res) => {
         const returnsQuery = `update hold_stock c inner join (
             select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
             on c.stock_id=d.id set c.returns=((d.price-c.avg_price)/c.avg_price)*100 where c.user_id=?;`;
-        await pool.query(returnsQuery, [date.add(7, "days").format("YYYY-MM-DD"), req.userId]);
+        await pool.query(returnsQuery, [date.format("YYYY-MM-DD"), req.userId]);
 
         const rankingQuery = `update ranking e inner join (
             select c.user_id, sum(case when c.stock_id=10 then c.avg_price*c.quantity else d.price*c.quantity end) as seed from hold_stock c left outer join (
                 select a.id, b.price from stock a inner join stock_price b on a.id=b.stock_id where b.date=?) d
-                on c.stock_id=d.id group by c.user_id) f
-                on e.user_id=f.user_id set e.user_pdi=f.seed, e.user_returns=((f.seed-100000)/100000)*100 where e.user_id = ?;`;
+                on c.stock_id=d.id where c.user_id = ? group by c.user_id) f
+                on e.user_id=f.user_id set e.user_pdi=f.seed, e.user_returns=((f.seed-100000)/100000)*100;`;
         await pool.query(rankingQuery, [date.format("YYYY-MM-DD"), req.userId]);
 
         // 뉴스받아오기
@@ -109,10 +109,11 @@ router.get("/:stockId/:turn", async (req, res) => {
     try {
         const date = moment("2020-01-01");
         const query = `select a.id, a.name, a.description, b.price, b.date, b.diff from stock a inner join stock_price b on a.id=b.stock_id where a.id=? and (b.date>=? and b.date<=?);`;
+
         const [result] = await pool.query(query, [
             req.params.stockId,
             date.add((req.params.turn - 1) * 7, "days").format("YYYY-MM-DD"),
-            date.add(6, "days").format("YYYY-MM-DD"),
+            date.add(7, "days").format("YYYY-MM-DD"),
         ]);
         // console.log(result);
         res.status(200).send(result);

@@ -96,4 +96,21 @@ router.get("/content", async (req, res) => {
     }
 });
 
+router.get("/:date", async (req, res) => {
+    //TODO : 오늘이 공휴일인지 확인
+    try {
+        const holiQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`
+        const [result] = await pool.query(holiQuery, [req.params.date]);
+        const isHoly = result[0].count>0 ? 1 : 0;
+        if(isHoly) res.send({
+            isHoly : isHoly,
+            date_name : result[0].date_name
+        });
+        else res.send({isHoly : isHoly});
+    } catch (e) {
+        console.log(e);
+        res.send("ERROR : " + e);
+    }
+});
+
 module.exports = router;

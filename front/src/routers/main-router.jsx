@@ -4,6 +4,7 @@ import Market from "../routes/main/Market";
 import Farm from "../routes/main/Farm";
 import Quiz from "../routes/main/Quiz";
 import MainLayPage from "../routes/main/layout";
+import Ending from "../routes/main/Ending";
 
 const mainRouter = [
     {
@@ -28,6 +29,11 @@ const mainRouter = [
             {
                 path: "quiz",
                 element: <Quiz />,
+                index: true,
+            },
+            {
+                path: "ending",
+                element: <Ending />,
                 index: true,
             },
         ],

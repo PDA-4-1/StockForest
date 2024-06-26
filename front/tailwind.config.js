@@ -25,6 +25,7 @@ module.exports = {
                 "back-blue": "#F2F5FC",
                 "modal-yellow": "#FDF9EA",
                 "back-grey": "#EFF0F6",
+                "button-yellow": "#FFD101",
             },
             animation: {
                 "spin-fast": "spin 0.3s linear infinite",

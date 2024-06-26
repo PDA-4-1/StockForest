@@ -3,6 +3,7 @@ const axios = require("axios");
 const https = require("https");
 const moment = require("moment");
 const pool = require("../config/db.connect");
+const cron = require("node-cron");
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -34,7 +35,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("0 30 8 * * *", executeJob);
+    schedule.scheduleJob("0 0 0 * * *", executeJob);
 };
 
 const realCode = [
@@ -55,11 +56,23 @@ const doKIS = async () => {
         // 요청 내용 작성, 요청 보내기
         const date = moment().tz("Asia/Seoul");
         const dateDay = date.day();
+        //주말 확인
         if (dateDay === 0 || dateDay === 6) {
-            //주말 확인
             console.log("주말입니다 !");
+            const weekendQuery = `INSERT INTO holiday VALUES (?, ?)`;
+            await pool.query(weekendQuery, [date.format("YYYY-MM-DD"), "주말"]);
             return;
         }
+        //공휴일 확인
+        const holyQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
+        var [isHoly] = await pool.query(holyQuery, [
+            date.format("YYYY-MM-DD"),
+        ]);
+        if (isHoly[0].count > 0) {
+            console.log("오늘은 공휴일입니다!");
+            return;
+        }
+
         //오후 4시 확인
         const startOfDay = moment.tz("Asia/Seoul").startOf("day"); // 오늘의 시작 시간 (00:00:00)
         const endOfQuizTime = moment
@@ -87,13 +100,22 @@ const doKIS = async () => {
         const accessToken = tokenReq.data.access_token;
 
         // 한국투자증권 API 연결 - 일일 주가 요청하기
-        const yesterday = moment()
+        var yesterday = moment()
             .tz("Asia/Seoul")
-            .subtract(1, "days")
-            .format("YYYY-MM-DD"); // 하루 전 날
-        const today = moment(yesterday).add(1, "days").format("YYYY-MM-DD");
+            .subtract(1, "days");// 하루 전 날
+        // 공휴일인지 확인
+        [isHoly] = await pool.query(holyQuery, [
+            yesterday.format("YYYY-MM-DD"),
+        ]);
+        while (isHoly[0].count > 0) {
+            yesterday = yesterday.subtract(1, "days");
+            [isHoly] = await pool.query(holyQuery, [
+                yesterday.format("YYYY-MM-DD"),
+            ]); 
+        }
+        yesterday = yesterday.format("YYYY-MM-DD");
         const startDate = moment(yesterday).format("YYYYMMDD");
-        const endDate = moment(yesterday).add(1, "days").format("YYYYMMDD");
+        const endDate = date.format("YYYYMMDD");
 
         const KIS_URL =
             "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
@@ -127,7 +149,7 @@ const doKIS = async () => {
                         : 3;
                 const query = `INSERT INTO quiz_answer (date, stock_id, stock_name, answer, today_cost, yesterday_cost) VALUES (?,?,?,?,?,?)`;
                 await pool.query(query, [
-                    today,
+                    endDate,
                     i + 1,
                     realCode[i][1],
                     isUp,
@@ -140,7 +162,72 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 35 8 * * *", executeJob);//한국시간 기준으로 변경
+    schedule.scheduleJob("0 0 8 * * *", executeJob); //한국시간 기준으로 작성
 };
 
-module.exports = { doJob, doKIS };
+const doHoly = async () => {
+    const executeJob = async () => {
+        // 공공데이터 특일 정보 API 연결
+        const year = moment().tz("Asia/Seoul").format("Y");
+        const month = moment().tz("Asia/Seoul").format("MM");
+        const HOLY_URL =
+            "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo";
+        const params = {
+            solYear: year,
+            solMonth: month,
+            ServiceKey: process.env.ServiceKey,
+            _type: "json",
+        };
+        try {
+            const holyReq = await axios.get(HOLY_URL, { params });
+            const holyList = holyReq.data.response.body.items.item;
+            if (holyList === null || holyList === undefined) {
+                return;
+            }
+            const query = `INSERT INTO holiday VALUES (?,?)`;
+            if (Array.isArray(holyList)) {
+                holyList.map(async (elem, i) => {
+                    const holiDate = moment(elem.locdate, "YYYYMMDD").format(
+                        "YYYY-MM-DD"
+                    );
+                    await pool.query(query, [holiDate, elem.dateName]);
+                });
+            } else {
+                const holiDate = moment(holyList.locdate, "YYYYMMDD").format(
+                    "YYYY-MM-DD"
+                );
+                await pool.query(query, [holiDate, holyList.dateName]);
+            }
+            if (month == "05") {
+                const holiDate = moment(`${year}${month}01`, "YYYYMMDD").format(
+                    "YYYY-MM-DD"
+                );
+                await pool.query(query, [holiDate, "근로자의 날"]);
+            }
+            if (month == "12") {
+                var lastDate = moment(`${year}${month}31`, "YYYYMMDD");
+                while (lastDate.day() == 0 || lastDate.day() == 6) {
+                    lastDate = lastDate.subtract(1, "days");
+                }
+                const holiDate = moment(lastDate).format("YYYY-MM-DD");
+                console.log(holiDate);
+                await pool.query(query, [holiDate, "올해 마지막 평일"]);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    await executeJob();
+    const schedule = cron.schedule(
+        "0 0 0 1 * *",
+        () => {
+            executeJob();
+        },
+        {
+            timezone: "Asia/Seoul",
+        }
+    );
+    schedule.start();
+};
+
+module.exports = { doJob, doKIS, doHoly };

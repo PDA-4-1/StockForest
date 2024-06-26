@@ -7,3 +7,8 @@ export async function GetUserProfile() {
     const res = await service.get(``);
     return res.data;
 }
+
+export async function PatchEnding() {
+    const res = await service.patch(`/ending`);
+    return res.data;
+}
