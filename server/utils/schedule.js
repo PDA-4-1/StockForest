@@ -140,7 +140,42 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 35 8 * * *", executeJob);//한국시간 기준으로 변경
+    schedule.scheduleJob("0 35 8 * * *", executeJob); //한국시간 기준으로 변경
 };
 
-module.exports = { doJob, doKIS };
+const doHoly = async () => {
+    const executeJob = async () => {
+        // 공공데이터 특일 정보 API 연결
+        const year = moment().tz("Asia/Seoul").format("Y");
+        const month = moment().tz("Asia/Seoul").format("MM");
+        const HOLY_URL =
+            "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo";
+        const params = {
+            solYear: year,
+            solMonth: "05",
+            ServiceKey: process.env.ServiceKey,
+            _type: "json",
+        };
+        const holyReq = await axios.get(HOLY_URL, { params });
+        const holyList = holyReq.data.response.body.items.item;
+        console.log(holyList);
+        if (holyList === null || holyList === undefined) {
+            return;
+        }
+        const query = `INSERT INTO holiday VALUES (?,?)`;
+        if (Array.isArray(holyList)) {
+            holyList.map(async (elem, i) => {
+                const holidate = moment(elem.locdate, "YYYYMMDD").format(
+                    "YYYY-MM-DD"
+                );
+                await pool.query(query, [holidate, elem.dateName]);
+            });
+        } else {
+            const holidate = moment(holyList.locdate, "YYYYMMDD").format("YYYY-MM-DD");
+            await pool.query(query, [holidate, holyList.dateName]);
+        }
+    };
+    await executeJob();
+};
+
+module.exports = { doJob, doKIS, doHoly };

@@ -3,7 +3,6 @@ var pool = require("../../config/db.connect.js");
 const axios = require("axios");
 const dotenv = require("dotenv");
 const moment = require("moment-timezone");
-const isHoliday = require("@kokr/date");
 var router = express.Router();
 
 dotenv.config();
