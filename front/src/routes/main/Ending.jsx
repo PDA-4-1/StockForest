@@ -32,6 +32,7 @@ export default function Ending() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const restart = () => {
+        setCongSee(false);
         PatchEnding()
             .then((data) => {
                 console.log(data);
@@ -39,8 +40,8 @@ export default function Ending() {
                     GetUserProfile().then((data) => {
                         console.log(data);
                         dispatch(saveUser(data));
+                        navigate("/farm");
                     });
-                    navigate("/farm");
                 }
             })
             .catch((err) => console.log(err));
