@@ -59,6 +59,8 @@ const doKIS = async () => {
         if (dateDay === 0 || dateDay === 6) {
             //주말 확인
             console.log("주말입니다 !");
+            const weekendQuery = `INSERT INTO holiday VALUES (?, ?)`
+            await pool.query(weekendQuery, [date.format("YYYY-MM-DD"), "주말"]);
             return;
         }
         //오후 4시 확인
