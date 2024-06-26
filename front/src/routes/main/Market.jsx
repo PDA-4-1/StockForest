@@ -5,17 +5,14 @@ import StockCard from "../../components/StockCard";
 import StockDetail from "../../components/StockDetail";
 import Ranking from "../../components/Ranking/Ranking";
 import { GetStockChart, GetStockList, NextTurn } from "../../lib/apis/stock";
-import {
-    savePrices,
-    saveStockList,
-    saveSelectedStock,
-} from "../../store/stockSlice";
+import { savePrices, saveStockList, saveSelectedStock } from "../../store/stockSlice";
 import Profile from "../../components/Profile";
 import { GetUserProfile } from "../../lib/apis/user";
 import { saveTurn, saveUser } from "../../store/userSlice";
 import NewsModal from "../../components/Modal/NewsModal";
 import NumModal from "../../components/Modal/NumModal";
 import pli from "~/public/imgs/pli.png";
+import { useNavigate } from "react-router-dom";
 
 const Market = () => {
     const selectedStock = useSelector((state) => state.stock.selectedStock);
@@ -42,7 +39,12 @@ const Market = () => {
             .catch((err) => console.log(err));
     };
 
+    const navigate = useNavigate();
     const nextTurn = () => {
+        if (turn === 155) {
+            setRound(turn + 1);
+            navigate("/ending");
+        }
         setRound(turn + 1);
         setRoundSee(true);
         NextTurn(turn)
@@ -64,6 +66,10 @@ const Market = () => {
     useEffect(() => {
         GetUserProfile()
             .then((data) => {
+                if (data.turn >= 156) {
+                    navigate("/ending");
+                }
+
                 dispatch(saveUser(data));
                 GetStockList(data.turn)
                     .then((data) => {
@@ -116,12 +122,7 @@ const Market = () => {
                     <Ranking />
                 </div>
             </div>
-            {modalSee && (
-                <NewsModal
-                    onHide={() => setModalSee(false)}
-                    newsList={newsList}
-                />
-            )}
+            {modalSee && <NewsModal onHide={() => setModalSee(false)} newsList={newsList} />}
             {roundSee && <NumModal turn={round} />}
         </div>
     );
