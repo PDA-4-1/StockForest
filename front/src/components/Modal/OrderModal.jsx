@@ -11,6 +11,7 @@ export default function OrderModal(props) {
     const stockId = props.stockId;
     const price = props.price;
     const count = props.count;
+    const avgPrice = props.avgPrice;
     const dispatch = useDispatch();
     const [num, setNum] = useState(0);
     const handleModalClick = (e) => {
@@ -85,7 +86,11 @@ export default function OrderModal(props) {
                             </div>
                         </div>
                         <div className="flex justify-between">
-                            <p>가격</p>
+                            <p>원래 가격</p>
+                            <p>{avgPrice} 프디</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p>현재 가격</p>
                             <p>{price} 프디</p>
                         </div>
                         <div className="flex justify-between">
