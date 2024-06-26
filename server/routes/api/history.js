@@ -10,27 +10,23 @@ router.get("/:stockId/:action", async (req, res) => {
 
     try {
         // 전체 조회
-        const baseQuery = `SELECT is_buy, price, quantity, turn FROM stock_history WHERE user_id = ?`;
-        let subQuery;
+        const baseQuery = `SELECT stock_id, is_buy, price, quantity, turn FROM stock_history WHERE user_id = ?`;
+        let subQuery = baseQuery;
         let params = [userId];
         if (stockId == 0) {
-            allQuery = `SELECT stock_id, is_buy, price, quantity, turn FROM stock_history WHERE user_id = ?`;
-            if (action == 2) {
-                // 전체조회
-                subQuery = allQuery;
-            } else {
+            if (action != 2) {
                 // 종목만 전체
-                subQuery = allQuery + ` AND is_buy = ?`;
+                subQuery += ` AND is_buy = ?`;
                 params.push(action);
             }
         } else {
             if (action == 2) {
                 // 거래만 전체
-                subQuery = baseQuery + ` AND stock_id = ?`;
+                subQuery += ` AND stock_id = ?`;
                 params.push(stockId);
             } else {
                 // 종목, 거래 골라서
-                subQuery = baseQuery + ` AND stock_id = ? AND is_buy = ?`;
+                subQuery += ` AND stock_id = ? AND is_buy = ?`;
                 params.push(stockId);
                 params.push(action);
             }
