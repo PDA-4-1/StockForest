@@ -8,6 +8,7 @@ module.exports = {
                 "2xl": "1700px",
                 "xl": "1600px",
                 "l": "1500px",
+                "m": "1400px",
             },
             backgroundImage: {
                 "background-pattern": "url('/imgs/background.svg')",
