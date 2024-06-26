@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BgmBtn from "./BgmBtn";
+import StockHistoryButton from "./StockHistoryButton";
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ const Navbar = () => {
                         className="w-[90px] h-[60px] cursor-pointer"
                     />
                 </div>
-                <div className="flex-grow flex justify-center space-x-4 gap-20">
+                <div className="flex-grow flex justify-center space-x-4 gap-20 ml-[13vw]">
                     <div className="flex">
                         <img
                             src="/imgs/market.svg"
@@ -59,6 +60,9 @@ const Navbar = () => {
                             농장으로
                         </button>
                     </div>
+                </div>
+                <div>
+                    <StockHistoryButton/>
                 </div>
                 <div className="flex mr-10 bg-yellow-300 px-3 py-1 border-black rounded-[20px] cursor-pointer">
                     <img
