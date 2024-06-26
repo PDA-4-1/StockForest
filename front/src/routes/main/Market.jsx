@@ -12,6 +12,7 @@ import { saveTurn, saveUser } from "../../store/userSlice";
 import NewsModal from "../../components/Modal/NewsModal";
 import NumModal from "../../components/Modal/NumModal";
 import pli from "~/public/imgs/pli.png";
+import { useNavigate } from "react-router-dom";
 
 const Market = () => {
     const stockList = useSelector((state) => state.stock.stockList);
@@ -36,7 +37,13 @@ const Market = () => {
             })
             .catch((err) => console.log(err));
     };
+
+    const navigate = useNavigate();
     const nextTurn = () => {
+        if (turn === 155) {
+            setRound(turn + 1);
+            navigate("/ending");
+        }
         setRound(turn + 1);
         setRoundSee(true);
         NextTurn(turn)
@@ -57,6 +64,9 @@ const Market = () => {
     };
 
     useEffect(() => {
+        if (turn >= 156) {
+            navigate("/ending");
+        }
         GetUserProfile()
             .then((data) => {
                 console.log(data);
