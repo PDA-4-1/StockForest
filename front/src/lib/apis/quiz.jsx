@@ -23,7 +23,14 @@ export async function AnswerQuiz() {
     return res.data;
 }
 
+// 투자전략 정보 요청
 export async function ContentQuiz() {
     const res = await service.get("/content");
+    return res.data;
+}
+
+// 공휴일인지 확인
+export async function checkHoly(date) {
+    const res = await service.get(`/${date}`);
     return res.data;
 }
