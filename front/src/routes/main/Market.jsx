@@ -5,11 +5,7 @@ import StockCard from "../../components/StockCard";
 import StockDetail from "../../components/StockDetail";
 import Ranking from "../../components/Ranking/Ranking";
 import { GetStockChart, GetStockList, NextTurn } from "../../lib/apis/stock";
-import {
-    savePrices,
-    saveStockList,
-    saveSelectedStock,
-} from "../../store/stockSlice";
+import { savePrices, saveStockList, saveSelectedStock } from "../../store/stockSlice";
 import Profile from "../../components/Profile";
 import { GetUserProfile } from "../../lib/apis/user";
 import { saveTurn, saveUser } from "../../store/userSlice";
@@ -68,11 +64,12 @@ const Market = () => {
     };
 
     useEffect(() => {
-        if (turn >= 156) {
-            navigate("/ending");
-        }
         GetUserProfile()
             .then((data) => {
+                if (data.turn >= 156) {
+                    navigate("/ending");
+                }
+
                 dispatch(saveUser(data));
                 GetStockList(data.turn)
                     .then((data) => {
@@ -125,12 +122,7 @@ const Market = () => {
                     <Ranking />
                 </div>
             </div>
-            {modalSee && (
-                <NewsModal
-                    onHide={() => setModalSee(false)}
-                    newsList={newsList}
-                />
-            )}
+            {modalSee && <NewsModal onHide={() => setModalSee(false)} newsList={newsList} />}
             {roundSee && <NumModal turn={round} />}
         </div>
     );
