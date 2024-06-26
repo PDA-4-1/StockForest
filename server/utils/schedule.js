@@ -35,7 +35,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("0 30 2 * * *", executeJob);
+    schedule.scheduleJob("0 0 0 * * *", executeJob);
 };
 
 const realCode = [
@@ -55,27 +55,35 @@ const doKIS = async () => {
         // 한국투자증권 API 연결 - OAuth2 토큰 받기
         // 요청 내용 작성, 요청 보내기
         const date = moment().tz("Asia/Seoul");
-        // 로그 확인용
-        const current = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
-        console.log("함수 실행 시각 : " + current);
         const dateDay = date.day();
+        //주말 확인
         if (dateDay === 0 || dateDay === 6) {
-            //주말 확인
             console.log("주말입니다 !");
+            const weekendQuery = `INSERT INTO holiday VALUES (?, ?)`;
+            await pool.query(weekendQuery, [date.format("YYYY-MM-DD"), "주말"]);
             return;
         }
+        //공휴일 확인
+        const holyQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
+        var [isHoly] = await pool.query(holyQuery, [
+            date.format("YYYY-MM-DD"),
+        ]);
+        if (isHoly[0].count > 0) {
+            console.log("오늘은 공휴일입니다!");
+            return;
+        }
+
         //오후 4시 확인
         const startOfDay = moment.tz("Asia/Seoul").startOf("day"); // 오늘의 시작 시간 (00:00:00)
         const endOfQuizTime = moment
             .tz("Asia/Seoul")
             .startOf("day")
             .add(16, "hours"); // 오늘의 오후 4시 (16:00:00)
-        // 로그 확인용
-        // if (date.isBetween(startOfDay, endOfQuizTime)) {
-        //     console.log("오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.");
-        //     console.log(date.format());
-        //     return;
-        // }
+        if (date.isBetween(startOfDay, endOfQuizTime)) {
+            console.log("오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.");
+            console.log(date.format());
+            return;
+        }
         let headers;
         const URL = "https://openapi.koreainvestment.com:9443/oauth2/tokenP";
         headers = {
@@ -90,17 +98,24 @@ const doKIS = async () => {
 
         // Token 확인
         const accessToken = tokenReq.data.access_token;
-        // 로그 확인용
-        console.log("accessToken : " + accessToken);
 
         // 한국투자증권 API 연결 - 일일 주가 요청하기
-        const yesterday = moment()
+        var yesterday = moment()
             .tz("Asia/Seoul")
-            .subtract(1, "days")
-            .format("YYYY-MM-DD"); // 하루 전 날
-        const today = moment(yesterday).add(1, "days").format("YYYY-MM-DD");
+            .subtract(1, "days");// 하루 전 날
+        // 공휴일인지 확인
+        [isHoly] = await pool.query(holyQuery, [
+            yesterday.format("YYYY-MM-DD"),
+        ]);
+        while (isHoly[0].count > 0) {
+            yesterday = yesterday.subtract(1, "days");
+            [isHoly] = await pool.query(holyQuery, [
+                yesterday.format("YYYY-MM-DD"),
+            ]); 
+        }
+        yesterday = yesterday.format("YYYY-MM-DD");
         const startDate = moment(yesterday).format("YYYYMMDD");
-        const endDate = moment(yesterday).add(1, "days").format("YYYYMMDD");
+        const endDate = date.format("YYYYMMDD");
 
         const KIS_URL =
             "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
@@ -122,12 +137,8 @@ const doKIS = async () => {
                 FID_ORG_ADJ_PRC: 0,
             };
             let todayCost, yesterdayCost;
-            // 로그 확인용
-            console.log("params 할당 끝");
             try {
                 const stockReq = await axios.get(KIS_URL, { headers, params });
-                // 로그 확인용
-                console.log("api 요청 완료")
                 todayCost = stockReq.data.output2[0].stck_clpr;
                 yesterdayCost = stockReq.data.output2[1].stck_clpr;
                 const isUp =
@@ -138,7 +149,7 @@ const doKIS = async () => {
                         : 3;
                 const query = `INSERT INTO quiz_answer (date, stock_id, stock_name, answer, today_cost, yesterday_cost) VALUES (?,?,?,?,?,?)`;
                 await pool.query(query, [
-                    today,
+                    endDate,
                     i + 1,
                     realCode[i][1],
                     isUp,
@@ -151,7 +162,7 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 48 2 * * *", executeJob); //한국시간 기준으로 변경
+    schedule.scheduleJob("0 0 8 * * *", executeJob); //한국시간 기준으로 작성
 };
 
 const doHoly = async () => {
