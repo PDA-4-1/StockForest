@@ -197,11 +197,15 @@ const doHoly = async () => {
         }
     };
     await executeJob();
-    const schedule = cron.schedule('0 0 0 1 * *', () => {
-        executeJob();
-    }, {
-        timezone: "Asia/Seoul"
-    });
+    const schedule = cron.schedule(
+        "0 0 0 1 * *",
+        () => {
+            executeJob();
+        },
+        {
+            timezone: "Asia/Seoul",
+        }
+    );
     schedule.start();
 };
 
