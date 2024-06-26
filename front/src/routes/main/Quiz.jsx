@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "~/components/Navbar";
 import moment from "moment-timezone";
-import { ContentQuiz, AnswerQuiz, UpdateQuiz, checkHoly } from "~/lib/apis/quiz";
+import {
+    ContentQuiz,
+    AnswerQuiz,
+    UpdateQuiz,
+    checkHoly,
+} from "~/lib/apis/quiz";
 import QuizModal from "~/components/QuizModal";
 import QuizAnswerModal from "~/components/QuizAnswerModal";
 import StockDropdown from "~/components/StockDropdown";
@@ -24,6 +29,7 @@ const Quiz = () => {
         yesterdayCost: 0,
     });
     const [isHoly, setIsHoly] = useState(false);
+    const [dateName, setDateName] = useState("");
 
     // date 설정 -> 오늘 날짜로 설정하기(서울 기준)
     useEffect(() => {
@@ -32,15 +38,15 @@ const Quiz = () => {
 
         async function getHoly() {
             const data = await checkHoly(currentDate);
-            console.log(data);
-            setIsHoly(data.content);
+            setDateName(data.date_name);
+            setIsHoly(data.isHoly);
         }
         async function getContent() {
             const data = await ContentQuiz();
             setQuizNews(data.content);
         }
         getHoly();
-        if(!isHoly) getContent();
+        if (!isHoly) getContent();
     }, []);
 
     const postAnswer = async () => {
@@ -73,45 +79,62 @@ const Quiz = () => {
     return (
         <div className="bg-background-pattern bg-cover bg-center h-screen ">
             <Navbar />
-            <div className="flex justify-center">
-                <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('imgs/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
-                    <div className="w-2/3 relative right-[60px]">
-                        <div>{truncateText(quizNews, 150)}</div>
+            {console.log("isHoly : " + isHoly)}
+            {isHoly ? (
+                <div className="flex justify-center">
+                    <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('imgs/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
+                        <div className="w-2/3 relative right-[60px]">
+                            <div className="text-center">오늘은 {dateName}이기 때문에 주식장이 안 열립니다!</div>
+                            <div className="text-center">퀴즈는 다음에 만나요 !</div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div>
+                    <div className="flex justify-center">
+                        <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('imgs/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
+                            <div className="w-2/3 relative right-[60px]">
+                                <div>{truncateText(quizNews, 150)}</div>
+                                <button
+                                    className="flex ml-auto text-sky-400"
+                                    onClick={() => setModalSee(true)}
+                                >
+                                    더보기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        <div className="flex items-center gap-4">
+                            <StockDropdown
+                                stockName={stockName}
+                                setStockName={setStockName}
+                                setStockId={setStockId}
+                            />
+                            <UpDownDropdown
+                                upDown={upDown}
+                                setUpDown={setUpDown}
+                            />
+                            <div className="flex justify-center w-full">
+                                <button
+                                    className="w-40 text-center bg-black text-white px-4 py-2 rounded-md"
+                                    onClick={postAnswer}
+                                >
+                                    저장
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex justify-center w-full mt-5">
                         <button
-                            className="flex ml-auto text-sky-400"
-                            onClick={() => setModalSee(true)}
+                            className="text-center bg-yellow-500 text-white px-4 py-2 rounded-md"
+                            onClick={checkAnswer}
                         >
-                            더보기
+                            어제 푼 퀴즈 확인하기
                         </button>
                     </div>
                 </div>
-            </div>
-            <div className="flex justify-center mt-4">
-                <div className="flex items-center gap-4">
-                    <StockDropdown
-                        stockName={stockName}
-                        setStockName={setStockName}
-                        setStockId={setStockId}
-                    />
-                    <UpDownDropdown upDown={upDown} setUpDown={setUpDown} />
-                    <div className="flex justify-center w-full">
-                        <button
-                            className="w-40 text-center bg-black text-white px-4 py-2 rounded-md"
-                            onClick={postAnswer}
-                        >
-                            저장
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div className="flex justify-center w-full mt-5">
-                <button
-                    className="text-center bg-yellow-500 text-white px-4 py-2 rounded-md"
-                    onClick={checkAnswer}
-                >
-                    어제 푼 퀴즈 확인하기
-                </button>
-            </div>
+            )}
             {modalSee && (
                 <QuizModal
                     onHide={() => setModalSee(false)}
