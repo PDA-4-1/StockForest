@@ -1,7 +1,10 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { MdCancel } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { saveSelectedStock } from "../store/stockSlice";
+import { GetStockList } from "../lib/apis/stock";
 
 const CompanyProfile = ({
     visible,
@@ -12,10 +15,23 @@ const CompanyProfile = ({
     currentPrice,
 }) => {
     const navigate = useNavigate();
-    const userInfo = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
+    const turn = useSelector((state) => state.user.user.turn);
 
-    const goMarket = () => {
-        navigate("/market");
+    const goMarket = async () => {
+        try {
+            const stockList = await GetStockList(turn);
+
+            const marketData = stockList.find(
+                (item) => item.id === stock.stock_id
+            );
+
+            dispatch(saveSelectedStock(marketData));
+
+            navigate("/market");
+        } catch (error) {
+            console.error("Error fetching stock list:", error);
+        }
     };
 
     return (
@@ -37,12 +53,23 @@ const CompanyProfile = ({
                             </div>
                         )}
                         <div>{name}</div>
+                        <MdCancel
+                            onClick={onClose}
+                            className="relative left-[10px] cursor-pointer"
+                        />
                     </div>
                     <div className="grid grid-cols-1 gap-2 mb-4 row-span-2">
                         <div>나의 주식수 : {stock.quantity}개</div>
                         <div>평단가 : {stock.avg_price}원</div>
                         <div>현재가 : {currentPrice}</div>
-                        <div>수익률 : {stock.returns}%</div>
+                        <div>
+                            수익률 :{" "}
+                            {stock.returns !== undefined &&
+                            stock.returns !== null
+                                ? stock.returns.toFixed(2)
+                                : "데이터 없음"}
+                            %
+                        </div>
                     </div>
                     <button
                         onClick={goMarket}
