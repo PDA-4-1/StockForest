@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Toast } from "../../components/Toast";
+import { handleLogin } from "../login/Login";
 
 const Signup = () => {
     const {
@@ -22,7 +23,7 @@ const Signup = () => {
 
             if (response.status === 200) {
                 Toast.fire("회원가입 성공!", "", "success");
-                navigate("/login");
+                handleLogin(nickname, password, navigate);
             }
         } catch (error) {
             if (error.response) {

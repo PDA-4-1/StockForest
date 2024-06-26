@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     prices: [],
     stockList: [],
+    selectedStock: null,
     bgmOn: true,
 };
 
@@ -22,6 +23,10 @@ const stockSlice = createSlice({
             const newStockList = action.payload;
             state.stockList = newStockList;
         },
+        saveSelectedStock: (state, action) => {
+            const selectedStock = action.payload;
+            state.selectedStock = selectedStock;
+        },
         setBgm: (state, action) => {
             state.bgmOn = !state.bgmOn;
         },
@@ -29,4 +34,4 @@ const stockSlice = createSlice({
 });
 
 export default stockSlice.reducer;
-export const { reset, savePrices, saveStockList, setBgm } = stockSlice.actions;
+export const { reset, savePrices, saveSelectedStock, saveStockList, setBgm } = stockSlice.actions;
