@@ -85,20 +85,20 @@ const StockHistoryButton = () => {
 
     const stockDetails = {
         0: { name: "전체", image: null },
-        1: { name: "콩순전자", image: "/imgs/field/tomato/tomato1.png" },
-        2: { name: "도토리톡", image: "/imgs/field/banana/banana1.png" },
+        1: { name: "콩순전자", image: "/imgs/field/tomato/tomatoprofile.png" },
+        2: { name: "도토리톡", image: "/imgs/field/banana/bananaprofile.png" },
         3: {
             name: "뉴진수퍼노바",
-            image: "/imgs/field/blueberry/blueberry1.png",
+            image: "/imgs/field/blueberry/blueberryprofile.png",
         },
-        4: { name: "주식회사붕붕", image: "/imgs/field/peach/peach1.png" },
-        5: { name: "미미네약국", image: "/imgs/field/orange/orange1.png" },
-        6: { name: "철수건설", image: "/imgs/field/melon/melon1.png" },
-        7: { name: "올리브업", image: "/imgs/field/grape/grape1.png" },
-        8: { name: "숲속여관", image: "/imgs/field/apple/apple1.png" },
+        4: { name: "주식회사붕붕", image: "/imgs/field/peach/peachprofile.png" },
+        5: { name: "미미네약국", image: "/imgs/field/orange/orangeprofile.png" },
+        6: { name: "철수건설", image: "/imgs/field/melon/melonprofile.png" },
+        7: { name: "올리브업", image: "/imgs/field/grape/grapeprofile.png" },
+        8: { name: "숲속여관", image: "/imgs/field/apple/appleprofile.png" },
         9: {
             name: "과학나라",
-            image: "/imgs/field/strawberry/strawberry1.png",
+            image: "/imgs/field/strawberry/strawberryprofile.png",
         },
     };
 
@@ -161,23 +161,23 @@ const StockHistoryButton = () => {
     return (
         <div>
             <button
-                className="bg-yellow-300 px-3 py-1 border-black rounded-[10px] cursor-pointer hover:brightness-75 mr-[10px]"
+                className="bg-green-300 px-3 py-3 border-black rounded-[20px] cursor-pointer hover:brightness-75 mr-[10px]"
                 onClick={handleOpenModal}
             >
-                기록 보기
+                거래 기록 보기
             </button>
 
             <Modal show={showModal} onClose={handleCloseModal}>
                 <h2>나의 거래 기록</h2>
                 <StockSelector stocks={stocks} onSelect={handleStockSelect} />
                 <Tabs activeTab={activeTab} onTabChange={handleTabChange} />
-                <div className="flex-grow">
+                <div className="flex-grow ">
                     {hasHistory ? (
                         <ul>
                             {historyData.map((item, index) => (
                                 <li
                                     key={index}
-                                    className="flex items-center mb-4"
+                                    className="flex items-center mb-4 border-b-2 border-gray pb-2"
                                 >
                                     {stockDetails[item.stock_id] &&
                                     stockDetails[item.stock_id].image ? (
@@ -193,17 +193,20 @@ const StockHistoryButton = () => {
                                         />
                                     ) : null}
                                     <div className="flex flex-col">
-                                        <strong
-                                        >
+                                        <strong>
                                             {stockDetails[item.stock_id]
                                                 ? stockDetails[item.stock_id]
                                                       .name
                                                 : "Unknown"}
                                         </strong>{" "}
                                         {item.is_buy === 1 ? (
-                                            <span className="text-red-500">구입</span>
+                                            <span className="text-red-500">
+                                                구입
+                                            </span>
                                         ) : (
-                                            <span className="text-blue-500">판매</span>
+                                            <span className="text-blue-500">
+                                                판매
+                                            </span>
                                         )}
                                         <div className="flex items-center">
                                             <img
