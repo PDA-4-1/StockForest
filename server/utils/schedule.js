@@ -156,39 +156,43 @@ const doHoly = async () => {
             ServiceKey: process.env.ServiceKey,
             _type: "json",
         };
-        const holyReq = await axios.get(HOLY_URL, { params });
-        const holyList = holyReq.data.response.body.items.item;
-        if (holyList === null || holyList === undefined) {
-            return;
-        }
-        const query = `INSERT INTO holiday VALUES (?,?)`;
-        if (Array.isArray(holyList)) {
-            holyList.map(async (elem, i) => {
-                const holiDate = moment(elem.locdate, "YYYYMMDD").format(
+        try {
+            const holyReq = await axios.get(HOLY_URL, { params });
+            const holyList = holyReq.data.response.body.items.item;
+            if (holyList === null || holyList === undefined) {
+                return;
+            }
+            const query = `INSERT INTO holiday VALUES (?,?)`;
+            if (Array.isArray(holyList)) {
+                holyList.map(async (elem, i) => {
+                    const holiDate = moment(elem.locdate, "YYYYMMDD").format(
+                        "YYYY-MM-DD"
+                    );
+                    await pool.query(query, [holiDate, elem.dateName]);
+                });
+            } else {
+                const holiDate = moment(holyList.locdate, "YYYYMMDD").format(
                     "YYYY-MM-DD"
                 );
-                await pool.query(query, [holiDate, elem.dateName]);
-            });
-        } else {
-            const holiDate = moment(holyList.locdate, "YYYYMMDD").format(
-                "YYYY-MM-DD"
-            );
-            await pool.query(query, [holiDate, holyList.dateName]);
-        }
-        if (month == "05") {
-            const holiDate = moment(`${year}${month}01`, "YYYYMMDD").format(
-                "YYYY-MM-DD"
-            );
-            await pool.query(query, [holiDate, "근로자의 날"]);
-        }
-        if (month == "12") {
-            var lastDate = moment(`${year}${month}31`, "YYYYMMDD");
-            while (lastDate.day() == 0 || lastDate.day() == 6) {
-                lastDate = lastDate.subtract(1, "days");
+                await pool.query(query, [holiDate, holyList.dateName]);
             }
-            const holiDate = moment(lastDate).format("YYYY-MM-DD");
-            console.log(holiDate);
-            await pool.query(query, [holiDate, "올해 마지막 평일"]);
+            if (month == "05") {
+                const holiDate = moment(`${year}${month}01`, "YYYYMMDD").format(
+                    "YYYY-MM-DD"
+                );
+                await pool.query(query, [holiDate, "근로자의 날"]);
+            }
+            if (month == "12") {
+                var lastDate = moment(`${year}${month}31`, "YYYYMMDD");
+                while (lastDate.day() == 0 || lastDate.day() == 6) {
+                    lastDate = lastDate.subtract(1, "days");
+                }
+                const holiDate = moment(lastDate).format("YYYY-MM-DD");
+                console.log(holiDate);
+                await pool.query(query, [holiDate, "올해 마지막 평일"]);
+            }
+        } catch (e) {
+            console.log(e);
         }
     };
     await executeJob();
