@@ -55,9 +55,6 @@ const doKIS = async () => {
         // 한국투자증권 API 연결 - OAuth2 토큰 받기
         // 요청 내용 작성, 요청 보내기
         const date = moment().tz("Asia/Seoul");
-        // 로그 확인용
-        const current = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
-        console.log("함수 실행 시각 : " + current);
         const dateDay = date.day();
         if (dateDay === 0 || dateDay === 6) {
             //주말 확인
@@ -70,12 +67,11 @@ const doKIS = async () => {
             .tz("Asia/Seoul")
             .startOf("day")
             .add(16, "hours"); // 오늘의 오후 4시 (16:00:00)
-        // 로그 확인용
-        // if (date.isBetween(startOfDay, endOfQuizTime)) {
-        //     console.log("오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.");
-        //     console.log(date.format());
-        //     return;
-        // }
+        if (date.isBetween(startOfDay, endOfQuizTime)) {
+            console.log("오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.");
+            console.log(date.format());
+            return;
+        }
         let headers;
         const URL = "https://openapi.koreainvestment.com:9443/oauth2/tokenP";
         headers = {
@@ -90,8 +86,6 @@ const doKIS = async () => {
 
         // Token 확인
         const accessToken = tokenReq.data.access_token;
-        // 로그 확인용
-        console.log("accessToken : " + accessToken);
 
         // 한국투자증권 API 연결 - 일일 주가 요청하기
         const yesterday = moment()
@@ -122,12 +116,8 @@ const doKIS = async () => {
                 FID_ORG_ADJ_PRC: 0,
             };
             let todayCost, yesterdayCost;
-            // 로그 확인용
-            console.log("params 할당 끝");
             try {
                 const stockReq = await axios.get(KIS_URL, { headers, params });
-                // 로그 확인용
-                console.log("api 요청 완료")
                 todayCost = stockReq.data.output2[0].stck_clpr;
                 yesterdayCost = stockReq.data.output2[1].stck_clpr;
                 const isUp =
