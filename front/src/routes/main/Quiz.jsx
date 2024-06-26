@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "~/components/Navbar";
 import moment from "moment-timezone";
-import { ContentQuiz, AnswerQuiz, UpdateQuiz } from "~/lib/apis/quiz";
+import { ContentQuiz, AnswerQuiz, UpdateQuiz, checkHoly } from "~/lib/apis/quiz";
 import QuizModal from "~/components/QuizModal";
 import QuizAnswerModal from "~/components/QuizAnswerModal";
 import StockDropdown from "~/components/StockDropdown";
@@ -23,17 +23,24 @@ const Quiz = () => {
         todayCost: 0,
         yesterdayCost: 0,
     });
+    const [isHoly, setIsHoly] = useState(false);
 
     // date 설정 -> 오늘 날짜로 설정하기(서울 기준)
     useEffect(() => {
         const currentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD");
         setDate(currentDate);
 
+        async function getHoly() {
+            const data = await checkHoly(currentDate);
+            console.log(data);
+            setIsHoly(data.content);
+        }
         async function getContent() {
             const data = await ContentQuiz();
             setQuizNews(data.content);
         }
-        getContent();
+        getHoly();
+        if(!isHoly) getContent();
     }, []);
 
     const postAnswer = async () => {
