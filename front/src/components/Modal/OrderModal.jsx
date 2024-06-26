@@ -21,13 +21,13 @@ export default function OrderModal(props) {
     const sellStock = () => {
         // console.log(num, stockId, price, price * num);
         if (!num) {
-            Toast.fire("팔 나무를 1개 이상 골라주세요", "", "error");
+            Toast.fire("팔 과일을 1개 이상 골라주세요", "", "error");
             return;
         }
         SellStock(stockId, price, num)
             .then((data) => {
                 // console.log(data);
-                Toast.fire("주식을 판매했습니다", "", "success");
+                Toast.fire("과일을 판매했습니다", "", "success");
                 dispatch(savePdi(price * num));
                 onHide();
             })
@@ -40,13 +40,13 @@ export default function OrderModal(props) {
     const buyStock = () => {
         // console.log(num, stockId, price, price * num);
         if (!num) {
-            Toast.fire("살 나무를 1개 이상 골라주세요", "", "error");
+            Toast.fire("살 과일을 1개 이상 골라주세요", "", "error");
             return;
         }
         BuyStock(stockId, price, num)
             .then((data) => {
                 console.log(data);
-                Toast.fire("주식을 구매했습니다", "", "success");
+                Toast.fire("과일을 구매했습니다", "", "success");
                 dispatch(savePdi(-(price * num)));
                 onHide();
             })
@@ -68,11 +68,11 @@ export default function OrderModal(props) {
                     <div className="text-center grid gap-6 w-full">
                         <p className="text-2xl font-bold">판 매 서</p>
                         <div className="flex justify-between">
-                            <p>내 나무</p>
-                            <p>{count} 그루</p>
+                            <p>내 과일</p>
+                            <p>{count} 개</p>
                         </div>
                         <div className="flex justify-between">
-                            <p>팔 나무</p>
+                            <p>팔 과일</p>
                             <div className="flex space-x-1">
                                 <input
                                     type="number"
@@ -81,7 +81,7 @@ export default function OrderModal(props) {
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
-                                <p>그루</p>
+                                <p>개</p>
                             </div>
                         </div>
                         <div className="flex justify-between">
@@ -101,7 +101,7 @@ export default function OrderModal(props) {
                     <div className="text-center grid gap-6 w-full">
                         <p className="text-2xl font-bold">주 문 서</p>
                         <div className="flex justify-between">
-                            <p>살 나무</p>
+                            <p>살 과일</p>
                             <div className="flex space-x-1">
                                 <input
                                     type="number"
@@ -110,7 +110,7 @@ export default function OrderModal(props) {
                                     onChange={(e) => setNum(e.target.value)}
                                     className="w-40 max-h-6 text-right"
                                 />
-                                <p>그루</p>
+                                <p>개</p>
                             </div>
                         </div>
                         <div className="flex justify-between">
