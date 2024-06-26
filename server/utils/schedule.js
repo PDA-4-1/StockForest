@@ -151,7 +151,7 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 40 2 * * *", executeJob); //한국시간 기준으로 변경
+    schedule.scheduleJob("0 48 2 * * *", executeJob); //한국시간 기준으로 변경
 };
 
 const doHoly = async () => {
