@@ -1,9 +1,20 @@
 import { IoTriangleSharp } from "react-icons/io5";
 
 export default function StockCard(props) {
-    const { name, price, diff } = props.stock;
+    const { id, name, price, diff } = props.stock;
     const selected = props.selected;
     const onClick = props.onClick;
+    const stockImages = {
+        1: "/imgs/field/tomato/tomato1.png",
+        2: "/imgs/field/banana/banana1.png",
+        3: "/imgs/field/blueberry/blueberry1.png",
+        4: "/imgs/field/peach/peach1.png",
+        5: "/imgs/field/orange/orange1.png",
+        6: "/imgs/field/melon/melon1.png",
+        7: "/imgs/field/grape/grape1.png",
+        8: "/imgs/field/apple/apple1.png",
+        9: "/imgs/field/strawberry/strawberry2.png",
+    };
 
     return (
         <div
@@ -12,7 +23,7 @@ export default function StockCard(props) {
             } w-full rounded-3xl flex items-center justify-center px-3 space-x-2 hover:cursor-pointer hover:bg-select-green max-w-[180px]`}
             onClick={onClick}
         >
-            <div className="w-9 h-9 rounded-full bg-black"></div>
+            <img src={stockImages[id]} className="w-9 h-9 rounded-full" />
             <div className="text-sm min-w-[100px]">
                 <p className={selected == name ? "text-white" : ""}>{name}</p>
                 <div

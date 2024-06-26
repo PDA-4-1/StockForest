@@ -3,6 +3,7 @@ const axios = require("axios");
 const https = require("https");
 const moment = require("moment");
 const pool = require("../config/db.connect");
+const cron = require("node-cron");
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -34,7 +35,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("0 30 8 * * *", executeJob);
+    schedule.scheduleJob("0 30 2 * * *", executeJob);
 };
 
 const realCode = [
@@ -140,7 +141,72 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 35 8 * * *", executeJob);//한국시간 기준으로 변경
+    schedule.scheduleJob("0 25 2 * * *", executeJob); //한국시간 기준으로 변경
 };
 
-module.exports = { doJob, doKIS };
+const doHoly = async () => {
+    const executeJob = async () => {
+        // 공공데이터 특일 정보 API 연결
+        const year = moment().tz("Asia/Seoul").format("Y");
+        const month = moment().tz("Asia/Seoul").format("MM");
+        const HOLY_URL =
+            "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo";
+        const params = {
+            solYear: year,
+            solMonth: month,
+            ServiceKey: process.env.ServiceKey,
+            _type: "json",
+        };
+        try {
+            const holyReq = await axios.get(HOLY_URL, { params });
+            const holyList = holyReq.data.response.body.items.item;
+            if (holyList === null || holyList === undefined) {
+                return;
+            }
+            const query = `INSERT INTO holiday VALUES (?,?)`;
+            if (Array.isArray(holyList)) {
+                holyList.map(async (elem, i) => {
+                    const holiDate = moment(elem.locdate, "YYYYMMDD").format(
+                        "YYYY-MM-DD"
+                    );
+                    await pool.query(query, [holiDate, elem.dateName]);
+                });
+            } else {
+                const holiDate = moment(holyList.locdate, "YYYYMMDD").format(
+                    "YYYY-MM-DD"
+                );
+                await pool.query(query, [holiDate, holyList.dateName]);
+            }
+            if (month == "05") {
+                const holiDate = moment(`${year}${month}01`, "YYYYMMDD").format(
+                    "YYYY-MM-DD"
+                );
+                await pool.query(query, [holiDate, "근로자의 날"]);
+            }
+            if (month == "12") {
+                var lastDate = moment(`${year}${month}31`, "YYYYMMDD");
+                while (lastDate.day() == 0 || lastDate.day() == 6) {
+                    lastDate = lastDate.subtract(1, "days");
+                }
+                const holiDate = moment(lastDate).format("YYYY-MM-DD");
+                console.log(holiDate);
+                await pool.query(query, [holiDate, "올해 마지막 평일"]);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    await executeJob();
+    const schedule = cron.schedule(
+        "0 0 0 1 * *",
+        () => {
+            executeJob();
+        },
+        {
+            timezone: "Asia/Seoul",
+        }
+    );
+    schedule.start();
+};
+
+module.exports = { doJob, doKIS, doHoly };

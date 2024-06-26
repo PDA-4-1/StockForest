@@ -70,7 +70,7 @@ const Navbar = () => {
                     <BgmBtn />
                 </div>
             </div>
-            <div className="border-b-2 border-[#FDF9EA] mt-2"></div>
+            <div className="border-b-2 border-[#008000] mt-2"></div>
         </>
     );
 };

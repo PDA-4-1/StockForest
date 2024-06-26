@@ -22,19 +22,19 @@ const ThreeModelViewer = () => {
             2000
         );
         // 카메라 위치 조정
-        camera.position.set(0, 500, 700);
+        camera.position.set(0, 50, 380);
 
         const scene = new THREE.Scene();
 
         // 조명 세팅
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
         scene.add(ambientLight);
 
         const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
         directionalLight1.position.set(-100, 200, -100).normalize();
         scene.add(directionalLight1);
 
-        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
         directionalLight2.position.set(100, -200, 100).normalize();
         scene.add(directionalLight2);
 
@@ -60,6 +60,7 @@ const ThreeModelViewer = () => {
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.125;
+        controls.enableZoom = false; // 마우스 휠 확대 및 축소 비활성화
 
         window.addEventListener("resize", onWindowResize);
 
@@ -97,10 +98,10 @@ const ThreeModelViewer = () => {
             model = gltf.scene;
             scene.add(model);
 
-            model.scale.set(700, 700, 700);
+            model.scale.set(500, 500, 500);
             model.rotation.y = 0;
             model.rotation.x = 0; // 초기 X축 회전 각도를 0으로 설정하여 직립 상태로 보이게 함
-            model.position.set(0, -600, 0); // 모델의 위치를 Y축 기준으로 덜 이동시킴
+            model.position.set(0, -450, 0); // 모델의 위치를 Y축 기준으로 덜 이동시킴
 
             model.traverse((node) => {
                 if (node.isMesh) {
@@ -126,7 +127,7 @@ const ThreeModelViewer = () => {
                 const upperBoundRotationX = 0.05; // 약 20도
 
                 // 새로운 Y축 회전 각도 계산
-                const newRotationY = mouseX * Math.PI * 0.45;
+                const newRotationY = mouseX * Math.PI * 0.6;
 
                 // Y축 회전 각도 제한 적용
                 if (
@@ -137,7 +138,7 @@ const ThreeModelViewer = () => {
                 }
 
                 // 새로운 X축 회전 각도 계산
-                const newRotationX = -mouseY * Math.PI * 0.34;
+                const newRotationX = -mouseY * Math.PI * 0.35;
 
                 // X축 회전 각도 제한 적용
                 if (

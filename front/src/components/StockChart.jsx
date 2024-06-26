@@ -3,31 +3,30 @@ import ReactApexChart from "react-apexcharts";
 import { useSelector } from "react-redux";
 
 const StockChart = () => {
-    /*
-  // 차트 데이터 예시
-  // name: 데이터 값의 이름
-  // data: 데이터 값 입력해주세용
-  series: [{
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-    }]
-
-
-
-  // X축 데이터 예시 ex) D-7, D-6, D-5... 1주일 데이터 넣을 예정
-  categories: [],
-
-  */
     const prices = useSelector((state) => state.stock.prices);
+
+    useEffect(() => {
+        setChartOptions((prevOptions) => ({
+            ...prevOptions,
+            series: [
+                {
+                    ...prevOptions.series[0],
+                    data: prices.slice().reverse(),
+                },
+            ],
+        }));
+    }, [prices]);
+
     const [chartOptions, setChartOptions] = useState({
         series: [
             {
-                name: "Desktops",
+                name: "가격",
                 data: [],
             },
         ],
         options: {
             chart: {
+                toolbar: { show: false },
                 height: "auto",
                 type: "line",
                 zoom: {
@@ -40,35 +39,40 @@ const StockChart = () => {
             stroke: {
                 curve: "straight",
             },
+            fill: {
+                type: "gradient",
+                gradient: { gradientToColors: ["blue"], stops: [0, 100] },
+            },
+            colors: ["red"],
             grid: {
                 row: {
-                    colors: ["#FEED9F", "transparent"], // takes an array which will be repeated on columns
+                    colors: ["#FEED9F", "transparent"], // takes an array which will be repeated on rows
                     opacity: 0.3,
                 },
             },
-            xaxis: {
-                categories: ["D-5", "D-4", "D-3", "D-2", "D-1"],
+            tooltip: {
+                x: {
+                    show: false, // x축 정보 비활성화
+                },
+                y: {
+                    formatter: (value) => `${value.toFixed(2)}프디`,
+                },
             },
-            colors: ["#88C9A1"],
+            xaxis: {
+                labels: { show: false },
+            },
         },
     });
-
-    useEffect(() => {
-        setChartOptions((prevOptions) => ({
-            ...prevOptions,
-            series: [
-                {
-                    ...prevOptions.series[0],
-                    data: prices,
-                },
-            ],
-        }));
-    }, [prices]);
 
     return (
         <div>
             <div id="chart">
-                <ReactApexChart options={chartOptions.options} series={chartOptions.series} type="line" height={300} />
+                <ReactApexChart
+                    options={chartOptions.options}
+                    series={chartOptions.series}
+                    type="line"
+                    height={300}
+                />
             </div>
             <div id="html-dist"></div>
         </div>
