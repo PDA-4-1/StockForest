@@ -1,7 +1,10 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { MdCancel } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { saveSelectedStock } from "../store/stockSlice";
+import { GetStockList } from "../lib/apis/stock";
 
 const CompanyProfile = ({
     visible,
@@ -12,9 +15,23 @@ const CompanyProfile = ({
     currentPrice,
 }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const turn = useSelector((state) => state.user.user.turn);
 
-    const goMarket = () => {
-        navigate("/market");
+    const goMarket = async () => {
+        try {
+            const stockList = await GetStockList(turn);
+
+            const marketData = stockList.find(
+                (item) => item.id === stock.stock_id
+            );
+
+            dispatch(saveSelectedStock(marketData));
+
+            navigate("/market");
+        } catch (error) {
+            console.error("Error fetching stock list:", error);
+        }
     };
 
     return (
@@ -36,10 +53,6 @@ const CompanyProfile = ({
                             </div>
                         )}
                         <div>{name}</div>
-                        {/* <button
-                            onClick={onClose}
-                            className="relative left-[10px] bg-wood-opacity-50 text-white px-2 py-2 rounded hover:brightness-75"
-                        ></button> */}
                         <MdCancel
                             onClick={onClose}
                             className="relative left-[10px] cursor-pointer"
