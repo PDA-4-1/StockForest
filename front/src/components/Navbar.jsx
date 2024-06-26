@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BgmBtn from "./BgmBtn";
+import StockHistoryButton from "./StockHistoryButton";
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -56,12 +57,16 @@ const Navbar = () => {
                         </button>
                     </div>
                 </div>
+                <div>
+                    <StockHistoryButton/>
+                </div>
                 <div className="flex mr-10 bg-yellow-300 px-3 py-1 border-black rounded-[20px] cursor-pointer">
                     <img
                         src="/imgs/quiz.svg"
                         alt="퀴즈"
                         className="size-10 cursor-pointer"
                     />
+
                     <button className="text-xl ml-2 text-[#505050]">
                         오늘의 퀴즈
                     </button>
