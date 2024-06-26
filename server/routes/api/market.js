@@ -35,7 +35,7 @@ router.get("/:turn", async (req, res) => {
         let date = moment("2020-01-01").add(req.params.turn * 7, "days"); // 시작 날짜 계산
 
         for (let i = 0; i < 7; i++) {
-            const query = `select a.id, a.name, a.description, b.price, b.diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
+            const query = `select a.id, a.name, a.description, b.price, b.diff_7 as diff from stock a inner join stock_price b on a.id=b.stock_id where b.date=?;`;
             const [result] = await pool.query(query, [date.add(i, "days").format("YYYY-MM-DD")]);
             if (result.length > 0) {
                 // 해당하는 turn에 주식이 있으면 응답
@@ -112,7 +112,7 @@ router.get("/:stockId/:turn", async (req, res) => {
         const [result] = await pool.query(query, [
             req.params.stockId,
             date.add((req.params.turn - 1) * 7, "days").format("YYYY-MM-DD"),
-            date.add(6, "days").format("YYYY-MM-DD"),
+            date.add(7, "days").format("YYYY-MM-DD"),
         ]);
         // console.log(result);
         res.status(200).send(result);
