@@ -59,9 +59,9 @@ const CompanyProfile = ({
                         />
                     </div>
                     <div className="grid grid-cols-1 gap-2 mb-4 row-span-2">
-                        <div>나의 주식수 : {stock.quantity}개</div>
-                        <div>평단가 : {stock.avg_price}원</div>
-                        <div>현재가 : {currentPrice}</div>
+                        <div>나의 과일 수 : {stock.quantity}개</div>
+                        <div>평균가격 : {stock.avg_price}원</div>
+                        <div>현재가격 : {currentPrice}</div>
                         <div>
                             수익률 :{" "}
                             {stock.returns !== undefined &&
@@ -75,7 +75,7 @@ const CompanyProfile = ({
                         onClick={goMarket}
                         className="bg-yellow-500 text-white px-2 py-2 rounded hover:brightness-75 row-span-1"
                     >
-                        팔러가기
+                        사기/팔기
                     </button>
                 </div>
             </div>
