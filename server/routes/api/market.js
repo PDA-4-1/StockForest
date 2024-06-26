@@ -112,7 +112,7 @@ router.get("/:stockId/:turn", async (req, res) => {
         const [result] = await pool.query(query, [
             req.params.stockId,
             date.add((req.params.turn - 1) * 7, "days").format("YYYY-MM-DD"),
-            date.add(6, "days").format("YYYY-MM-DD"),
+            date.add(7, "days").format("YYYY-MM-DD"),
         ]);
         // console.log(result);
         res.status(200).send(result);
