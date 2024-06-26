@@ -109,9 +109,10 @@ router.get("/:stockId/:turn", async (req, res) => {
     try {
         const date = moment("2020-01-01");
         const query = `select a.id, a.name, a.description, b.price, b.date, b.diff from stock a inner join stock_price b on a.id=b.stock_id where a.id=? and (b.date>=? and b.date<=?);`;
+
         const [result] = await pool.query(query, [
             req.params.stockId,
-            date.add((req.params.turn - 1) * 7, "days").format("YYYY-MM-DD"),
+            date.add((req.params.turn - 1) * 7 + 1, "days").format("YYYY-MM-DD"),
             date.add(6, "days").format("YYYY-MM-DD"),
         ]);
         // console.log(result);
