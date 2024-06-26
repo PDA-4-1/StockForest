@@ -163,8 +163,11 @@ router.post("/buy", async (req, res) => {
             // 매수가능할 경우
 
             // 매수 정보 거래내역 테이블에 추가
-            const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity) values (?, ?, ?, ?, ?);`;
-            const [stockHistoryResult] = await pool.query(stockHistoryQuery, [req.userId, stockId, 1, price, quantity]);
+            const getTurnQuery = `SELECT turn FROM user WHERE id=?`;
+            const [turnResult] = await pool.query(getTurnQuery, [req.userId]);
+            const turn = turnResult[0].turn;
+            const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity, turn) values (?, ?, ?, ?, ?, ?);`;
+            const [stockHistoryResult] = await pool.query(stockHistoryQuery, [req.userId, stockId, 1, price, quantity, turn]);
 
             // 매수 정보 보유주식 테이블에 추가
             // 해당 주식 보유시 update
