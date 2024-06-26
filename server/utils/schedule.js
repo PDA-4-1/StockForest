@@ -35,7 +35,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("0 30 2 * * *", executeJob);
+    schedule.scheduleJob("0 0 0 * * *", executeJob);
 };
 
 const realCode = [
@@ -153,7 +153,7 @@ const doKIS = async () => {
         }
     };
     // await executeJob();
-    schedule.scheduleJob("0 48 2 * * *", executeJob); //한국시간 기준으로 변경
+    schedule.scheduleJob("0 0 8 * * *", executeJob); //한국시간 기준으로 작성
 };
 
 const doHoly = async () => {
