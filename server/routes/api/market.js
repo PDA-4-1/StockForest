@@ -135,7 +135,7 @@ router.get("/sell/:stockId/:turn", async (req, res) => {
 
             // 열려있다면 보내기
             if (stockResult.length > 0) {
-                const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
+                const query = `select a.user_id, a.stock_id, a.quantity, a.avg_price, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
                 const [result] = await pool.query(query, [req.userId, req.params.stockId, date.format("YYYY-MM-DD")]);
                 res.status(200).send(result);
                 break;
