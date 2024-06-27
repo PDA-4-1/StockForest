@@ -10,7 +10,7 @@ const BgmBtn = () => {
         <div>
             {bgmStatus && (
                 <MdMusicNote
-                    className="text-black-500 text-5xl cursor-pointer"
+                    className="text-black-500 cursor-pointer w-6 h-6"
                     onClick={() => {
                         dispatch(setBgm());
                     }}
@@ -18,7 +18,7 @@ const BgmBtn = () => {
             )}
             {!bgmStatus && (
                 <MdMusicOff
-                    className="text-red-500 text-5xl cursor-pointer"
+                    className="text-red-500 cursor-pointer w-6 h-6"
                     onClick={() => {
                         dispatch(setBgm());
                     }}
