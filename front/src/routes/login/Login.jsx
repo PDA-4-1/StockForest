@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "../../components/Toast";
+import { GetUserProfile } from "../../lib/apis/user";
 
 export const handleLogin = async (nickname, password, navigate) => {
     try {
@@ -11,7 +12,14 @@ export const handleLogin = async (nickname, password, navigate) => {
         });
 
         if (response.status === 200) {
-            navigate("/market");
+            GetUserProfile().then((data) => {
+                // 튜토리얼 했을 때는 마켓으로 아닐 때는 튜토리얼로 보내기
+                if (data.tutorial) {
+                    navigate("/market");
+                } else {
+                    navigate("/tutorial");
+                }
+            });
         }
     } catch (error) {
         if (error.response) {
