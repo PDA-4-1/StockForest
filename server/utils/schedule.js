@@ -35,7 +35,17 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("5 0 0 * * *", executeJob);
+    // schedule.scheduleJob("5 0 0 * * *", executeJob);
+    const schedule = cron.schedule(
+        "0 15 8 * * *",
+        () => {
+            executeJob();
+        },
+        {
+            timezone: "Asia/Seoul",
+        }
+    );
+    schedule.start();
 };
 
 const realCode = [
