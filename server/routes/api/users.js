@@ -164,7 +164,7 @@ router.patch("/ending", async (req, res) => {
         //hold_stock table -> 해당 유저 값 다 삭제
         const del_hold_stock_query = `Delete from hold_stock where user_id=?;`;
         await pool.query(del_hold_stock_query, [userId]);
-        const add_hold_stock_query = `Insert into hold_stock values (?,10,1,10000,0);`;
+        const add_hold_stock_query = `Insert into hold_stock values (?,10,1,100000,0);`;
         await pool.query(add_hold_stock_query, [userId]);
 
         //ranking table -> 해당 유저 값 다 삭제
