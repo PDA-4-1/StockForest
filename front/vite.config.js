@@ -8,8 +8,8 @@ export default defineConfig({
         port: 3000,
     }, hmr: {
       protocol: 'ws',
-      host: 'localhost',
-      port: 3000,
+      host: 'http://stockforest.kro.kr',
+      clientPort: 80,
     },
     resolve: {
         alias: [
