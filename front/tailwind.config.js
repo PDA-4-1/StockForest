@@ -6,9 +6,9 @@ module.exports = {
             screens: {
                 "3xl": "1820px",
                 "2xl": "1700px",
-                "xl": "1600px",
-                "l": "1500px",
-                "m": "1400px",
+                xl: "1600px",
+                l: "1500px",
+                m: "1400px",
             },
             backgroundImage: {
                 "background-pattern": "url('/imgs/background.svg')",
@@ -32,5 +32,5 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [require("tailwind-scrollbar")({ nocompatible: true, preferredStrategy: "pseudoelements" })],
 };
