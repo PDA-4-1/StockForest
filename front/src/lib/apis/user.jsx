@@ -12,3 +12,8 @@ export async function PatchEnding() {
     const res = await service.patch(`/ending`);
     return res.data;
 }
+
+export async function PostTutorial() {
+    const res = await service.post(`/tutorial`);
+    return res;
+}
