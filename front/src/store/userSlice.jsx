@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: {
         nickname: "",
-        returns: "",
+        user_returns: 0,
         user_pdi: 0,
         turn: 1,
         img: 1,

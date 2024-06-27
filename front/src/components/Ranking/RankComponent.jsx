@@ -12,7 +12,7 @@ export default function RankComponent(props) {
         <div className="flex items-center justify-between bg-white rounded-xl px-3 py-1 text-sm min-h-9">
             <p className="text-center min-w-6">{ranking || rank}</p>
             <div className="flex items-center space-x-2">
-                <img src={imgs[img]} className="w-6 h-6 rounded-full border border-black bg-white" />
+                <img src={imgs[img]} className="w-6 h-6 rounded-full border border-black bg-white object-contain" />
                 <p className="min-w-[100px]">{nickname}</p>
             </div>
             <p className="min-w-[57px] text-right">{user_pdi.toLocaleString()} 프디</p>
