@@ -85,20 +85,20 @@ const StockHistoryButton = () => {
 
     const stockDetails = {
         0: { name: "전체", image: null },
-        1: { name: "콩순전자", image: "/imgs/field/tomato/tomatoprofile.png" },
-        2: { name: "도토리톡", image: "/imgs/field/banana/bananaprofile.png" },
+        1: { name: "콩순전자", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/tomato/tomatoprofile.png" },
+        2: { name: "도토리톡", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/banana/bananaprofile.png" },
         3: {
             name: "뉴진수퍼노바",
-            image: "/imgs/field/blueberry/blueberryprofile.png",
+            image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/blueberry/blueberryprofile.png",
         },
-        4: { name: "주식회사붕붕", image: "/imgs/field/peach/peachprofile.png" },
-        5: { name: "미미네약국", image: "/imgs/field/orange/orangeprofile.png" },
-        6: { name: "철수건설", image: "/imgs/field/melon/melonprofile.png" },
-        7: { name: "올리브업", image: "/imgs/field/grape/grapeprofile.png" },
-        8: { name: "숲속여관", image: "/imgs/field/apple/appleprofile.png" },
+        4: { name: "주식회사붕붕", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/peach/peachprofile.png" },
+        5: { name: "미미네약국", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/orange/orangeprofile.png" },
+        6: { name: "철수건설", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/melon/melonprofile.png" },
+        7: { name: "올리브업", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/grape/grapeprofile.png" },
+        8: { name: "숲속여관", image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/apple/appleprofile.png" },
         9: {
             name: "과학나라",
-            image: "/imgs/field/strawberry/strawberryprofile.png",
+            image: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/strawberry/strawberryprofile.png",
         },
     };
 

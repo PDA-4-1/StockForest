@@ -11,7 +11,6 @@ import { GetUserProfile } from "../../lib/apis/user";
 import { saveTurn, saveUser } from "../../store/userSlice";
 import NewsModal from "../../components/Modal/NewsModal";
 import NumModal from "../../components/Modal/NumModal";
-import pli from "~/public/imgs/pli.png";
 import { useNavigate } from "react-router-dom";
 
 const Market = () => {
@@ -113,7 +112,11 @@ const Market = () => {
                         <StockDetail stock={selectedStock} />
                     ) : (
                         <div className="col-span-3 flex h-full justify-end items-end">
-                            <img className="h-4/5" src={pli} alt="플리" />
+                            <img
+                                className="h-4/5"
+                                src="https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/pli.png?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDkaDmFwLW5vcnRoZWFzdC0yIkcwRQIgMdeqZwT4wvBYBy5DD7tMVHrGlUfNu8EU7US5BovNwD4CIQCuoUXxembleARqOlKk1YNzfQ0ojz8HZhWwt5bk9%2BU37SqGAwji%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDk5MjM4MjUwOTY3NiIMws9OLcsVqkmlNOg9KtoCMIBysGcPIQWsRSWIjtx%2FWACYYout3%2Ba9U15Ztl8gBtw%2B5glGiOZ3xJqUeobT%2FKY93l%2Fs3YTNxGB2o%2F%2B%2FmK3EFrLlRY073hJsMQ7%2FkWBaTWAQjcZ957OQeUomr%2Fdq6rPpnU5fUbNqDZySZlp9XAvsvmGVRNTSC%2FSz3Kll9JXSPDfao2VDBolAj2BTg0EgS3zyRuuYzdpQ4LAOQ0lKUs%2BpT4vlFIIxqzx29M%2BDI0WlZ32KWEr%2FgEzRJZNLShVvSKRD5NE8NvOvQoydLEBT7Dyi0X7Kisfr40ke1opXkJo6INsttsmHeMslidBYdEodudSpjFwGFqzSrqsMFHvfOYtfH%2FzVuX2R2m0pTH6a%2FPyvigaahqgqpo8ZAIqD6X8XCxIoJt8jzDST8DFot96kVOyQ6B%2BUTb%2BnqbnwHUBl9zfRsMgeRVLlfh386HlurOHIIyvL3kI7iNPGbTnvpjDz%2BfKzBjqzArz8J8EMoIlmSxB0wqZMSNNsXwy6CNKjNbSKQdRRfxR8VPs4n4kvQ5cwsqjCrpeKqJNBu6tax2%2B86SRCjCpn6rvawA6n4AdDESKnkQx1BFaP8hUvtlGBCs%2BTQdhNGggAN%2F7T8D6yEBibRL8JuUCgwhYbGKb1E30eTIOiY95NcZYbJ9XgFLYl1HX7k%2BcyqZciRTePigkjRazH%2F8yCwVlK1CbLfpmezkv9tpa5RuwQd4GKKNJNsGVxc7i5e3rwp%2B70zoXGKINjfHyy0cUXtboavUGcnvI042h%2F4jNPP9CIuZE6Z6vxZPHWFWgifdBjkV6JuJBNwMqFznxpTcap9KkpJqrlDMV6ZnWtgQokwTbLiWpY%2BQtLB04aS2fazw5q68Eblq64tWMsi2MI1vuAS8M6h4Body0%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240627T073046Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA6ODU3MJWMM7VXTF5%2F20240627%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=dd52cadb6adafeb8fba477ebd3258bbd08c0c7768faac67ebf71b9ead4970592"
+                                alt="플리"
+                            />
                         </div>
                     )}
                 </div>
