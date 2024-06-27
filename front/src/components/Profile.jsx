@@ -14,7 +14,7 @@ const Profile = (props) => {
     return (
         <div className="w-full h-full row-span-2 bg-[url('/imgs/loginform.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center space-y-3">
             <div className="flex items-center space-x-3 min-w-40">
-                <img className="w-14 h-14 rounded-full bg-white" src={imgs[userInfo.img]} />
+                <img className="w-14 h-14 rounded-full bg-white object-contain" src={imgs[userInfo.img]} />
                 <div className="text-left">
                     <div>{userInfo.nickname}</div>
                     <div className="mt-1">수익률: {Number(userInfo.user_returns.toFixed(2)) || 0}%</div>
