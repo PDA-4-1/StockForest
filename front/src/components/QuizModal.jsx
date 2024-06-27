@@ -19,7 +19,7 @@ export default function QuizModal(props) {
                     </p>
                 </div>
                 <div className="row-span-3 scroll-pr-6 scrollbar scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-back-yellow overflow-y-scroll">
-                    <p className="break-keep leading-8 pr-1">{content}</p>
+                    <div className="break-keep leading-8 pr-1" dangerouslySetInnerHTML={{__html: content}}/>
                 </div>
             </div>
         </div>
