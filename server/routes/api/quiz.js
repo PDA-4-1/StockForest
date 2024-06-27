@@ -15,6 +15,14 @@ router.post("/response", async (req, res) => {
         const date = req.body.date;
         const upDown = req.body.upDown;
 
+        const checkQuery = `SELECT count(*) as cnt from quiz WHERE user_id = ? AND date = ?`;
+        const [check] = await pool.query(checkQuery, [userId, date]);
+        console.log(check[0].cnt);
+        if (check[0].cnt > 0) {
+            res.send({ code: 0 });
+            return;
+        }
+
         const resQuery = `INSERT INTO quiz (user_id, stock_id, date, up_down) VALUES (?, ?, ?, ?)`;
         const [result] = await pool.query(resQuery, [
             userId,
@@ -23,7 +31,9 @@ router.post("/response", async (req, res) => {
             upDown,
         ]);
         console.log(result.affectedRows);
-        res.send(result.affectedRows + "개의 레코드가 추가되었습니다");
+        res.send({
+            code : 1,
+            message : result.affectedRows + "개의 레코드가 추가되었습니다"});
     } catch (err) {
         console.log(err);
         res.send(err);
@@ -99,14 +109,15 @@ router.get("/content", async (req, res) => {
 router.get("/:date", async (req, res) => {
     //TODO : 오늘이 공휴일인지 확인
     try {
-        const holiQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`
+        const holiQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
         const [result] = await pool.query(holiQuery, [req.params.date]);
-        const isHoly = result[0].count>0 ? 1 : 0;
-        if(isHoly) res.send({
-            isHoly : isHoly,
-            date_name : result[0].date_name
-        });
-        else res.send({isHoly : isHoly});
+        const isHoly = result[0].count > 0 ? 1 : 0;
+        if (isHoly)
+            res.send({
+                isHoly: isHoly,
+                date_name: result[0].date_name,
+            });
+        else res.send({ isHoly: isHoly });
     } catch (e) {
         console.log(e);
         res.send("ERROR : " + e);
