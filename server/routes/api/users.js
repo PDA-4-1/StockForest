@@ -168,4 +168,16 @@ router.patch("/ending", async (req, res) => {
     }
 });
 
+// 튜토리얼 완료
+router.post("/tutorial", async (req, res) => {
+    try {
+        const query = `update user set tutorial = 1 where id = ?`;
+        await pool.query(query, [req.userId]);
+        res.status(200).send("tutorial clear");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+});
+
 module.exports = router;
