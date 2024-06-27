@@ -35,7 +35,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("0 0 0 * * *", executeJob);
+    schedule.scheduleJob("5 0 2 * * *", executeJob);
 };
 
 const realCode = [
@@ -65,9 +65,7 @@ const doKIS = async () => {
         }
         //공휴일 확인
         const holyQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
-        var [isHoly] = await pool.query(holyQuery, [
-            date.format("YYYY-MM-DD"),
-        ]);
+        var [isHoly] = await pool.query(holyQuery, [date.format("YYYY-MM-DD")]);
         if (isHoly[0].count > 0) {
             console.log("오늘은 공휴일입니다!");
             return;
@@ -100,9 +98,7 @@ const doKIS = async () => {
         const accessToken = tokenReq.data.access_token;
 
         // 한국투자증권 API 연결 - 일일 주가 요청하기
-        var yesterday = moment()
-            .tz("Asia/Seoul")
-            .subtract(1, "days");// 하루 전 날
+        var yesterday = moment().tz("Asia/Seoul").subtract(1, "days"); // 하루 전 날
         // 공휴일인지 확인
         [isHoly] = await pool.query(holyQuery, [
             yesterday.format("YYYY-MM-DD"),
@@ -111,7 +107,7 @@ const doKIS = async () => {
             yesterday = yesterday.subtract(1, "days");
             [isHoly] = await pool.query(holyQuery, [
                 yesterday.format("YYYY-MM-DD"),
-            ]); 
+            ]);
         }
         yesterday = yesterday.format("YYYY-MM-DD");
         const startDate = moment(yesterday).format("YYYYMMDD");
