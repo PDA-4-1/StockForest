@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 const Profile = (props) => {
     const userInfo = useSelector((state) => state.user.user);
+    const retruns = userInfo.user_returns ? Number(userInfo.user_returns.toFixed(2)) : 0;
     const nextTurn = props.nextTurn;
     const imgs = {
         1: "https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/moli.png",
@@ -17,7 +18,7 @@ const Profile = (props) => {
                 <img className="w-14 h-14 rounded-full bg-white object-contain" src={imgs[userInfo.img]} />
                 <div className="text-left">
                     <div>{userInfo.nickname}</div>
-                    <div className="mt-1">수익률: {Number(userInfo.user_returns.toFixed(2)) || 0}%</div>
+                    <div className="mt-1">수익률: {retruns}%</div>
                 </div>
             </div>
 
