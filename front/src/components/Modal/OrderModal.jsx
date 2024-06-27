@@ -2,10 +2,11 @@ import { useState } from "react";
 import { BuyStock, SellStock } from "../../lib/apis/stock";
 import StockButton from "../StockButton";
 import { Toast } from "../Toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { savePdi } from "../../store/userSlice";
 
 export default function OrderModal(props) {
+    const user_pdi = useSelector((state) => state.user.user.user_pdi);
     const purpo = props.purpo;
     const onHide = props.onHide;
     const stockId = props.stockId;
@@ -58,6 +59,9 @@ export default function OrderModal(props) {
             });
         setNum(0);
     };
+    const buyMax = () => {
+        setNum(Math.trunc(user_pdi / price));
+    };
 
     return (
         <div
@@ -68,13 +72,13 @@ export default function OrderModal(props) {
                 {purpo == "sell" ? (
                     <div className="text-center grid gap-6 w-full">
                         <p className="text-2xl font-bold">판 매 서</p>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>내 과일</p>
                             <p>{count} 개</p>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>팔 과일</p>
-                            <div className="flex space-x-1">
+                            <div className="flex space-x-1 items-center">
                                 <input
                                     type="number"
                                     min="0"
@@ -83,17 +87,23 @@ export default function OrderModal(props) {
                                     className="w-40 max-h-6 text-right"
                                 />
                                 <p>개</p>
+                                <button
+                                    onClick={() => setNum(count)}
+                                    className="bg-shinhan-blue text-white text-xs px-2 py-1 rounded-full ml-3 h-fit"
+                                >
+                                    MAX
+                                </button>
                             </div>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>원래 가격</p>
                             <p>{avgPrice} 프디</p>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>현재 가격</p>
                             <p>{price} 프디</p>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>총 가격</p>
                             <p>{price * num} 프디</p>
                         </div>
@@ -105,9 +115,9 @@ export default function OrderModal(props) {
                 ) : (
                     <div className="text-center grid gap-6 w-full">
                         <p className="text-2xl font-bold">주 문 서</p>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>살 과일</p>
-                            <div className="flex space-x-1">
+                            <div className="flex space-x-1 items-center">
                                 <input
                                     type="number"
                                     min="0"
@@ -116,13 +126,19 @@ export default function OrderModal(props) {
                                     className="w-40 max-h-6 text-right"
                                 />
                                 <p>개</p>
+                                <button
+                                    onClick={buyMax}
+                                    className="bg-shinhan-red text-white text-xs px-2 py-1 rounded-full ml-3 h-fit"
+                                >
+                                    MAX
+                                </button>
                             </div>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>가격</p>
                             <p>{price} 프디</p>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>총 가격</p>
                             <p>{price * num} 프디</p>
                         </div>
