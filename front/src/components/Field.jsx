@@ -159,7 +159,7 @@ const Field = () => {
         } else {
             return (
                 <div
-                    className="w-full h-full flex justify-center overflow-hidden bg-[url('/imgs/field4.png')] bg-contain bg-no-repeat bg-center relative"
+                    className="w-full h-full flex justify-center overflow-hidden bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/field/field4.png')] bg-contain bg-no-repeat bg-center relative"
                     key={`placeholder-${index}`}
                 />
             );
@@ -168,7 +168,7 @@ const Field = () => {
 
     return (
         <div
-            className="grid grid-cols-4 overflow-hidden bg-[url('imgs/file5.png')]"
+            className="grid grid-cols-4 overflow-hidden bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/field/file5.png')]"
             style={{ height: "calc(100vh - 70px)" }}
         >
             {/* <img src="imgs/pat.png" className="w-[200px] absolute z-30 left-[870px]"></img> */}
