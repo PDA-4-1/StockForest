@@ -35,7 +35,7 @@ const doJob = async () => {
         await pool.query(query, [date, todayData]);
     };
     // await executeJob();
-    schedule.scheduleJob("5 0 2 * * *", executeJob);
+    schedule.scheduleJob("5 0 0 * * *", executeJob);
 };
 
 const realCode = [
