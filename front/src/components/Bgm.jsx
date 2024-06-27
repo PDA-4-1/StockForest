@@ -4,7 +4,8 @@ import { useRef, useEffect } from "react";
 
 const Bgm = () => {
     const bgmStatus = useSelector((state) => state.stock.bgmOn);
-    const bgmUrl = "/bgm/bgm_1h.mp3";
+    const bgmUrl =
+        "https://stockforest.s3.ap-northeast-2.amazonaws.com/bgm/bgm_1h.mp3";
     const audioRef = useRef(null);
 
     useEffect(() => {
