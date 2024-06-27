@@ -15,6 +15,14 @@ router.post("/response", async (req, res) => {
         const date = req.body.date;
         const upDown = req.body.upDown;
 
+        const checkQuery = `SELECT count(*) as cnt from quiz WHERE user_id = ? AND date = ?`;
+        const [check] = await pool.query(checkQuery, [userId, date]);
+        console.log(check[0].cnt);
+        if (check[0].cnt > 0) {
+            res.send({ code: 0 });
+            return;
+        }
+
         const resQuery = `INSERT INTO quiz (user_id, stock_id, date, up_down) VALUES (?, ?, ?, ?)`;
         const [result] = await pool.query(resQuery, [
             userId,
@@ -23,7 +31,9 @@ router.post("/response", async (req, res) => {
             upDown,
         ]);
         console.log(result.affectedRows);
-        res.send(result.affectedRows + "개의 레코드가 추가되었습니다");
+        res.send({
+            code : 1,
+            message : result.affectedRows + "개의 레코드가 추가되었습니다"});
     } catch (err) {
         console.log(err);
         res.send(err);
@@ -63,13 +73,13 @@ router.patch("/answer", async (req, res) => {
         await pool.query(answerQuery, [isCorrect, req.userId, yesterday]);
 
         // 맞았을 경우 사용자의 pdi 추가
-        if (isCorrect) {
+        if (isCorrect && !userResponse[0].is_checked) {
             const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
             await pool.query(addPointQuery, [req.userId]);
         }
 
         res.send({
-            code: userResponse[0].is_checked ? 2 : 1,
+            code: userResponse[0].is_checked ? 2 : 1, // 이미 조회했으면 2
             stockCode: userResponse[0].stock_id, // 고른 종목 코드
             stockName: answerResponse[0].stock_name, // 고른 종목 이름
             yesterdayCost: answerResponse[0].yesterday_cost,
@@ -99,14 +109,15 @@ router.get("/content", async (req, res) => {
 router.get("/:date", async (req, res) => {
     //TODO : 오늘이 공휴일인지 확인
     try {
-        const holiQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`
+        const holiQuery = `SELECT COUNT(*) AS count, date_name FROM holiday WHERE date = ?;`;
         const [result] = await pool.query(holiQuery, [req.params.date]);
-        const isHoly = result[0].count>0 ? 1 : 0;
-        if(isHoly) res.send({
-            isHoly : isHoly,
-            date_name : result[0].date_name
-        });
-        else res.send({isHoly : isHoly});
+        const isHoly = result[0].count > 0 ? 1 : 0;
+        if (isHoly)
+            res.send({
+                isHoly: isHoly,
+                date_name: result[0].date_name,
+            });
+        else res.send({ isHoly: isHoly });
     } catch (e) {
         console.log(e);
         res.send("ERROR : " + e);

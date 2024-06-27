@@ -135,7 +135,7 @@ router.get("/sell/:stockId/:turn", async (req, res) => {
 
             // 열려있다면 보내기
             if (stockResult.length > 0) {
-                const query = `select a.user_id, a.stock_id, a.quantity, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
+                const query = `select a.user_id, a.stock_id, a.quantity, a.avg_price, b.price from hold_stock a inner join stock_price b on a.stock_id=b.stock_id where a.user_id=? and a.stock_id=? and b.date=?;`;
                 const [result] = await pool.query(query, [req.userId, req.params.stockId, date.format("YYYY-MM-DD")]);
                 res.status(200).send(result);
                 break;
@@ -163,8 +163,11 @@ router.post("/buy", async (req, res) => {
             // 매수가능할 경우
 
             // 매수 정보 거래내역 테이블에 추가
-            const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity) values (?, ?, ?, ?, ?);`;
-            const [stockHistoryResult] = await pool.query(stockHistoryQuery, [req.userId, stockId, 1, price, quantity]);
+            const getTurnQuery = `SELECT turn FROM user WHERE id=?`;
+            const [turnResult] = await pool.query(getTurnQuery, [req.userId]);
+            const turn = turnResult[0].turn;
+            const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity, turn) values (?, ?, ?, ?, ?, ?);`;
+            const [stockHistoryResult] = await pool.query(stockHistoryQuery, [req.userId, stockId, 1, price, quantity, turn]);
 
             // 매수 정보 보유주식 테이블에 추가
             // 해당 주식 보유시 update
@@ -223,8 +226,11 @@ router.post("/sell", async (req, res) => {
             // 매도할 수 있는 경우
 
             // 매도 정보 거래내역 테이블에 추가
-            const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity) values (?, ?, ?, ?, ?);`;
-            const [stockHistoryResult] = await pool.query(stockHistoryQuery, [req.userId, stockId, 0, price, quantity]);
+            const getTurnQuery = `SELECT turn FROM user WHERE id=?`;
+            const [turnResult] = await pool.query(getTurnQuery, [req.userId]);
+            const turn = turnResult[0].turn;
+            const stockHistoryQuery = `insert into stock_history (user_id, stock_id, is_buy, price, quantity, turn) values (?, ?, ?, ?, ?, ?);`;
+            const [stockHistoryResult] = await pool.query(stockHistoryQuery, [req.userId, stockId, 0, price, quantity, turn]);
 
             // 매도 정보 보유주식 테이블에 업데이트
             // 해당 주식 update

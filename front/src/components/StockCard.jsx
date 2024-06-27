@@ -23,7 +23,7 @@ export default function StockCard(props) {
             } w-full rounded-3xl flex items-center justify-center px-3 space-x-2 hover:cursor-pointer hover:bg-select-green max-w-[180px]`}
             onClick={onClick}
         >
-            <img src={stockImages[id]} className="w-9 h-9 rounded-full" />
+            <img src={stockImages[id]} className="w-9 h-9 rounded-full object-contain" />
             <div className="text-sm min-w-[100px]">
                 <p className={selected == name ? "text-white" : ""}>{name}</p>
                 <div
