@@ -63,13 +63,13 @@ router.patch("/answer", async (req, res) => {
         await pool.query(answerQuery, [isCorrect, req.userId, yesterday]);
 
         // 맞았을 경우 사용자의 pdi 추가
-        if (isCorrect) {
+        if (isCorrect && !userResponse[0].is_checked) {
             const addPointQuery = `UPDATE hold_stock SET avg_price = avg_price + 500 WHERE user_id = ? AND stock_id = 10`;
             await pool.query(addPointQuery, [req.userId]);
         }
 
         res.send({
-            code: userResponse[0].is_checked ? 2 : 1,
+            code: userResponse[0].is_checked ? 2 : 1, // 이미 조회했으면 2
             stockCode: userResponse[0].stock_id, // 고른 종목 코드
             stockName: answerResponse[0].stock_name, // 고른 종목 이름
             yesterdayCost: answerResponse[0].yesterday_cost,
