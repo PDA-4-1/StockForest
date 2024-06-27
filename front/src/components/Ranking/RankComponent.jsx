@@ -15,7 +15,7 @@ export default function RankComponent(props) {
                 <img src={imgs[img]} className="w-6 h-6 rounded-full border border-black bg-white" />
                 <p className="min-w-[100px]">{nickname}</p>
             </div>
-            <p className="min-w-[57px] text-right">{user_pdi} 프디</p>
+            <p className="min-w-[57px] text-right">{user_pdi.toLocaleString()} 프디</p>
         </div>
     );
 }

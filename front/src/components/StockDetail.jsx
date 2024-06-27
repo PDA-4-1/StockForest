@@ -12,6 +12,7 @@ export default function StockDetail({ stock }) {
     const [purpo, setPurpo] = useState("");
     const [modalSee, setModalSee] = useState(false);
     const [count, setCount] = useState(0);
+    const [avgPrice, setAvgPrice] = useState(0);
     const turn = useSelector((state) => state.user.user.turn);
     const openSellModal = () => {
         setPurpo("sell");
@@ -19,6 +20,7 @@ export default function StockDetail({ stock }) {
             console.log(data);
             if (data.length > 0 && data[0].quantity > 0) {
                 setCount(data[0].quantity);
+                setAvgPrice(data[0].avg_price);
                 setModalSee(true);
             } else {
                 Toast.fire("보유 주식이 없어요!", "", "error");
@@ -72,7 +74,16 @@ export default function StockDetail({ stock }) {
                     <StockChart />
                 </div>
             </div>
-            {modalSee ? <OrderModal purpo={purpo} onHide={onHide} price={price} stockId={id} count={count} /> : null}
+            {modalSee ? (
+                <OrderModal
+                    purpo={purpo}
+                    onHide={onHide}
+                    price={price}
+                    stockId={id}
+                    count={count}
+                    avgPrice={avgPrice}
+                />
+            ) : null}
         </>
     );
 }
