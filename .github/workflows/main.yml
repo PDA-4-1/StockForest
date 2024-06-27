@@ -25,6 +25,10 @@ jobs:
         script: |
           cd StockForest
           git pull origin main
+          
+          cd ~/StockForest/front
+          npm run build
+
           cd ~
           docker-compose down
           docker-compose up --build -d
