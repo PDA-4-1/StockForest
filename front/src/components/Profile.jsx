@@ -17,7 +17,7 @@ const Profile = (props) => {
                 <img className="w-14 h-14 rounded-full bg-white" src={imgs[userInfo.img]} />
                 <div className="text-left">
                     <div>{userInfo.nickname}</div>
-                    <div className="mt-1">수익률: {userInfo.user_returns || 0}%</div>
+                    <div className="mt-1">수익률: {Number(userInfo.user_returns.toFixed(2)) || 0}%</div>
                 </div>
             </div>
 
