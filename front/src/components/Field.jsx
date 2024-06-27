@@ -90,19 +90,19 @@ const Field = () => {
             imageType = "5.png";
         }
 
-        return `/imgs/${stockImages[stockId]}${imageType}`;
+        return `https://stockforest.s3.ap-northeast-2.amazonaws.com/${stockImages[stockId]}${imageType}`;
     };
-
+    
     const signImages = {
-        1: "/imgs/field/sign/samsung.png",
-        2: "/imgs/field/sign/kakao.png",
-        3: "/imgs/field/sign/sm.png",
-        4: "/imgs/field/sign/hyundai.png",
-        5: "/imgs/field/sign/cell.png",
-        6: "/imgs/field/sign/gs.png",
-        7: "/imgs/field/sign/amore.png",
-        8: "/imgs/field/sign/shilla.png",
-        9: "/imgs/field/sign/lg.png",
+        1: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/samsung.png",
+        2: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/kakao.png",
+        3: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/sm.png",
+        4: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/hyundai.png",
+        5: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/cell.png",
+        6: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/gs.png",
+        7: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/amore.png",
+        8: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/shilla.png",
+        9: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/sign/lg.png",
     };
 
     const stockName = {

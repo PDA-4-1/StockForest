@@ -11,6 +11,7 @@ import QuizModal from "~/components/QuizModal";
 import QuizAnswerModal from "~/components/QuizAnswerModal";
 import StockDropdown from "~/components/StockDropdown";
 import UpDownDropdown from "~/components/UpDownDropdown";
+import { Toast } from "../../components/Toast";
 
 const Quiz = () => {
     const [stockName, setStockName] = useState("주식 이름");
@@ -51,7 +52,7 @@ const Quiz = () => {
 
     const postAnswer = async () => {
         const result = await UpdateQuiz(stockId, date, upDown);
-        console.log(result);
+        Toast.fire("성공적으로 저장되었습니다!", "", "success");
     };
 
     const checkAnswer = async () => {
