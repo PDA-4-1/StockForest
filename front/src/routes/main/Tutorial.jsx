@@ -44,7 +44,7 @@ export default function Tutorial() {
             {step != 0 ? (
                 <>
                     <button className={`${common} absolute right-6 top-6`} onClick={nextStep}>
-                        {step === 20 ? "시작하기" : "다음으로"}
+                        {step === 21 ? "시작하기" : "다음으로"}
                     </button>
                     <img src={imgs[step]} className="max-h-screen w-full h-full object-fill" />
                 </>
