@@ -23,7 +23,7 @@ const Profile = (props) => {
 
             <div className="flex items-center min-w-40 justify-between">
                 <img src="/imgs/money.svg" alt="자산" className="w-10 h-10" />
-                <div className="ml-[5px]">{userInfo.user_pdi} 프디</div>
+                <div className="ml-[5px]">{userInfo.user_pdi.toLocaleString()} 프디</div>
             </div>
 
             <div className="flex items-center justify-between min-w-40">
