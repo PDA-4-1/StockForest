@@ -101,7 +101,7 @@ const Quiz = () => {
             {console.log("isHoly : " + isHoly)}
             {isHoly ? (
                 <div className="flex justify-center">
-                    <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('imgs/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
+                    <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
                         <div className="w-2/3 relative right-[60px]">
                             <div className="text-center">
                                 오늘은 {dateName}이기 때문에 주식장이 안
@@ -116,7 +116,7 @@ const Quiz = () => {
             ) : (
                 <div>
                     <div className="flex justify-center">
-                        <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('imgs/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
+                        <div className="w-[1034px] h-[315px] mt-[50px] pl-50 bg-[url('https://stockforest.s3.ap-northeast-2.amazonaws.com/quiz/quiz_back.png')] flex justify-center items-center scale-[0.8] m:scale-[0.9] l:scale-[1]">
                             <div className="w-2/3 relative right-[60px]">
                                 <div>{truncateText(quizNews, 150)}</div>
                                 <button
