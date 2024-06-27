@@ -14,8 +14,8 @@ import UpDownDropdown from "~/components/UpDownDropdown";
 import { Toast } from "../../components/Toast";
 
 const Quiz = () => {
-    const [stockName, setStockName] = useState("주식 이름");
-    const [stockId, setStockId] = useState(0);
+    const [stockName, setStockName] = useState("삼성전자");
+    const [stockId, setStockId] = useState(1);
     const [date, setDate] = useState("2024-06-18");
     const [upDown, setUpDown] = useState(true); // 상승이면 true
     const [quizNews, setQuizNews] = useState("");
