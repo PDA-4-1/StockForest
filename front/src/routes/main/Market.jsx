@@ -11,7 +11,6 @@ import { GetUserProfile } from "../../lib/apis/user";
 import { saveTurn, saveUser } from "../../store/userSlice";
 import NewsModal from "../../components/Modal/NewsModal";
 import NumModal from "../../components/Modal/NumModal";
-import pli from "~/public/imgs/pli.png";
 import { useNavigate } from "react-router-dom";
 
 const Market = () => {
@@ -113,7 +112,11 @@ const Market = () => {
                         <StockDetail stock={selectedStock} />
                     ) : (
                         <div className="col-span-3 flex h-full justify-end items-end">
-                            <img className="h-4/5" src={pli} alt="플리" />
+                            <img
+                                className="h-4/5"
+                                src="https://stockforest.s3.ap-northeast-2.amazonaws.com/profile_img/pli.png"
+                                alt="플리"
+                            />
                         </div>
                     )}
                 </div>

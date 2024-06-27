@@ -136,6 +136,16 @@ router.post("/signin", async (req, res) => {
     }
 });
 
+router.get("/logout", async (req, res, next) => {
+    try {
+        res.clearCookie("authToken")
+            .status(200)
+            .json({ message: "로그아웃 성공" });
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+});
+
 router.patch("/ending", async (req, res) => {
     //TODO: 모든 턴 종료시 사용자 정보 비우기
     try {
@@ -154,7 +164,7 @@ router.patch("/ending", async (req, res) => {
         //hold_stock table -> 해당 유저 값 다 삭제
         const del_hold_stock_query = `Delete from hold_stock where user_id=?;`;
         await pool.query(del_hold_stock_query, [userId]);
-        const add_hold_stock_query = `Insert into hold_stock values (?,10,1,10000,0);`;
+        const add_hold_stock_query = `Insert into hold_stock values (?,10,1,100000,0);`;
         await pool.query(add_hold_stock_query, [userId]);
 
         //ranking table -> 해당 유저 값 다 삭제

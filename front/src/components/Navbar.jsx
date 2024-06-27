@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BgmBtn from "./BgmBtn";
 import StockHistoryButton from "./StockHistoryButton";
 import { FaQuestion } from "react-icons/fa";
+import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -45,7 +46,10 @@ const Navbar = () => {
                             onClick={handleMarketClick}
                             className="size-10 cursor-pointer"
                         />
-                        <button onClick={handleMarketClick} className="text-xl ml-2 text-[#505050]">
+                        <button
+                            onClick={handleMarketClick}
+                            className="text-xl ml-2 text-[#505050]"
+                        >
                             시장으로
                         </button>
                     </div>
@@ -56,7 +60,10 @@ const Navbar = () => {
                             onClick={handleFarmClick}
                             className="size-10 cursor-pointer"
                         />
-                        <button onClick={handleFarmClick} className="text-xl ml-2 text-[#505050]">
+                        <button
+                            onClick={handleFarmClick}
+                            className="text-xl ml-2 text-[#505050]"
+                        >
                             농장으로
                         </button>
                     </div>
@@ -64,16 +71,29 @@ const Navbar = () => {
                 <div>
                     <StockHistoryButton />
                 </div>
-                <div className="flex mr-10 bg-yellow-300 px-3 py-1 border-black rounded-[20px] cursor-pointer">
-                    <img src="/imgs/quiz.svg" alt="퀴즈" className="size-10 cursor-pointer" />
-                    <button onClick={handleQuizClick} className="text-xl ml-2 text-[#505050]">
+                <div className="flex mr-4 bg-yellow-300 px-3 py-1 border-black rounded-[20px] cursor-pointer">
+                    <img
+                        src="/imgs/quiz.svg"
+                        alt="퀴즈"
+                        className="size-10 cursor-pointer"
+                    />
+                    <button
+                        onClick={handleQuizClick}
+                        className="text-xl ml-2 text-[#505050]"
+                    >
                         오늘의 퀴즈
                     </button>
                 </div>
                 <div className="bg-white rounded-full w-fit h-fit p-2 cursor-pointer mr-4">
+                    <LogoutButton />
+                </div>
+                <div className="bg-white rounded-full w-fit h-fit p-2 cursor-pointer mr-4">
                     <BgmBtn />
                 </div>
-                <div className="bg-white rounded-full w-fit h-fit p-2 cursor-pointer mr-4" onClick={handleTutoClick}>
+                <div
+                    className="bg-white rounded-full w-fit h-fit p-2 cursor-pointer mr-4"
+                    onClick={handleTutoClick}
+                >
                     <FaQuestion className="w-6 h-6" />
                 </div>
             </div>
