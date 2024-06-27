@@ -37,7 +37,7 @@ const doJob = async () => {
     // await executeJob();
     // schedule.scheduleJob("5 0 0 * * *", executeJob);
     const schedule = cron.schedule(
-        "15 0 8 * * *",
+        "0 15 8 * * *",
         () => {
             executeJob();
         },
