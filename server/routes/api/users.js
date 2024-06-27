@@ -136,6 +136,16 @@ router.post("/signin", async (req, res) => {
     }
 });
 
+router.get("/logout", async (req, res, next) => {
+    try {
+        res.clearCookie("authToken")
+            .status(200)
+            .json({ message: "로그아웃 성공" });
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+});
+
 router.patch("/ending", async (req, res) => {
     //TODO: 모든 턴 종료시 사용자 정보 비우기
     try {
