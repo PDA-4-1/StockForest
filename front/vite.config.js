@@ -6,11 +6,13 @@ export default defineConfig({
     plugins: [react()],
     server: {
         port: 3000,
-    }, hmr: {
-      protocol: 'ws',
-      host: 'http://stockforest.kro.kr',
-      clientPort: 80,
+        host: 0,0,0,0,
+        hmr: {
+            protocol: 'ws',
+            host: 'http://stockforest.kro.kr',
+            clientPort: 80,
     },
+    }, 
     resolve: {
         alias: [
             // 절대경로로 접근하기
