@@ -52,7 +52,11 @@ const Quiz = () => {
 
     const postAnswer = async () => {
         const result = await UpdateQuiz(stockId, date, upDown);
-        Toast.fire("성공적으로 저장되었습니다!", "", "success");
+        console.log(result.code);
+        if(result.code === 0) {
+            Toast.fire("오늘의 퀴즈를 이미 풀었습니다!", "", "error");    
+        }
+        else Toast.fire("성공적으로 저장되었습니다!", "", "success");
     };
 
     const checkAnswer = async () => {
