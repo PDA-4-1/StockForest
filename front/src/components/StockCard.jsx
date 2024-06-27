@@ -5,15 +5,15 @@ export default function StockCard(props) {
     const selected = props.selected;
     const onClick = props.onClick;
     const stockImages = {
-        1: "/imgs/field/tomato/tomato1.png",
-        2: "/imgs/field/banana/banana1.png",
-        3: "/imgs/field/blueberry/blueberry1.png",
-        4: "/imgs/field/peach/peach1.png",
-        5: "/imgs/field/orange/orange1.png",
-        6: "/imgs/field/melon/melon1.png",
-        7: "/imgs/field/grape/grape1.png",
-        8: "/imgs/field/apple/apple1.png",
-        9: "/imgs/field/strawberry/strawberry2.png",
+        1: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/tomato/tomato1.png",
+        2: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/banana/banana1.png",
+        3: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/blueberry/blueberry1.png",
+        4: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/peach/peach1.png",
+        5: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/orange/orange1.png",
+        6: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/melon/melon1.png",
+        7: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/grape/grape1.png",
+        8: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/apple/apple1.png",
+        9: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/strawberry/strawberry2.png",
     };
 
     return (

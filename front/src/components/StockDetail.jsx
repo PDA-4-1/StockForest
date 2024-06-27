@@ -35,15 +35,15 @@ export default function StockDetail({ stock }) {
         setModalSee(false);
     };
     const stockImages = {
-        1: "/imgs/field/tomato/tomatoprofile.png",
-        2: "/imgs/field/banana/bananaprofile.png",
-        3: "/imgs/field/blueberry/blueberryprofile.png",
-        4: "/imgs/field/peach/peachprofile.png",
-        5: "/imgs/field/orange/orangeprofile.png",
-        6: "/imgs/field/melon/melonprofile.png",
-        7: "/imgs/field/grape/grapeprofile.png",
-        8: "/imgs/field/apple/appleprofile.png",
-        9: "/imgs/field/strawberry/strawberryprofile.png",
+        1: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/tomato/tomatoprofile.png",
+        2: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/banana/bananaprofile.png",
+        3: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/blueberry/blueberryprofile.png",
+        4: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/peach/peachprofile.png",
+        5: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/orange/orangeprofile.png",
+        6: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/melon/melonprofile.png",
+        7: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/grape/grapeprofile.png",
+        8: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/apple/appleprofile.png",
+        9: "https://stockforest.s3.ap-northeast-2.amazonaws.com/field/strawberry/strawberryprofile.png",
     };
 
     return (
