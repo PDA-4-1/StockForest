@@ -27,6 +27,7 @@ jobs:
           git pull origin main
           
           cd ~/StockForest/front
+          npm install
           npm run build
 
           cd ~
