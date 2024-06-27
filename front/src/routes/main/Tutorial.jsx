@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PostTutorial } from "../../lib/apis/user";
 import { useNavigate } from "react-router-dom";
 import logo from "~/public/imgs/Logo.svg";
@@ -11,31 +11,17 @@ export default function Tutorial() {
 
     // 튜토리얼 스킵
     const skipTutorial = () => {
-        PostTutorial()
-            .then((data) => {
-                console.log(data);
-                if (data.status === 200) {
-                    navigate("/market");
-                }
-            })
-            .catch((err) => console.log(err.response));
+        navigate("/market");
     };
 
     // 다음 단계
     const nextStep = () => {
-        // 마지막 튜토리얼이면 tutorial 1로 바꾸고 마켓으로 이동
+        // 마지막 튜토리얼이면 마켓으로 이동
         if (step === 21) {
-            PostTutorial()
-                .then((data) => {
-                    console.log(data);
-                    if (data.status === 200) {
-                        navigate("/market");
-                    }
-                })
-                .catch((err) => console.log(err.response));
+            navigate("/market");
         }
         setStep(step + 1);
-        console.log(step);
+        // console.log(step);
     };
 
     const generateImageUrls = (count) => {
@@ -50,6 +36,9 @@ export default function Tutorial() {
 
     const imgs = generateImageUrls(21);
 
+    useEffect(() => {
+        PostTutorial().catch((err) => console.log(err.response));
+    }, []);
     return (
         <div className="w-full h-screen max-h-screen bg-background-pattern relative grid justify-items-center">
             {step != 0 ? (
