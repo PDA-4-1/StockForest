@@ -76,6 +76,7 @@ const Navbar = () => {
                         src="/imgs/quiz.svg"
                         alt="퀴즈"
                         className="size-10 cursor-pointer"
+                        onClick={handleQuizClick}
                     />
                     <button
                         onClick={handleQuizClick}
