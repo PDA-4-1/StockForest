@@ -66,13 +66,13 @@ const Quiz = () => {
             .tz("Asia/Seoul")
             .startOf("day")
             .add(16, "hours"); // 오늘의 오후 4시 (16:00:00)
-        if (now.isBetween(startOfDay, endOfQuizTime)) {
-            Toast.fire(
-                "오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.",
-                "",
-                "error"
-            );
-        } else {
+        // if (now.isBetween(startOfDay, endOfQuizTime)) {
+        //     Toast.fire(
+        //         "오후 4시 이전에는 퀴즈의 답을 확인할 수 없습니다.",
+        //         "",
+        //         "error"
+        //     );
+        // } else {
             const result = await AnswerQuiz();
             console.log(result);
             setResult({
@@ -85,7 +85,7 @@ const Quiz = () => {
             });
             console.log("result: " + result);
             setAnswerModalSee(true);
-        }
+        // }
     };
 
     const truncateText = (text, length) => {
