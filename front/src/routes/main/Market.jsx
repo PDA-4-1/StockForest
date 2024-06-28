@@ -12,6 +12,7 @@ import { saveTurn, saveUser } from "../../store/userSlice";
 import NewsModal from "../../components/Modal/NewsModal";
 import NumModal from "../../components/Modal/NumModal";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "../../components/Toast";
 
 const Market = () => {
     const selectedStock = useSelector((state) => state.stock.selectedStock);
@@ -76,7 +77,14 @@ const Market = () => {
                     })
                     .catch((err) => console.log(err.response));
             })
-            .catch((err) => console.log(err.response));
+            .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    Toast.fire("로그인 하세요!", "", "error");
+                    navigate("/");
+                } else {
+                    console.error("Error :", error);
+                }
+            });
     }, [turn]);
 
     useEffect(() => {
