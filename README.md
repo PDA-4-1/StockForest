@@ -51,6 +51,36 @@
 
 ![ERD](https://github.com/PDA-4-1/StockForest/assets/122499274/9a3bdd61-c71c-4755-8301-3169935e43c3)
 
+## ✨기능
+
+### 1. 랜딩 페이지 및 회원가입 🚪
+![랜딩페이지-및-회원가입](https://github.com/PDA-4-1/StockForest/assets/101380919/a2745afb-a75c-487a-8868-19b941e35f66)
+
+
+### 2. 튜토리얼 📚
+![튜토리얼](https://github.com/PDA-4-1/StockForest/assets/101380919/31c594ef-412e-44c0-a6bb-fa6e49b35a6f)
+
+### 3. 주식 매수 💸
+![주식-매수](https://github.com/PDA-4-1/StockForest/assets/101380919/5f89bad9-d124-4e4c-bbe5-349e839aedb5)
+
+### 4. 농장 확인 및 매도 🌾
+![농장-확인-및-매도](https://github.com/PDA-4-1/StockForest/assets/101380919/c5c4085b-202a-4329-b728-db495d53fdf3)
+
+### 5. 턴 넘기기 및 뉴스 📰
+![턴-넘기기-및-뉴스](https://github.com/PDA-4-1/StockForest/assets/101380919/2b02ef8d-ea36-4ab9-b341-45555c00e6fa)
+
+### 6. 거래 기록 보기 📈
+![거래-기록-보기](https://github.com/PDA-4-1/StockForest/assets/101380919/308f275b-fb8c-45fa-b652-fc3fc83903aa)
+
+### 7. 오늘의 퀴즈 ❓
+![오늘의-퀴즈](https://github.com/PDA-4-1/StockForest/assets/101380919/3fb0b9fc-0e1e-480a-904f-14b134aea189)
+
+### 8. 엔딩 🎉
+![엔딩](https://github.com/PDA-4-1/StockForest/assets/101380919/c0360650-4d88-41c2-adce-6e94a8189abf)
+
+
+
+
 # 컨벤션
 
 ## Commit Message
